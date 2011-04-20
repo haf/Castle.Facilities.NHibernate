@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Castle.Facilities.NHibernate", "src\Castle.Facilities.NHibernate\Castle.Facilities.NHibernate.csproj", "{12598D2B-B68E-4EA7-A7DD-0CC2398CE8B6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Castle.Facilities.NHibernate.Tests", "src\Castle.Facilities.NHibernate.Tests\Castle.Facilities.NHibernate.Tests.csproj", "{EAC2817B-94AC-4DB2-AA22-F17E284D9892}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{12598D2B-B68E-4EA7-A7DD-0CC2398CE8B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12598D2B-B68E-4EA7-A7DD-0CC2398CE8B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12598D2B-B68E-4EA7-A7DD-0CC2398CE8B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12598D2B-B68E-4EA7-A7DD-0CC2398CE8B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EAC2817B-94AC-4DB2-AA22-F17E284D9892}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EAC2817B-94AC-4DB2-AA22-F17E284D9892}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EAC2817B-94AC-4DB2-AA22-F17E284D9892}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EAC2817B-94AC-4DB2-AA22-F17E284D9892}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
