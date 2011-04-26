@@ -107,7 +107,7 @@ class Nuspec
     metadata.add_element('owners').add_text(@owners) if !@owners.nil?
     metadata.add_element('summary').add_text(@summary) if !@summary.nil?
     metadata.add_element('iconUrl').add_text(@iconUrl) if !@iconUrl.nil?
-    metadata.add_element('requireLicenseAcceptance').add_text(@requireLicenseAcceptance) if !@requireLicenseAcceptance.nil?
+    metadata.add_element('requireLicenseAcceptance').inspect.add_text(@requireLicenseAcceptance) unless @requireLicenseAcceptance.nil?
     metadata.add_element('tags').add_text(@tags) if !@tags.nil?
 
     if @dependencies.length > 0

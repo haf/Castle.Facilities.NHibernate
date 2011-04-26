@@ -85,7 +85,7 @@ namespace :castle do
   task :assembly_infos => [:version]
   
   desc "prepare nuspec + nuget package"
-  task :nuget => ["#{Folders[:nuget]}", :nuget]
+  task :nuget => [:nuget_inner]
   
   task :test_all => [:test]
   
@@ -150,7 +150,7 @@ namespace :castle do
   # ===================================================
   directory "#{Folders[:tests]}"
   
-  task :nh_fac_test => [:msbuild, "#{Folders[:tests]}", :nh_fac_nunit, :nh_fac_test_publish_artifacts]
+  task :test => [:msbuild, "#{Folders[:tests]}", :nh_fac_nunit, :nh_fac_test_publish_artifacts]
   
   nunit :nh_fac_nunit do |nunit|
     nunit.command = Commands[:nunit]
@@ -190,17 +190,18 @@ namespace :castle do
     nuspec.title = Projects[:nh_fac][:title]
     nuspec.projectUrl = "https://github.com/haf/Castle.Facilities.NHibernate"
     nuspec.language = "en-US"
-    nuspec.licenseUrl = "http://me.com/license"
+    nuspec.licenseUrl = "https://github.com/haf/Castle.Facilities.NHibernate/raw/develop/License.txt"
     nuspec.requireLicenseAcceptance = true
     nuspec.projectUrl = "http://me.com"
     nuspec.dependency "Castle.Core", "2.5.2"
     nuspec.dependency "Castle.Windsor", "2.5.2"
     nuspec.dependency "Castle.Services.Transaction", "3.0.0.1001"
     nuspec.dependency "Castle.Facilities.AutoTx", "3.0.0.1001"
+	nuspec.framework_assembly "System.Transactions", FRAMEWORK
 	
     nuspec.output_file = Files[:nh_fac][:nuspec]
 	
-    nuspec_copy(:tx, "*Faclities.NHibernate.{dll,xml,pdb}")
+    nuspec_copy(:nh_fac, "*Facilities.NHibernate.{dll,xml,pdb}")
 	
     CLEAN.include(Folders[:nuspec])
   end
@@ -211,19 +212,19 @@ namespace :castle do
   directory "#{Folders[:nuget]}"
   
   # creates directory tasks for all nuspec-convention based directories
-  def nuget_directory(key)
+  def nuget_directory()
     dirs = FileList.new([:lib, :content, :tools].collect{ |dir|
-      File.join(Folders[:"#{key}_nuspec"], "#{dir}")
+      File.join(Folders[:nuspec], "#{dir}")
     }).each{ |d| directory d }
-    task :"#{key}_nuget_dirs" => dirs # NOTE: here a new dynamic task is defined
+    task :nuget_dirs => dirs # NOTE: here a new dynamic task is defined
   end
   
-  nuget_directory(:tx)
+  nuget_directory()
   
-  desc "generate nuget package for tx services"
-  nugetpack :nuget => [:output, :nuspec] do |nuget|
+  desc "generate nuget package for NHibernate Facility"
+  nugetpack :nuget_inner => [:output, :nuspec, :nuget_dirs] do |nuget|
     nuget.command     = Commands[:nuget]
-    nuget.nuspec      = Files[:tx][:nuspec]
+    nuget.nuspec      = Files[:nh_fac][:nuspec]
     nuget.output      = Folders[:nuget]
   end
   
