@@ -59,53 +59,6 @@ namespace Castle.Facilities.NHibernate.Tests
 			}
 		}
 
-		/*
-Test 'Castle.Services.Transaction.Tests.vNext.NHibernateFacility_Multiple_Threads_DependentTransactionWithParent.Forking_NewTransaction_Means_AnotherISessionReference' failed:
-	System.Transactions.TransactionAbortedException : The transaction has aborted.
-  ----> NHibernate.Exceptions.GenericADOException : could not insert: [Castle.Services.Transaction.Tests.vNext.Thing#f83bd5df-fab7-470f-880b-9eca010e737b][SQL: INSERT INTO dbo.[Thing] (val, ID) VALUES (?, ?)]
-  ----> System.Data.SqlClient.SqlException : Cannot enlist in the transaction because the transaction has already been committed or rolled back.
-	at System.Transactions.TransactionStatePromotedAborted.PromotedTransactionOutcome(InternalTransaction tx)
-	at System.Transactions.TransactionStatePromotedEnded.EndCommit(InternalTransaction tx)
-	at System.Transactions.CommittableTransaction.Commit()
-	f:\code\castle\Castle.Services.Transaction\src\Castle.Services.Transaction\Transaction.cs(208,0): at Castle.Services.Transaction.Transaction.Castle.Services.Transaction.ITransaction.Complete()
-	f:\code\castle\Castle.Services.Transaction\src\Castle.Facilities.AutoTx\TxInterceptor.cs(170,0): at Castle.Facilities.AutoTx.TxInterceptor.SynchronizedCase(IInvocation invocation, ITransaction transaction)
-	f:\code\castle\Castle.Services.Transaction\src\Castle.Facilities.AutoTx\TxInterceptor.cs(102,0): at Castle.Facilities.AutoTx.TxInterceptor.Castle.DynamicProxy.IInterceptor.Intercept(IInvocation invocation)
-	at Castle.DynamicProxy.AbstractInvocation.Proceed()
-	at Castle.Proxies.ThreadedServiceProxy.MainThreadedEntry()
-	NHibernateFacility_Multiple_Threads_DependentTransactionWithParent.cs(57,0): at Castle.Services.Transaction.Tests.vNext.NHibernateFacility_Multiple_Threads_DependentTransactionWithParent.Forking_NewTransaction_Means_AnotherISessionReference()
-	--GenericADOException
-	at NHibernate.Persister.Entity.AbstractEntityPersister.Insert(Object id, Object[] fields, Boolean[] notNull, Int32 j, SqlCommandInfo sql, Object obj, ISessionImplementor session)
-	at NHibernate.Persister.Entity.AbstractEntityPersister.Insert(Object id, Object[] fields, Object obj, ISessionImplementor session)
-	at NHibernate.Action.EntityInsertAction.Execute()
-	at NHibernate.Engine.ActionQueue.Execute(IExecutable executable)
-	at NHibernate.Engine.ActionQueue.ExecuteActions(IList list)
-	at NHibernate.Engine.ActionQueue.ExecuteActions()
-	at NHibernate.Event.Default.AbstractFlushingEventListener.PerformExecutions(IEventSource session)
-	at NHibernate.Event.Default.DefaultFlushEventListener.OnFlush(FlushEvent event)
-	at NHibernate.Impl.SessionImpl.Flush()
-	at NHibernate.Transaction.AdoNetWithDistributedTransactionFactory.DistributedTransactionContext.System.Transactions.IEnlistmentNotification.Prepare(PreparingEnlistment preparingEnlistment)
-	--SqlException
-	at System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection)
-	at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection)
-	at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning()
-	at System.Data.SqlClient.TdsParser.Run(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj)
-	at System.Data.SqlClient.TdsParser.TdsExecuteTransactionManagerRequest(Byte[] buffer, TransactionManagerRequestType request, String transactionName, TransactionManagerIsolationLevel isoLevel, Int32 timeout, SqlInternalTransaction transaction, TdsParserStateObject stateObj, Boolean isDelegateControlRequest)
-	at System.Data.SqlClient.SqlInternalConnectionTds.PropagateTransactionCookie(Byte[] cookie)
-	at System.Data.SqlClient.SqlInternalConnection.EnlistNonNull(Transaction tx)
-	at System.Data.SqlClient.SqlInternalConnection.Enlist(Transaction tx)
-	at System.Data.SqlClient.SqlInternalConnectionTds.Activate(Transaction transaction)
-	at System.Data.ProviderBase.DbConnectionInternal.ActivateConnection(Transaction transaction)
-	at System.Data.ProviderBase.DbConnectionPool.GetConnection(DbConnection owningObject)
-	at System.Data.ProviderBase.DbConnectionFactory.GetConnection(DbConnection owningConnection)
-	at System.Data.ProviderBase.DbConnectionClosed.OpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory)
-	at System.Data.SqlClient.SqlConnection.Open()
-	at NHibernate.Connection.DriverConnectionProvider.GetConnection()
-	at NHibernate.AdoNet.ConnectionManager.GetConnection()
-	at NHibernate.AdoNet.AbstractBatcher.Prepare(IDbCommand cmd)
-	at NHibernate.AdoNet.AbstractBatcher.ExecuteNonQuery(IDbCommand cmd)
-	at NHibernate.AdoNet.NonBatchingBatcher.AddToBatch(IExpectation expectation)
-	at NHibernate.Persister.Entity.AbstractEntityPersister.Insert(Object id, Object[] fields, Boolean[] notNull, Int32 j, SqlCommandInfo sql, Object obj, ISessionImplementor session)*/
-
 		[Test]
 		public void Forking_InDependentTransaction_Means_PerTransactionLifeStyle_SoSameInstances()
 		{
