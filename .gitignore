@@ -1,12 +1,14 @@
 /build
-AssemblyInfo.cs
+/packages
 src/*/obj
 src/*/bin
+src/*AssemblyInfo.cs
 *.csproj.user
 *ReSharper.user
 _ReSharper*
 *.ReSharper
 *.suo
 *.cache
-Castle.Services.Transaction.user
+Castle.Facilities.NHibernate.user
 * Thumbs.db
+*.nupkg

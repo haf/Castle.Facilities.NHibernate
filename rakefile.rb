@@ -1,38 +1,230 @@
-$: << './'
-require 'lib/albacore'
-require 'version_bumper'
+# copyright Henrik Feldt 2011
 
-task :default => ["castle:build"]
+$: << './'
+require 'albacore'
+require 'buildscripts/albacore_mods'
+begin
+  require 'version_bumper'  
+rescue LoadError
+  puts 'version bumper not available!'
+end
+require 'rake/clean'
+require 'buildscripts/project_data'
+require 'buildscripts/paths'
+require 'buildscripts/utils'
+require 'buildscripts/environment'
+
+# profile time: "PS \> $start = [DateTime]::UtcNow ; rake ; $end = [DateTime]::UtcNow ; $diff = $end-$start ; "Started: $start to $end, a diff of $diff"
+task :default => [:release]
+
+desc "prepare the version info files to get ready to start coding!"
+task :prepare => ["castle:assembly_infos"]
+
+desc "build in release mode"
+task :release => ["env:release", "castle:build"]
+
+desc "build in debug mode"
+task :debug => ["env:debug", "castle:build"]
+
+task :ci => ["clobber", "castle:build"]
+
+desc "Run all unit and integration tests in debug mode"
+task :test_all => ["env:debug", "castle:test_all"]
+
+desc "prepare alpha version for being published"
+task :alpha do
+  puts %q{
+    TODO: Basically what the script should do;
+    1. Verify no pending changes
+    2. Verify on develop branch
+    3. Ask for alpha number
+    4. Verify alpha number is greater than the last alpha number
+    5. Verify we're not above alpha, e.g. in beta.
+    6. git add . -A ; git commit -m "Automatic alpha" ; rake release castle:test_all
+       This ensures we have passing tests and a build with a matching git commit hash.
+    7. git checkout master
+    8. git merge --no-ff -m "Alpha [version here] commit." develop
+    9. git push
+    10. git tag -a "v[VERSION]"
+    11. git push --tags
+        This means that the tag is now publically browsable.
+    
+    Now, TeamCity till take over and run the compile process on the server and then
+    upload the artifacts to be downloaded at https://github.com/haf/Castle.Services.Transaction/downloads
+
+}
+end
+
+CLOBBER.include(Folders[:out])
+CLOBBER.include(Folders[:packages])
+
+Albacore.configure do |config|
+  config.nunit.command = Commands[:nunit]
+  config.assemblyinfo.namespaces = "System", "System.Reflection", "System.Runtime.InteropServices", "System.Security"
+end
+
+desc "Builds Debug + Release"
+task :build_all do
+  ["env:release", "env:debug"].each{ |t| build t }
+end
+
+def build(conf)
+  puts "BUILD ALL CONF #{conf}"
+  Rake::Task.tasks.each{ |t| t.reenable }
+  Rake::Task[conf].invoke # these will only be invoked once each
+  Rake::Task["castle:build"].invoke
+  Rake::Task["castle:test_all"].invoke
+end
 
 namespace :castle do
 
-  desc "build project"
-  msbuild :build, [:config, :framework] => [:version] do |msb, args|
-    msb.use :args[:framework] || :net40
-	msb.properties :Configuration => args[:config] || :Release
+  desc "build + unit tests + output"
+  task :build => [:version, :msbuild, :test, :output]
+ 
+  desc "generate the assembly infos you need to compile with VS"
+  task :assembly_infos => [:version]
+  
+  desc "prepare nuspec + nuget package"
+  task :nuget => ["#{Folders[:nuget]}", :nuget]
+  
+  task :test_all => [:test]
+  
+  #                    BUILDING
+  # ===================================================
+  
+  msbuild :msbuild do |msb, args|
+    # msb.use = :args[:framework] || :net40
+    config = "#{FRAMEWORK.upcase}-#{CONFIGURATION}"
+    puts "Building config #{config} with MsBuild"
+    msb.properties :Configuration => config
     msb.targets :Clean, :Build
-    msb.solution = 
+    msb.solution = Files[:sln]
+  end
+    
+  #                    VERSIONING
+  #        http://support.microsoft.com/kb/556041
+  # ===================================================
+  
+  file 'src/CommonAssemblyInfo.cs' => "castle:version"
+  
+  assemblyinfo :version do |asm|
+    data = commit_data() #hash + date
+    asm.product_name = asm.title = Projects[:nh_fac][:title]
+    asm.description = Projects[:nh_fac][:description] + " #{data[0]} - #{data[1]}"
+    # This is the version number used by framework during build and at runtime to locate, link and load the assemblies. When you add reference to any assembly in your project, it is this version number which gets embedded.
+    asm.version = VERSION
+    # Assembly File Version : This is the version number given to file as in file system. It is displayed by Windows Explorer. Its never used by .NET framework or runtime for referencing.
+    asm.file_version = VERSION_INFORMAL
+    asm.custom_attributes :AssemblyInformationalVersion => "#{VERSION}", # disposed as product version in explorer
+      :CLSCompliantAttribute => false,
+      :AssemblyConfiguration => "#{CONFIGURATION}",
+      :Guid => Projects[:nh_fac][:guid]
+    asm.com_visible = false
+    asm.copyright = Projects[:nh_fac][:copyright]
+    asm.output_file = 'src/CommonAssemblyInfo.cs'
+  end  
+  
+  #                    OUTPUTTING
+  # ===================================================
+  task :output => [:nh_fac_output] do
+    Dir.glob(File.join(Folders[:binaries], "*.txt")){ | fn | File.delete(fn) } # remove old commit marker files
+	data = commit_data() # get semantic data
+    File.open File.join(Folders[:binaries], "#{data[0]} - #{data[1]}.txt"), "w" do |f|
+      f.puts %Q{aa
+    This file's name gives you the specifics of the commit.
+    
+    Commit hash:		#{data[0]}
+    Commit date:		#{data[1]}
+}
+    end
   end
   
+  task :nh_fac_output => :msbuild do
+    target = File.join(Folders[:binaries], Projects[:nh_fac][:dir])
+    copy_files Folders[:nh_fac_out], "*.{xml,dll,pdb,config}", target
+    CLEAN.include(target)
+  end
+  
+  
+  #                     TESTING
+  # ===================================================
+  directory "#{Folders[:tests]}"
+  
+  task :nh_fac_test => [:msbuild, "#{Folders[:tests]}", :nh_fac_nunit, :nh_fac_test_publish_artifacts]
+  
+  nunit :nh_fac_nunit do |nunit|
+    nunit.command = Commands[:nunit]
+    nunit.options '/framework v4.0', "/out #{Files[:nh_fac][:test_log]}", "/xml #{Files[:nh_fac][:test_xml]}"
+    nunit.assemblies Files[:nh_fac][:test]
+	CLEAN.include(Folders[:tests])
+  end
+  
+  task :nh_fac_test_publish_artifacts => :nh_fac_nunit do
+	puts "##teamcity[importData type='nunit' path='#{Files[:nh_fac][:test_xml]}']"
+	puts "##teamcity[publishArtifacts '#{Files[:nh_fac][:test_log]}']"
+  end
+
+  #                      NUSPEC
+  # ===================================================
+  
+  # copy from the key's data using the glob pattern
+  def nuspec_copy(key, glob)
+    puts "key: #{key}, glob: #{glob}, proj dir: #{Projects[key][:dir]}"
+    FileList[File.join(Folders[:binaries], Projects[key][:dir], glob)].collect{ |f|
+      to = File.join( Folders[:"#{key}_nuspec"], "lib", FRAMEWORK )
+      FileUtils.mkdir_p to
+      cp f, to
+	  # return the file name and its extension:
+	  File.join(FRAMEWORK, File.basename(f))
+    }
+  end
+  
+  file "#{Files[:nh_fac][:nuspec]}"
+  
   desc "create the nuget package"
-  nuspec do |nuspec|
+  nuspec :nuspec do |nuspec|
     nuspec.id = "Castle.Facilities.NHibernate"
-    nuspec.version = File.Read
-    nuspec.authors = "Henrik Feldt"
-    nuspec.description = %q{aaWhen using NHibernate this Castle NHibernate Facility will make it easier to manage sessions and session factories. 
-		Integrated with Windsor, Castle Transaction Services, Castle AutoTx Facility and FluentNHibernate, 
-		it gives you ease of configuration and many extensibility options.}
-    nuspec.title = "Castle NHibernate Facility"
-	nuspec.dependency "Castle.Core", "2.5.1"
-	nuspec.dependency "Castle.Windsor", "2.5.1"
-	nuspec.dependency "Castle.Services.Transaction", "2.5.1"
-    nuspec.dependency "Castle.Facilities.AutoTx", "2.5.1"
+    nuspec.version = VERSION
+    nuspec.authors = Projects[:nh_fac][:authors]
+    nuspec.description = Projects[:nh_fac][:description]
+    nuspec.title = Projects[:nh_fac][:title]
+    nuspec.projectUrl = "https://github.com/haf/Castle.Facilities.NHibernate"
     nuspec.language = "en-US"
     nuspec.licenseUrl = "http://me.com/license"
+    nuspec.requireLicenseAcceptance = true
     nuspec.projectUrl = "http://me.com"
-    nuspec.dependency "Autofac", "2.4.3.700"
-    nuspec.working_directory = "Build/Deploy"
-    nuspec.output_file = "fluentworkflow.nuspec"
+    nuspec.dependency "Castle.Core", "2.5.2"
+    nuspec.dependency "Castle.Windsor", "2.5.2"
+    nuspec.dependency "Castle.Services.Transaction", "3.0.0.1001"
+    nuspec.dependency "Castle.Facilities.AutoTx", "3.0.0.1001"
+	
+    nuspec.output_file = Files[:nh_fac][:nuspec]
+	
+    nuspec_copy(:tx, "*Faclities.NHibernate.{dll,xml,pdb}")
+	
+    CLEAN.include(Folders[:nuspec])
+  end
+  
+  #                       NUGET
+  # ===================================================
+  
+  directory "#{Folders[:nuget]}"
+  
+  # creates directory tasks for all nuspec-convention based directories
+  def nuget_directory(key)
+    dirs = FileList.new([:lib, :content, :tools].collect{ |dir|
+      File.join(Folders[:"#{key}_nuspec"], "#{dir}")
+    }).each{ |d| directory d }
+    task :"#{key}_nuget_dirs" => dirs # NOTE: here a new dynamic task is defined
+  end
+  
+  nuget_directory(:tx)
+  
+  desc "generate nuget package for tx services"
+  nugetpack :nuget => [:output, :nuspec] do |nuget|
+    nuget.command     = Commands[:nuget]
+    nuget.nuspec      = Files[:tx][:nuspec]
+    nuget.output      = Folders[:nuget]
   end
   
 end
