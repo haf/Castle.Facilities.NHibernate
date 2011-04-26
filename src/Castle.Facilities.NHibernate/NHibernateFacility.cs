@@ -34,10 +34,21 @@ using NHibernate.Cfg;
 
 namespace Castle.Facilities.NHibernate
 {
+	///<summary>
+	/// Easy NHibernate integration with declarative transactions 
+	/// using Castle Transaction Services and .Net System.Transactions.
+	/// Integrate Transactional NTFS with NHibernate and database transactions, 
+	/// or choose methods to fork dependent transactions for to run your transaction 
+	/// constituents in parallel. The NHibernate Facility is configured 
+	/// using FluentNHibernate 
+	///</summary>
 	public class NHibernateFacility : AbstractFacility
 	{
 		private static readonly ILog _Logger = LogManager.GetLogger(typeof (NHibernateFacility));
 		
+		/// <summary>
+		/// Initialize, override
+		/// </summary>
 		[ContractVerification(false)] // interactive bits don't have contracts
 		protected override void Init()
 		{
