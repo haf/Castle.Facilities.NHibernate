@@ -171,7 +171,7 @@ namespace :castle do
   def nuspec_copy(key, glob)
     puts "key: #{key}, glob: #{glob}, proj dir: #{Projects[key][:dir]}"
     FileList[File.join(Folders[:binaries], Projects[key][:dir], glob)].collect{ |f|
-      to = File.join( Folders[:"#{key}_nuspec"], "lib", FRAMEWORK )
+      to = File.join( Folders[:nuspec], "lib", FRAMEWORK )
       FileUtils.mkdir_p to
       cp f, to
 	  # return the file name and its extension:
@@ -191,8 +191,7 @@ namespace :castle do
     nuspec.projectUrl = "https://github.com/haf/Castle.Facilities.NHibernate"
     nuspec.language = "en-US"
     nuspec.licenseUrl = "https://github.com/haf/Castle.Facilities.NHibernate/raw/develop/License.txt"
-    nuspec.requireLicenseAcceptance = true
-    nuspec.projectUrl = "http://me.com"
+    nuspec.requireLicenseAcceptance = "true"
     nuspec.dependency "Castle.Core", "2.5.2"
     nuspec.dependency "Castle.Windsor", "2.5.2"
     nuspec.dependency "Castle.Services.Transaction", "3.0.0.1001"
@@ -215,14 +214,15 @@ namespace :castle do
   def nuget_directory()
     dirs = FileList.new([:lib, :content, :tools].collect{ |dir|
       File.join(Folders[:nuspec], "#{dir}")
-    }).each{ |d| directory d }
+    })
     task :nuget_dirs => dirs # NOTE: here a new dynamic task is defined
+	dirs.to_a.each{ |d| directory d }
   end
   
   nuget_directory()
   
   desc "generate nuget package for NHibernate Facility"
-  nugetpack :nuget_inner => [:output, :nuspec, :nuget_dirs] do |nuget|
+  nugetpack :nuget_inner => [:output, :nuspec, "#{Folders[:nuget]}", :nuget_dirs] do |nuget|
     nuget.command     = Commands[:nuget]
     nuget.nuspec      = Files[:nh_fac][:nuspec]
     nuget.output      = Folders[:nuget]
