@@ -22,7 +22,7 @@ Files = {
   :version => "VERSION",
   
   :nh_fac => {
-    :nuspec => File.join(Folders[:nuspec], "#{Projects[:nh_fac][:dir]}.nuspec"),
+    :nuspec => File.join(Folders[:nuspec], "#{Projects[:nh_fac][:id]}.nuspec"),
 	:test_log => File.join(Folders[:tests], "Castle.Facilities.NHibernate.Tests.log"),
 	:test_xml => File.join(Folders[:tests], "Castle.Facilities.NHibernate.Tests.xml"),
 	:test => 'ex: Castle.Facilities.NHibernate.Tests.dll'

@@ -185,7 +185,7 @@ namespace :castle do
   
   desc "create the nuget package"
   nuspec :nuspec do |nuspec|
-    nuspec.id = "Castle.Facilities.NHibernate"
+    nuspec.id = Projects[:nh_fac][:id]
     nuspec.version = VERSION
     nuspec.authors = Projects[:nh_fac][:authors]
     nuspec.description = Projects[:nh_fac][:description]
@@ -196,8 +196,11 @@ namespace :castle do
     nuspec.requireLicenseAcceptance = "true"
     nuspec.dependency "Castle.Core", "2.5.2"
     nuspec.dependency "Castle.Windsor", "2.5.2"
-    nuspec.dependency "Castle.Services.Transaction", "3.0.0.1001"
-    nuspec.dependency "Castle.Facilities.AutoTx", "3.0.0.1001"
+    nuspec.dependency "Castle.Services.Transaction", "3.0.0.1002"
+    nuspec.dependency "Castle.Facilities.AutoTx", "3.0.0.1002"
+	nuspec.dependency "log4net", "1.2.10"
+	nuspec.dependency "FluentNHibernate", "1.2.0.712"
+	nuspec.dependency "NHibernate.Castle", "3.1.0.4000"
 	nuspec.framework_assembly "System.Transactions", FRAMEWORK
 	
     nuspec.output_file = Files[:nh_fac][:nuspec]
