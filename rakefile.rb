@@ -194,8 +194,8 @@ namespace :castle do
     nuspec.requireLicenseAcceptance = "true"
     nuspec.dependency "Castle.Core", "2.5.2"
     nuspec.dependency "Castle.Windsor", "2.5.2"
-    nuspec.dependency "Castle.Services.Transaction", "3.0.0.1001"
-    nuspec.dependency "Castle.Facilities.AutoTx", "3.0.0.1001"
+    nuspec.dependency "Castle.Services.Transaction", "3.0.0.1002"
+    nuspec.dependency "Castle.Facilities.AutoTx", "3.0.0.1002"
 	nuspec.framework_assembly "System.Transactions", FRAMEWORK
 	
     nuspec.output_file = Files[:nh_fac][:nuspec]
