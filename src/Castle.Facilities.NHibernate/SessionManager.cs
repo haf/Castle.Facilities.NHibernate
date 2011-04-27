@@ -14,6 +14,10 @@ namespace Castle.Facilities.NHibernate
 	{
 		private readonly Func<ISession> _GetSession;
 
+		/// <summary>
+		/// Constructor.
+		/// </summary>
+		/// <param name="getSession"></param>
 		public SessionManager(Func<ISession> getSession)
 		{
 			Contract.Requires(getSession != null);
@@ -22,7 +26,7 @@ namespace Castle.Facilities.NHibernate
 			_GetSession = getSession;
 		}
 
-		public ISession OpenSession()
+		ISession ISessionManager.OpenSession()
 		{
 			var session = _GetSession();
 

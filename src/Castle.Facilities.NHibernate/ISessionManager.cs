@@ -10,6 +10,10 @@ namespace Castle.Facilities.NHibernate
 	[ContractClass(typeof(ISessionManagerContract))]
 	public interface ISessionManager
 	{
+		/// <summary>
+		/// Gets a new or existing ISession depending on your context.
+		/// </summary>
+		/// <returns>A non-null ISession.</returns>
 		ISession OpenSession();
 	}
 }
