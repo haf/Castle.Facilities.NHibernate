@@ -41,7 +41,7 @@ task :alpha => ["env:release"] do
 end
 
 CLOBBER.include(Folders[:out])
-CLOBBER.include(Folders[:packages])
+CLOBBER.include(Folders[:nuspec])
 
 Albacore.configure do |config|
   config.nunit.command = Commands[:nunit]
@@ -180,8 +180,8 @@ namespace :castle do
     nuspec.requireLicenseAcceptance = "true"
     nuspec.dependency "Castle.Core", "2.5.2"
     nuspec.dependency "Castle.Windsor", "2.5.2"
-    nuspec.dependency "Castle.Services.Transaction", "3.0.0.1002"
-    nuspec.dependency "Castle.Facilities.AutoTx", "3.0.0.1002"
+    nuspec.dependency "Castle.Services.Transaction", "[3.0.0.1003]" # exactly equal when alpha versions!
+    nuspec.dependency "Castle.Facilities.AutoTx", "[3.0.0.1003]"
 	nuspec.dependency "log4net", "1.2.10"
 	nuspec.dependency "FluentNHibernate", "1.2.0.712"
 	nuspec.dependency "NHibernate.Castle", "3.1.0.4000"
