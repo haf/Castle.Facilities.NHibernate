@@ -26,33 +26,17 @@ task :release => ["env:release", "castle:build", "castle:nuget"]
 desc "build in debug mode"
 task :debug => ["env:debug", "castle:build"]
  
-# no test while waiting for NHibernate server
 task :ci => ["clobber", "castle:build_notest", "castle:nuget"]
 
 desc "Run all unit and integration tests in debug mode"
 task :test_all => ["env:debug", "castle:test_all"]
 
 desc "prepare alpha version for being published"
-task :alpha do
+task :alpha => ["env:release"] do
   puts %q{
-    TODO: Basically what the script should do;
-    1. Verify no pending changes
-    2. Verify on develop branch
-    3. Ask for alpha number
-    4. Verify alpha number is greater than the last alpha number
-    5. Verify we're not above alpha, e.g. in beta.
-    6. git add . -A ; git commit -m "Automatic alpha" ; rake release castle:test_all
-       This ensures we have passing tests and a build with a matching git commit hash.
-    7. git checkout master
-    8. git merge --no-ff -m "Alpha [version here] commit." develop
-    9. git push
-    10. git tag -a "v[VERSION]"
-    11. git push --tags
-        This means that the tag is now publically browsable.
-    
-    Now, TeamCity till take over and run the compile process on the server and then
-    upload the artifacts to be downloaded at https://github.com/haf/Castle.Services.Transaction/downloads
-
+  
+    Preparing Alpha Release
+	
 }
 end
 

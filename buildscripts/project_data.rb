@@ -1,7 +1,7 @@
 # the Projects hash should only contain strings relating to the projects.
 Projects = {
 	:nh_fac => {
-		:id ="Castle.Facilities.NHibernate",
+		:id => "Castle.Facilities.NHibernate",
 		:dir => "Castle.Facilities.NHibernate",
 		:test_dir => "Castle.Facilities.NHibernate.Tests",
 		:title => "Castle NHibernate Facility",
