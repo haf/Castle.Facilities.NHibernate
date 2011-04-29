@@ -1,14 +1,14 @@
 # the Projects hash should only contain strings relating to the projects.
 Projects = {
-	:proj_key => {	
-		:id => "Castle.XXX",
-		:dir => "Castle.XXX",
-		:test_dir => "Castle.XXX.Tests",
-		:title => "Castle XXX",
-		:description => "XXX",
-		:copyright => "Apache 2.0 Licensed. The Castle Project 2004-2011",
-		:authors => "Castle Project Committers and Contributers",
-		:company => "The Castle Project",
-		:guid => "xxxxxxxx-fa2c-4630-a087-abd28f77af28"
+	:nh_fac => {
+		:id => "Castle.Facilities.NHibernate",
+		:dir => "Castle.Facilities.NHibernate",
+		:test_dir => "Castle.Facilities.NHibernate.Tests",
+		:title => "Castle NHibernate Facility",
+		:description => "Easy NHibernate integration with declarative transactions using Castle Transaction Services and .Net System.Transactions. Integrate Transactional NTFS with NHibernate and database transactions, or choose methods to fork dependent transactions for to run your transaction constituents in parallel. The NHibernate Facility is configured using FluentNHibernate",
+		:copyright => "Apache 2.0 Licensed. Copyright: Henrik Feldt 2011, The Castle Project",
+		:authors => "Henrik Feldt",
+		:company => "The Castle Project, Logibit",
+		:guid => "7f4d3ca3-95d5-4557-bbf5-1df3dda08744"
 	}
 }

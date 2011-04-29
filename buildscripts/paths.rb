@@ -9,23 +9,23 @@ Folders = {
   :nunit => File.join("tools", "NUnit", "bin"),
   
   :packages => "packages",
-  :nuspec => File.join("packages", Projects[:proj_key][:dir]),
+  :nuspec => File.join("packages", Projects[:nh_fac][:dir]),
   :nuget => File.join("build", "nuget"),
   
-  :proj_key_out => 'placeholder - specify build environment',
-  :proj_key_test_out => 'placeholder - specify build environment',
+  :nh_fac_out => 'placeholder - specify build environment',
+  :nh_fac_test_out => 'placeholder - specify build environment',
   :binaries => "placeholder - specify build environment"
 }
 
 Files = {
-  :sln => "Castle.XXX.sln",
+  :sln => "Castle.Facilities.NHibernate.sln",
   :version => "VERSION",
   
-  :proj_key => {
-    :nuspec => File.join(Folders[:nuspec], "#{Projects[:proj_key][:id]}.nuspec"),
-	:test_log => File.join(Folders[:tests], "Castle.XXX.Tests.log"),
-	:test_xml => File.join(Folders[:tests], "Castle.XXX.Tests.xml"),
-	:test => 'ex: Castle.XXX.Tests.dll'
+  :nh_fac => {
+    :nuspec => File.join(Folders[:nuspec], "#{Projects[:nh_fac][:id]}.nuspec"),
+	:test_log => File.join(Folders[:tests], "Castle.Facilities.NHibernate.Tests.log"),
+	:test_xml => File.join(Folders[:tests], "Castle.Facilities.NHibernate.Tests.xml"),
+	:test => 'ex: Castle.Facilities.NHibernate.Tests.dll'
   }
 }
 
