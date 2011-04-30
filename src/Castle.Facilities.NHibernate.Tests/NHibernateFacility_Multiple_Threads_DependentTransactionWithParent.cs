@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using Castle.Facilities.AutoTx;
 using Castle.Facilities.AutoTx.Testing;
+using Castle.Facilities.NHibernate.Tests.Framework;
 using Castle.Facilities.NHibernate.Tests.TestClasses;
 using Castle.MicroKernel.Registration;
 using Castle.Services.Transaction;
@@ -14,7 +15,7 @@ using NUnit.Framework;
 
 namespace Castle.Facilities.NHibernate.Tests
 {
-	public class NHibernateFacility_Multiple_Threads_DependentTransactionWithParent
+	public class NHibernateFacility_Multiple_Threads_DependentTransactionWithParent : EnsureSchema
 	{
 		private WindsorContainer _Container;
 

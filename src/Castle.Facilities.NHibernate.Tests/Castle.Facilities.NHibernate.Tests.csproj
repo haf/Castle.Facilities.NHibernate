@@ -84,7 +84,7 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Framework\TxTraceListener.cs" />
+    <Compile Include="Framework\EnsureSchema.cs" />
     <Compile Include="NHibernateFacility_Init.cs" />
     <Compile Include="NHibernateFacility_Multiple_Threads_DependentTransactionWithParent.cs" />
     <Compile Include="NHibernateFacility_SimpleUseCase_SingleSave.cs" />
@@ -102,9 +102,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config">
-      <SubType>Designer</SubType>
-    </None>
+    <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Readme.txt" />

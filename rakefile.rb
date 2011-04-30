@@ -21,42 +21,30 @@ desc "prepare the version info files to get ready to start coding!"
 task :prepare => ["castle:assembly_infos"]
 
 desc "build in release mode"
-task :release => ["env:release", "castle:build"]
+task :release => ["env:release", "castle:build", "castle:nuget"]
 
 desc "build in debug mode"
 task :debug => ["env:debug", "castle:build"]
-
-task :ci => ["clobber", "castle:build"]
+ 
+task :ci => ["clobber", "castle:build", "castle:nuget"]
 
 desc "Run all unit and integration tests in debug mode"
 task :test_all => ["env:debug", "castle:test_all"]
 
 desc "prepare alpha version for being published"
-task :alpha do
+task :alpha => ["env:release"] do
   puts %q{
-    TODO: Basically what the script should do;
-    1. Verify no pending changes
-    2. Verify on develop branch
-    3. Ask for alpha number
-    4. Verify alpha number is greater than the last alpha number
-    5. Verify we're not above alpha, e.g. in beta.
-    6. git add . -A ; git commit -m "Automatic alpha" ; rake release castle:test_all
-       This ensures we have passing tests and a build with a matching git commit hash.
-    7. git checkout master
-    8. git merge --no-ff -m "Alpha [version here] commit." develop
-    9. git push
-    10. git tag -a "v[VERSION]"
-    11. git push --tags
-        This means that the tag is now publically browsable.
-    
-    Now, TeamCity till take over and run the compile process on the server and then
-    upload the artifacts to be downloaded at https://github.com/haf/Castle.Services.Transaction/downloads
-
+  
+    Preparing Alpha Release
+	
 }
+
+  release_branch("alpha")
+
 end
 
 CLOBBER.include(Folders[:out])
-CLOBBER.include(Folders[:packages])
+CLOBBER.include(Folders[:nuspec])
 
 Albacore.configure do |config|
   config.nunit.command = Commands[:nunit]
@@ -80,6 +68,7 @@ namespace :castle do
 
   desc "build + unit tests + output"
   task :build => [:version, :msbuild, :test, :output]
+  task :build_notest => [:version, :msbuild, :output]
  
   desc "generate the assembly infos you need to compile with VS"
   task :assembly_infos => [:version]
@@ -183,7 +172,7 @@ namespace :castle do
   
   desc "create the nuget package"
   nuspec :nuspec do |nuspec|
-    nuspec.id = "Castle.Facilities.NHibernate"
+    nuspec.id = Projects[:nh_fac][:id]
     nuspec.version = VERSION
     nuspec.authors = Projects[:nh_fac][:authors]
     nuspec.description = Projects[:nh_fac][:description]
@@ -194,8 +183,11 @@ namespace :castle do
     nuspec.requireLicenseAcceptance = "true"
     nuspec.dependency "Castle.Core", "2.5.2"
     nuspec.dependency "Castle.Windsor", "2.5.2"
-    nuspec.dependency "Castle.Services.Transaction", "3.0.0.1002"
-    nuspec.dependency "Castle.Facilities.AutoTx", "3.0.0.1002"
+    nuspec.dependency "Castle.Services.Transaction", "[3.0.0.1003]" # exactly equal when alpha versions!
+    nuspec.dependency "Castle.Facilities.AutoTx", "[3.0.0.1003]"
+	nuspec.dependency "log4net", "1.2.10"
+	nuspec.dependency "FluentNHibernate", "1.2.0.712"
+	nuspec.dependency "NHibernate.Castle", "3.1.0.4000"
 	nuspec.framework_assembly "System.Transactions", FRAMEWORK
 	
     nuspec.output_file = Files[:nh_fac][:nuspec]
