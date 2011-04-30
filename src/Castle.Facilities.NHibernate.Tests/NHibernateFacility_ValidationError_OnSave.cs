@@ -20,6 +20,7 @@ using System;
 using System.Collections;
 using System.Transactions;
 using Castle.Facilities.AutoTx;
+using Castle.Facilities.NHibernate.Tests.Framework;
 using Castle.Facilities.NHibernate.Tests.TestClasses;
 using Castle.MicroKernel.Registration;
 using Castle.Services.Transaction;
@@ -34,7 +35,7 @@ using ITransaction = NHibernate.ITransaction;
 
 namespace Castle.Facilities.NHibernate.Tests
 {
-	internal class NHibernateFacility_ValidationError_OnSave
+	internal class NHibernateFacility_ValidationError_OnSave : EnsureSchema
 	{
 		private static readonly ILog _Logger = LogManager.GetLogger(typeof (NHibernateFacility_ValidationError_OnSave));
 
