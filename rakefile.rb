@@ -38,6 +38,9 @@ task :alpha => ["env:release"] do
     Preparing Alpha Release
 	
 }
+
+  release_branch("alpha")
+
 end
 
 CLOBBER.include(Folders[:out])
