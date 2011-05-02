@@ -181,7 +181,7 @@ namespace :castle do
     nuspec.licenseUrl = "https://github.com/haf/Castle.Facilities.NHibernate/raw/develop/License.txt"
     nuspec.requireLicenseAcceptance = "true"
     nuspec.dependency "Castle.Core", "2.5.2"
-    nuspec.dependency "Castle.Windsor", "2.5.2"
+    nuspec.dependency "Castle.Windsor", "[2.5.2]"
     nuspec.dependency "Castle.Services.Transaction", "[3.0.0.1003]" # exactly equal when alpha versions!
     nuspec.dependency "Castle.Facilities.AutoTx", "[3.0.0.1003]"
 	nuspec.dependency "log4net", "1.2.10"

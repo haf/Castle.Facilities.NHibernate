@@ -77,7 +77,7 @@
       <HintPath>..\..\packages\Castle.Services.Transaction.3.0.0.1003\lib\net40\Castle.Services.Transaction.dll</HintPath>
     </Reference>
     <Reference Include="Castle.Windsor, Version=2.5.1.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Castle.Windsor.2.5.3\lib\NET40\Castle.Windsor.dll</HintPath>
+      <HintPath>..\..\packages\Castle.Windsor.2.5.2\lib\NET40\Castle.Windsor.dll</HintPath>
     </Reference>
     <Reference Include="FluentNHibernate, Version=1.2.0.712, Culture=neutral, PublicKeyToken=8aa435e3cb308880, processorArchitecture=MSIL">
       <HintPath>..\..\packages\FluentNHibernate.1.2.0.712\lib\FluentNHibernate.dll</HintPath>
