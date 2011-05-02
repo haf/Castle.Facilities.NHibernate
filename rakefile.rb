@@ -33,18 +33,23 @@ task :test_all => ["env:debug", "castle:test_all"]
 
 desc "prepare alpha version for being published"
 task :alpha => ["env:release"] do
-  puts %q{
-  
-    Preparing Alpha Release
-	
-}
-
+  puts "Preparing Alpha Release"
   release_branch("alpha")
+end
 
+desc "prepare beta version for being published"
+task :beta => ["env:release"] do
+  puts "Preparing Beta Release"
+  release_branch("beta")
+end
+
+desc "prepare rc for being published"
+task :rc => ["env:release"] do
+  puts "Preparing RC release"
+  release_branch("rc")
 end
 
 CLOBBER.include(Folders[:out])
-CLOBBER.include(Folders[:nuspec])
 
 Albacore.configure do |config|
   config.nunit.command = Commands[:nunit]
@@ -182,9 +187,9 @@ namespace :castle do
     nuspec.licenseUrl = "https://github.com/haf/Castle.Facilities.NHibernate/raw/develop/License.txt"
     nuspec.requireLicenseAcceptance = "true"
     nuspec.dependency "Castle.Core", "2.5.2"
-    nuspec.dependency "Castle.Windsor", "2.5.2"
-    nuspec.dependency "Castle.Services.Transaction", "[3.0.0.1003]" # exactly equal when alpha versions!
-    nuspec.dependency "Castle.Facilities.AutoTx", "[3.0.0.1003]"
+    nuspec.dependency "Castle.Windsor", "[2.5.1.2127]"
+    nuspec.dependency "Castle.Services.Transaction", "[3.0.0.1004]" # exactly equal when alpha versions!
+    nuspec.dependency "Castle.Facilities.AutoTx", "[3.0.0.1004]"
 	nuspec.dependency "log4net", "1.2.10"
 	nuspec.dependency "FluentNHibernate", "1.2.0.712"
 	nuspec.dependency "NHibernate.Castle", "3.1.0.4000"

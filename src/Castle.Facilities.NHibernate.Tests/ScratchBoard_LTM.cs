@@ -23,6 +23,7 @@ using System.Transactions;
 using Castle.Facilities.NHibernate.Tests.TestClasses;
 using Castle.Services.Transaction;
 using NUnit.Framework;
+using TransactionScope = System.Transactions.TransactionScope;
 
 namespace Castle.Facilities.NHibernate.Tests
 {
@@ -92,7 +93,7 @@ CREATE TABLE [dbo].[Thing] (
 		public void ExplicitTransaction()
 		{
 			using (var t = new CommittableTransaction())
-			using (new TxScope(t))
+			using (new Services.Transaction.TransactionScope(t))
 			{
 				using (var c = GetConnection())
 				using (var cmd = c.CreateCommand())
@@ -111,7 +112,7 @@ CREATE TABLE [dbo].[Thing] (
 		public void ExplicitTransactionWithDependentTransaction()
 		{
 			using (var t = new CommittableTransaction())
-			using (new TxScope(t))
+			using (new Services.Transaction.TransactionScope(t))
 			{
 				Console.WriteLine("T1 STATUS: {0}", t.TransactionInformation.Status);
 
@@ -125,7 +126,7 @@ CREATE TABLE [dbo].[Thing] (
 				}
 
 				using (var t2 = t.DependentClone(DependentCloneOption.RollbackIfNotComplete))
-				using (new TxScope(t2))
+				using (new Services.Transaction.TransactionScope(t2))
 				using (var c = GetConnection())
 				using (var cmd = c.CreateCommand())
 				{
@@ -163,7 +164,7 @@ CREATE TABLE [dbo].[Thing] (
 		public void RetryOnFailure()
 		{
 			using (var t = new CommittableTransaction())
-			using (new TxScope(t))
+			using (new Services.Transaction.TransactionScope(t))
 			{
 				t.EnlistVolatile(new ThrowingResource(true), EnlistmentOptions.EnlistDuringPrepareRequired);
 
