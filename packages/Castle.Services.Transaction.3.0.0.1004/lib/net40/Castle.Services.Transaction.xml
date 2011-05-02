@@ -4,21 +4,21 @@
         <name>Castle.Services.Transaction</name>
     </assembly>
     <members>
-        <member name="T:Castle.Services.Transaction.Activity">
+        <member name="T:Castle.Services.Transaction.Activities.Activity">
             <summary>
-            Value-object that encapsulates a transaction and is serializable across
-            app-domains.
+            	Value-object that encapsulates a transaction and is serializable across
+            	app-domains.
             </summary>
         </member>
-        <member name="M:Castle.Services.Transaction.Activity.Push(Castle.Services.Transaction.ITransaction)">
+        <member name="M:Castle.Services.Transaction.Activities.Activity.Push(Castle.Services.Transaction.ITransaction)">
             <summary>
-            Push a transaction onto the stack of transactions.
+            	Push a transaction onto the stack of transactions.
             </summary>
-            <param name="transaction"></param>
+            <param name = "transaction"></param>
         </member>
-        <member name="M:Castle.Services.Transaction.Activity.Pop">
+        <member name="M:Castle.Services.Transaction.Activities.Activity.Pop">
             <summary>
-            Return the top-most transaction from the stack of transactions.
+            	Return the top-most transaction from the stack of transactions.
             </summary>
             <returns></returns>
         </member>
@@ -205,7 +205,7 @@
             	Gets the number of times the retry method has been called
             </summary>
         </member>
-        <member name="T:Castle.Services.Transaction.CallContextActivityManager">
+        <member name="T:Castle.Services.Transaction.Activities.CallContextActivityManager">
             <summary>
             The call-context activity manager saves the stack of transactions
             on the call-stack-context. This is the recommended manager and the default,
@@ -270,7 +270,7 @@
         </member>
         <member name="T:Castle.Services.Transaction.DefaultTransactionOptions">
             <summary>
-            	Sample implementation of ITransactionOptions. Use this if you are using <see cref="T:Castle.Services.Transaction.ITxManager"/> directly.
+            	Sample implementation of ITransactionOptions. Use this if you are using <see cref="T:Castle.Services.Transaction.ITransactionManager"/> directly.
             </summary>
         </member>
         <member name="P:Castle.Services.Transaction.ITransactionOptions.IsolationLevel">
@@ -352,23 +352,67 @@
             </returns>
             <filterpriority>2</filterpriority>
         </member>
-        <member name="T:Castle.Services.Transaction.Exceptions.TransactionException">
+        <member name="T:Castle.Services.Transaction.TransactionMode">
+            <summary>Obsolete. Remove usages. This attribute does nothing anymore.</summary>
+        </member>
+        <member name="F:Castle.Services.Transaction.TransactionMode.Unspecified">
+            <summary>use "Requires" on TransactionScopeOption instead.</summary>
+        </member>
+        <member name="F:Castle.Services.Transaction.TransactionMode.NotSupported">
+            <summary>use "Supress" on TransactionScopeOption instead.</summary>
+        </member>
+        <member name="F:Castle.Services.Transaction.TransactionMode.Requires">
+            <summary>use "Requires" on TransactionScopeOption instead.</summary>
+        </member>
+        <member name="F:Castle.Services.Transaction.TransactionMode.RequiresNew">
+            <summary>use "RequiresNew" on TransactionScopeOption instead.</summary>
+        </member>
+        <member name="F:Castle.Services.Transaction.TransactionMode.Supported">
+            <summary>use "Requires" on TransactionScopeOption instead.</summary>
+        </member>
+        <member name="T:Castle.Services.Transaction.IsolationMode">
+            <summary>Obsolete. Remove usages. Use <see cref="T:System.Transactions.IsolationLevel"/> instead.</summary>
+        </member>
+        <member name="T:Castle.Services.Transaction.ISynchronization">
+             <summary>Obsolete. Remove usages. Use code like this instead:
+             <code>using (var tx = _Tm.CreateTransaction(new DefaultTransactionOptions()).Value.Transaction)
+            {
+            	tx.Inner.EnlistVolatile(resource, EnlistmentOptions.EnlistDuringPrepareRequired);
+            	tx.Complete();
+            }</code>
+             or alternatively resolve/reference in instance of <see cref="T:Castle.Services.Transaction.ITransactionManager"/> and use 
+             <code>(:m).CurrentTransaction.Value.Inner.EnlistResource( <see cref="T:System.Transactions.ISinglePhaseNotification"/> synchronization )</code> 
+             instead.
+             </summary>
+        </member>
+        <member name="M:Castle.Services.Transaction.ISynchronization.BeforeCompletion">
+            <summary>Use <see cref="T:System.Transactions.ISinglePhaseNotification"/> instead.</summary>
+        </member>
+        <member name="M:Castle.Services.Transaction.ISynchronization.AfterCompletion">
+            <summary>Use <see cref="T:System.Transactions.ISinglePhaseNotification"/> instead.</summary>
+        </member>
+        <member name="T:Castle.Services.Transaction.CommitResourceException">
+            <summary>
+            These exceptions won't be thrown anymore. If you are using exceptions to validate your entities you should catch TransactionAbortedException instead of this.
+            </summary>
+        </member>
+        <member name="T:Castle.Services.Transaction.TransactionException">
             <summary>
             	Exception thrown when the transaction services code has problems.
             </summary>
         </member>
-        <member name="M:Castle.Services.Transaction.Exceptions.TransactionException.#ctor">
+        <member name="M:Castle.Services.Transaction.TransactionException.#ctor">
             <summary>
             	base c'tor
             </summary>
         </member>
-        <member name="M:Castle.Services.Transaction.Exceptions.TransactionException.#ctor(System.String)">
+        <member name="M:Castle.Services.Transaction.TransactionException.#ctor(System.String)">
             <summary>
             	c'tor with message
             </summary>
             <param name = "message"></param>
         </member>
-        <member name="M:Castle.Services.Transaction.Exceptions.TransactionException.#ctor(System.String,System.Uri)">
+        <member name="M:Castle.Services.Transaction.TransactionException.#ctor(System.String,System.Uri)">
             <summary>
             	c'tor with message and a uri (new Uri(...)).
             </summary>
@@ -389,7 +433,7 @@
             <summary>
             	<para>
             		Denotes a castle transaction. This is the main point of interaction between your code and
-            		the transactional behaviour of it. Use the transaction manager <see cref="T:Castle.Services.Transaction.ITxManager"/> to
+            		the transactional behaviour of it. Use the transaction manager <see cref="T:Castle.Services.Transaction.ITransactionManager"/> to
             		rollback from within a transactional method.
             	</para><para>
             	       	Implementors of this class should do their best to provide a stable implementation
@@ -425,7 +469,7 @@
             	that has already been rolled back, or an attempt is made to commit 
             	the transaction and the transaction aborts.
             </exception>
-            <exception cref="T:Castle.Services.Transaction.Exceptions.TransactionException">An unknown problem occurred. 
+            <exception cref="T:Castle.Services.Transaction.TransactionException">An unknown problem occurred. 
             	For example the connection to the database was lost.</exception>
             <remarks>
             	It's up for grabs (i.e. github pull request) to correctly handle state on the two exceptions that may be thrown
@@ -462,7 +506,7 @@
             	TODO: Change this property after construction if a new LTM/DTC transaction is created from the same transaction manager.
             </remarks>
         </member>
-        <member name="P:Castle.Services.Transaction.ITransaction.TxFHandle">
+        <member name="P:Castle.Services.Transaction.ITransaction.KernelTransactionHandle">
             <summary>
             	If the created transaction is a file transaction, there should be a
             	transacted-file-transaction handle available.
@@ -555,7 +599,7 @@
             	Gets the name of the transaction.
             </summary>
         </member>
-        <member name="M:Castle.Services.Transaction.Internal.IKernelTransaction.GetHandle(Castle.Services.Transaction.SafeKernelTxHandle@)">
+        <member name="M:Castle.Services.Transaction.Internal.IKernelTransaction.GetHandle(Castle.Services.Transaction.IO.SafeKernelTransactionHandle@)">
             <summary>
             	Gets a safe transaction handle. If we instead use IntPtr we 
             	might not release the transaction handle properly.
@@ -573,17 +617,17 @@
             	together with native kernel transactions.
             </summary>
         </member>
-        <member name="T:Castle.Services.Transaction.IO.TxAdapterBase">
+        <member name="T:Castle.Services.Transaction.IO.TransactionAdapterBase">
             <summary>
             	Adapter base class for the file and directory adapters.
             </summary>
         </member>
-        <member name="P:Castle.Services.Transaction.IO.TxAdapterBase.TxManager">
+        <member name="P:Castle.Services.Transaction.IO.TransactionAdapterBase.TransactionManager">
             <summary>
             	Gets the transaction manager, if there is one, or sets it.
             </summary>
         </member>
-        <member name="P:Castle.Services.Transaction.IO.TxAdapterBase.UseTransactions">
+        <member name="P:Castle.Services.Transaction.IO.TransactionAdapterBase.UseTransactions">
             <summary>
             	Gets/sets whether to use transactions.
             </summary>
@@ -665,7 +709,7 @@
             <param name = "path"></param>
             <returns></returns>
         </member>
-        <member name="T:Castle.Services.Transaction.Path">
+        <member name="T:Castle.Services.Transaction.IO.Path">
             <summary>
             	Utility class meant to replace the <see cref="T:System.IO.Path"/> class completely. This class handles these types of paths:
             	<list>
@@ -679,7 +723,7 @@
             	</list>
             </summary>
         </member>
-        <member name="M:Castle.Services.Transaction.Path.IsRooted(System.String)">
+        <member name="M:Castle.Services.Transaction.IO.Path.IsRooted(System.String)">
             <summary>
             	Returns whether the path is rooted. An empty string isn't.
             </summary>
@@ -687,14 +731,14 @@
             <returns>Whether the path is rooted or not.</returns>
             <exception cref="T:System.ArgumentNullException">If the passed argument is null.</exception>
         </member>
-        <member name="M:Castle.Services.Transaction.Path.GetPathRoot(System.String)">
+        <member name="M:Castle.Services.Transaction.IO.Path.GetPathRoot(System.String)">
             <summary>
             	Gets the path root, i.e. e.g. \\?\C:\ if the passed argument is \\?\C:\a\b\c.abc.
             </summary>
             <param name = "path">The path to get the root for.</param>
             <returns>The string denoting the root.</returns>
         </member>
-        <member name="M:Castle.Services.Transaction.Path.GetPathWithoutRoot(System.String)">
+        <member name="M:Castle.Services.Transaction.IO.Path.GetPathWithoutRoot(System.String)">
             <summary>
             	Gets a path without root.
             </summary>
@@ -702,7 +746,7 @@
             <returns></returns>
             <exception cref="T:System.ArgumentNullException"></exception>
         </member>
-        <member name="M:Castle.Services.Transaction.Path.NormDirSepChars(System.String)">
+        <member name="M:Castle.Services.Transaction.IO.Path.NormDirSepChars(System.String)">
             <summary>
             	Normalize all the directory separation chars.
             	Also removes empty space in beginning and end of string.
@@ -711,7 +755,7 @@
             <returns>The directory string path with all occurrances of the alternating chars
             	replaced for that specified in <see cref="F:System.IO.Path.DirectorySeparatorChar"/></returns>
         </member>
-        <member name="M:Castle.Services.Transaction.Path.GetPathInfo(System.String)">
+        <member name="M:Castle.Services.Transaction.IO.Path.GetPathInfo(System.String)">
             <summary>
             	Gets path info (drive and non root path)
             </summary>
@@ -719,7 +763,7 @@
             <returns></returns>
             <exception cref="T:System.ArgumentNullException"></exception>
         </member>
-        <member name="M:Castle.Services.Transaction.Path.GetFullPath(System.String)">
+        <member name="M:Castle.Services.Transaction.IO.Path.GetFullPath(System.String)">
             <summary>
             	Gets the full path for a given path.
             </summary>
@@ -727,7 +771,7 @@
             <returns>The full path string</returns>
             <exception cref="T:System.ArgumentNullException">if path is null</exception>
         </member>
-        <member name="M:Castle.Services.Transaction.Path.GetPathWithoutLastBit(System.String)">
+        <member name="M:Castle.Services.Transaction.IO.Path.GetPathWithoutLastBit(System.String)">
             <summary>
             	Removes the last directory/file off the path.
             
@@ -866,34 +910,34 @@
             	Returns whether <see cref="P:Castle.Services.Transaction.IO.PathInfo.Root"/> is not an empty string.
             </summary>
         </member>
-        <member name="T:Castle.Services.Transaction.ITxManager">
+        <member name="T:Castle.Services.Transaction.ITransactionManager">
             <summary>
             	The transaction manager takes care of the nitty-gritty details of managing the store for transactions and their data.
             	Its main use-case is creating the actual transactions, given the options for the transaction and the 
             	be the place-to-go-to for knowing what transactions are currently ambient on the current call context.
             </summary>
         </member>
-        <member name="M:Castle.Services.Transaction.ITxManager.AddRetryPolicy(System.String,System.Func{System.Exception,System.Boolean})">
+        <member name="M:Castle.Services.Transaction.ITransactionManager.AddRetryPolicy(System.String,System.Func{System.Exception,System.Boolean})">
             <summary>
             	Add a new retry policy given a key and a function to execute.
             </summary>
             <param name = "policyKey"></param>
             <param name = "retryPolicy"></param>
         </member>
-        <member name="M:Castle.Services.Transaction.ITxManager.AddRetryPolicy(System.String,Castle.Services.Transaction.IRetryPolicy)">
+        <member name="M:Castle.Services.Transaction.ITransactionManager.AddRetryPolicy(System.String,Castle.Services.Transaction.IRetryPolicy)">
             <summary>
             	Add a new default retry policy based on key. It will be placed at the end of the chain.
             </summary>
             <param name = "policyKey"></param>
             <param name = "retryPolicy"></param>
         </member>
-        <member name="M:Castle.Services.Transaction.ITxManager.CreateTransaction">
+        <member name="M:Castle.Services.Transaction.ITransactionManager.CreateTransaction">
             <summary>
             	Create a new transaction with the default options <see cref="T:Castle.Services.Transaction.DefaultTransactionOptions"/>.
             </summary>
             <returns>Maybe a created transaction. If the default options is to supress transactions, the maybe has no value.</returns>
         </member>
-        <member name="M:Castle.Services.Transaction.ITxManager.CreateTransaction(Castle.Services.Transaction.ITransactionOptions)">
+        <member name="M:Castle.Services.Transaction.ITransactionManager.CreateTransaction(Castle.Services.Transaction.ITransactionOptions)">
             <summary>
             	Create a new transaction, given the transaction options.
             </summary>
@@ -913,14 +957,14 @@
             <param name="transactionOptions">Options to use for creating the new transaction.</param>
             <returns>Maybe a transaction, if the options specified it. If the default options is to supress transactions, the maybe has no value.</returns>
         </member>
-        <member name="M:Castle.Services.Transaction.ITxManager.CreateFileTransaction(Castle.Services.Transaction.ITransactionOptions)">
+        <member name="M:Castle.Services.Transaction.ITransactionManager.CreateFileTransaction(Castle.Services.Transaction.ITransactionOptions)">
             <summary>
             	Create a new transaction, given the transaction options.
             </summary>
             <param name = "transactionOptions">options to use for creating the transaction</param>
             <returns>If the default options is to supress transactions, the maybe has no value.</returns>
         </member>
-        <member name="P:Castle.Services.Transaction.ITxManager.CurrentTopTransaction">
+        <member name="P:Castle.Services.Transaction.ITransactionManager.CurrentTopTransaction">
             <summary>
             	<para>Gets the current transaction. If the program has a call context
             		located any methods further down the call-stack with methods with TransactionAttribute,
@@ -937,7 +981,7 @@
             	</para>
             </summary>
         </member>
-        <member name="P:Castle.Services.Transaction.ITxManager.CurrentTransaction">
+        <member name="P:Castle.Services.Transaction.ITransactionManager.CurrentTransaction">
             <summary>
             	<para>Gets the current transaction.
             		The value is Maybe.None() if no transaction is on the current call context.</para>
@@ -946,7 +990,7 @@
             		<see cref="P:System.Transactions.Transaction.Current"/> is null, but this property has the actual value of the transaction.</para>
             </summary>
         </member>
-        <member name="P:Castle.Services.Transaction.ITxManager.Count">
+        <member name="P:Castle.Services.Transaction.ITransactionManager.Count">
             <summary>
             	Gets the number of transactions on the current context (in which calls to this
             	interface is relevant).
@@ -1030,6 +1074,17 @@
             <param name = "ex"></param>
             <returns>The item in the maybe.</returns>
         </member>
+        <member name="M:Castle.Services.Transaction.Maybe.Coerce``2(Castle.Services.Transaction.Maybe{``0})">
+            <summary>
+            	Type-system hack, in leiu of covariant bind (or rather Do in this monad),
+            	changes type of the monad from TImpl to TAssignable, where TImpl : TAssignable.
+            	The coercion is still statically typed and correct.
+            </summary>
+            <typeparam name = "TImpl">The type to convert FROM</typeparam>
+            <typeparam name = "TAssignable">The type to convert TO</typeparam>
+            <param name = "maybe">The object invoked upon</param>
+            <returns>A new type of the same kind of monad.</returns>
+        </member>
         <member name="T:Castle.Services.Transaction.Maybe`1">
             <summary>
             	An implementation of the maybe monad.
@@ -1083,7 +1138,7 @@
             If the function fails, the return value is INVALID_HANDLE_VALUE.
             </returns>
         </member>
-        <member name="M:Castle.Services.Transaction.Internal.NativeMethods.CommitTransaction(Castle.Services.Transaction.SafeKernelTxHandle)">
+        <member name="M:Castle.Services.Transaction.Internal.NativeMethods.CommitTransaction(Castle.Services.Transaction.IO.SafeKernelTransactionHandle)">
             <summary>
             Requests that the specified transaction be committed.
             </summary>
@@ -1097,19 +1152,19 @@
             For more information, see KTM Security and Access Rights.</param>
             <returns></returns>
         </member>
-        <member name="M:Castle.Services.Transaction.Internal.NativeMethods.RollbackTransaction(Castle.Services.Transaction.SafeKernelTxHandle)">
+        <member name="M:Castle.Services.Transaction.Internal.NativeMethods.RollbackTransaction(Castle.Services.Transaction.IO.SafeKernelTransactionHandle)">
             <summary>
             Requests that the specified transaction be rolled back. This function is synchronous.
             </summary>
             <param name="transaction">A handle to the transaction.</param>
             <returns>If the function succeeds, the return value is nonzero.</returns>
         </member>
-        <member name="M:Castle.Services.Transaction.Internal.NativeMethods.DeleteFileTransactedW(System.String,Castle.Services.Transaction.SafeKernelTxHandle)">
+        <member name="M:Castle.Services.Transaction.Internal.NativeMethods.DeleteFileTransactedW(System.String,Castle.Services.Transaction.IO.SafeKernelTransactionHandle)">
             <summary>
             http://msdn.microsoft.com/en-us/library/aa363916(VS.85).aspx
             </summary>
         </member>
-        <member name="M:Castle.Services.Transaction.Internal.NativeMethods.FindFirstFileTransactedW(System.String,Castle.Services.Transaction.Internal.NativeMethods.FINDEX_INFO_LEVELS,Castle.Services.Transaction.Internal.NativeMethods.WIN32_FIND_DATA@,Castle.Services.Transaction.Internal.NativeMethods.FINDEX_SEARCH_OPS,System.IntPtr,System.UInt32,Castle.Services.Transaction.SafeKernelTxHandle)">
+        <member name="M:Castle.Services.Transaction.Internal.NativeMethods.FindFirstFileTransactedW(System.String,Castle.Services.Transaction.Internal.NativeMethods.FINDEX_INFO_LEVELS,Castle.Services.Transaction.Internal.NativeMethods.WIN32_FIND_DATA@,Castle.Services.Transaction.Internal.NativeMethods.FINDEX_SEARCH_OPS,System.IntPtr,System.UInt32,Castle.Services.Transaction.IO.SafeKernelTransactionHandle)">
             <param name="lpFileName"></param>
             <param name="fInfoLevelId"></param>
             <param name="lpFindFileData"></param>
@@ -1126,7 +1181,7 @@
             <param name="hTransaction"></param>
             <returns></returns>
         </member>
-        <member name="M:Castle.Services.Transaction.Internal.NativeMethods.FindNextFile(Castle.Services.Transaction.SafeFindHandle,Castle.Services.Transaction.Internal.NativeMethods.WIN32_FIND_DATA@)">
+        <member name="M:Castle.Services.Transaction.Internal.NativeMethods.FindNextFile(Castle.Services.Transaction.IO.SafeFindHandle,Castle.Services.Transaction.Internal.NativeMethods.WIN32_FIND_DATA@)">
             <summary>
             Continues a file search from a previous call to the FindFirstFile or FindFirstFileEx function.
             If there is a transaction bound to the file enumeration handle, then the files that are returned are subject to transaction isolation rules.
@@ -1140,17 +1195,17 @@
             If the function fails, the return value is zero and the contents of lpFindFileData are indeterminate. To get extended error information, call the GetLastError function.
             If the function fails because no more matching files can be found, the GetLastError function returns ERROR_NO_MORE_FILES.</returns>
         </member>
-        <member name="M:Castle.Services.Transaction.Internal.NativeMethods.FindFirstFileTransacted(System.String,System.Boolean,Castle.Services.Transaction.SafeKernelTxHandle)">
+        <member name="M:Castle.Services.Transaction.Internal.NativeMethods.FindFirstFileTransacted(System.String,System.Boolean,Castle.Services.Transaction.IO.SafeKernelTransactionHandle)">
             <summary>
             Not extern
             </summary>
         </member>
-        <member name="M:Castle.Services.Transaction.Internal.NativeMethods.FindFirstFileTransactedW(System.String,Castle.Services.Transaction.SafeKernelTxHandle,Castle.Services.Transaction.Internal.NativeMethods.WIN32_FIND_DATA@)">
+        <member name="M:Castle.Services.Transaction.Internal.NativeMethods.FindFirstFileTransactedW(System.String,Castle.Services.Transaction.IO.SafeKernelTransactionHandle,Castle.Services.Transaction.Internal.NativeMethods.WIN32_FIND_DATA@)">
             <summary>
             Not extern
             </summary>
         </member>
-        <member name="M:Castle.Services.Transaction.Internal.NativeMethods.CreateDirectoryTransactedW(System.String,System.String,System.IntPtr,Castle.Services.Transaction.SafeKernelTxHandle)">
+        <member name="M:Castle.Services.Transaction.Internal.NativeMethods.CreateDirectoryTransactedW(System.String,System.String,System.IntPtr,Castle.Services.Transaction.IO.SafeKernelTransactionHandle)">
             <summary>
             http://msdn.microsoft.com/en-us/library/aa363857(VS.85).aspx
             Creates a new directory as a transacted operation, with the attributes of a specified 
@@ -1167,7 +1222,7 @@
             <param name="hTransaction">A handle to the transaction. This handle is returned by the CreateTransaction function.</param>
             <returns>True if the call succeeds, otherwise do a GetLastError.</returns>
         </member>
-        <member name="M:Castle.Services.Transaction.Internal.NativeMethods.RemoveDirectoryTransactedW(System.String,Castle.Services.Transaction.SafeKernelTxHandle)">
+        <member name="M:Castle.Services.Transaction.Internal.NativeMethods.RemoveDirectoryTransactedW(System.String,Castle.Services.Transaction.IO.SafeKernelTransactionHandle)">
             <summary>
             http://msdn.microsoft.com/en-us/library/aa365490(VS.85).aspx
             Deletes an existing empty directory as a transacted operation.
@@ -1180,7 +1235,7 @@
             <param name="hTransaction">A handle to the transaction. This handle is returned by the CreateTransaction function.</param>
             <returns>True if the call succeeds, otherwise do a GetLastError.</returns>
         </member>
-        <member name="M:Castle.Services.Transaction.Internal.NativeMethods.GetFullPathNameTransactedW(System.String,System.Int32,System.Text.StringBuilder,System.IntPtr@,Castle.Services.Transaction.SafeKernelTxHandle)">
+        <member name="M:Castle.Services.Transaction.Internal.NativeMethods.GetFullPathNameTransactedW(System.String,System.Int32,System.Text.StringBuilder,System.IntPtr@,Castle.Services.Transaction.IO.SafeKernelTransactionHandle)">
             <summary>
             http://msdn.microsoft.com/en-us/library/aa364966(VS.85).aspx
             Retrieves the full path and file name of the specified file as a transacted operation.
@@ -1280,17 +1335,17 @@
              Attributes for security interop.
             </summary>
         </member>
-        <member name="T:Castle.Services.Transaction.SafeKernelTxHandle">
+        <member name="T:Castle.Services.Transaction.IO.SafeKernelTransactionHandle">
             <summary>
             	A safe file handle on the transaction resource.
             </summary>
         </member>
-        <member name="M:Castle.Services.Transaction.SafeKernelTxHandle.#ctor">
+        <member name="M:Castle.Services.Transaction.IO.SafeKernelTransactionHandle.#ctor">
             <summary>
             	Default c'tor
             </summary>
         </member>
-        <member name="M:Castle.Services.Transaction.SafeKernelTxHandle.#ctor(System.IntPtr)">
+        <member name="M:Castle.Services.Transaction.IO.SafeKernelTransactionHandle.#ctor(System.IntPtr)">
             <summary>
             	c'tor taking a pointer to a transaction.
             </summary>
@@ -1398,9 +1453,9 @@
             	Hint: <see cref="T:System.Collections.Generic.Dictionary`2"/> implements the return type.
             </summary>
         </member>
-        <member name="T:Castle.Services.Transaction.TxScope">
+        <member name="T:Castle.Services.Transaction.TransactionScope">
             <summary>
-            	A TxScope sets the ambient transaction for the duration of its lifetime and then re-assigns the previous value.
+            	A TransactionScope sets the ambient transaction for the duration of its lifetime and then re-assigns the previous value.
             </summary>
         </member>
         <member name="T:Castle.Services.Transaction.Utils.Fun">

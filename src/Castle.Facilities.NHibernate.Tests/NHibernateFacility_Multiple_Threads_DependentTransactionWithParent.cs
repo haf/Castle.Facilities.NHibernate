@@ -75,10 +75,10 @@ namespace Castle.Facilities.NHibernate.Tests
 		private readonly List<Guid> _CalculationsIds = new List<Guid>();
 
 		private readonly Func<ISession> _GetSession;
-		private readonly ITxManager _Manager;
+		private readonly ITransactionManager _Manager;
 		private Guid _MainThing;
 
-		public ThreadedService(Func<ISession> getSession, ITxManager manager)
+		public ThreadedService(Func<ISession> getSession, ITransactionManager manager)
 		{
 			Contract.Requires(manager != null);
 			Contract.Requires(getSession != null);

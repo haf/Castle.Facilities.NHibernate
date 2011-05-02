@@ -86,8 +86,8 @@ namespace Castle.Facilities.NHibernate.Tests
 
 			c.AddFacility<AutoTxFacility>();
 			c.AddFacility<NHibernateFacility>();
-			
-			Assert.That(c.Kernel.HasComponent(typeof(ITxManager)));
+
+			Assert.That(c.Kernel.HasComponent(typeof(ITransactionManager)));
 
 			return c;
 		}

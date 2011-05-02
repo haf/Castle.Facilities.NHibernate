@@ -7,7 +7,8 @@
         <member name="T:Castle.Facilities.AutoTx.AutoTxFacility">
             <summary>
             	A facility for automatically handling transactions using the lightweight
-            	transaction manager.
+            	transaction manager. This facility does not depend on
+            	any other facilities.
             </summary>
         </member>
         <member name="T:Castle.Facilities.AutoTx.Lifestyles.WrapperResolveLifestyleManager`1">
@@ -116,7 +117,7 @@
             <param name = "container">The container to resolve from.</param>
             <returns>The IOResolveScope</returns>
         </member>
-        <member name="M:Castle.Facilities.AutoTx.TxClassMetaInfo.AsTransactional(System.Reflection.MethodInfo)">
+        <member name="M:Castle.Facilities.AutoTx.TransactionalClassMetaInfo.AsTransactional(System.Reflection.MethodInfo)">
             <summary>
             	Gets the maybe transaction options for the method info, target. If the target
             	has not been associated with a tranaction, the maybe is none.
@@ -124,13 +125,13 @@
             <param name="target">Method to find the options for.</param>
             <returns>A non-null maybe <see cref="T:Castle.Services.Transaction.ITransactionOptions"/>.</returns>
         </member>
-        <member name="T:Castle.Facilities.AutoTx.TxComponentInspector">
+        <member name="T:Castle.Facilities.AutoTx.TransactionalComponentInspector">
             <summary>
             	Transaction component inspector that selects the methods
             	available to get intercepted with transactions.
             </summary>
         </member>
-        <member name="T:Castle.Facilities.AutoTx.TxManagerCurrentTransactionSelector">
+        <member name="T:Castle.Facilities.AutoTx.TransactionManagerCurrentTransactionSelector">
             <summary>
             	v3.1: This selector will allow you to select the transient component if
             	there is a component which is the same service and that is per-transaction.
