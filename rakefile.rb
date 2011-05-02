@@ -33,14 +33,20 @@ task :test_all => ["env:debug", "castle:test_all"]
 
 desc "prepare alpha version for being published"
 task :alpha => ["env:release"] do
-  puts %q{
-  
-    Preparing Alpha Release
-	
-}
-
+  puts "Preparing Alpha Release"
   release_branch("alpha")
+end
 
+desc "prepare beta version for being published"
+task :beta => ["env:release"] do
+  puts "Preparing Beta Release"
+  release_branch("beta")
+end
+
+desc "prepare rc for being published"
+task :rc => ["env:release"] do
+  puts "Preparing RC release"
+  release_branch("rc")
 end
 
 CLOBBER.include(Folders[:out])
