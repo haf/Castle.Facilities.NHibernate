@@ -93,7 +93,7 @@ CREATE TABLE [dbo].[Thing] (
 		public void ExplicitTransaction()
 		{
 			using (var t = new CommittableTransaction())
-			using (new Services.Transaction.TransactionScope(t))
+			using (new Services.Transaction.Internal.TxScope(t))
 			{
 				using (var c = GetConnection())
 				using (var cmd = c.CreateCommand())
@@ -112,7 +112,7 @@ CREATE TABLE [dbo].[Thing] (
 		public void ExplicitTransactionWithDependentTransaction()
 		{
 			using (var t = new CommittableTransaction())
-			using (new Services.Transaction.TransactionScope(t))
+			using (new Services.Transaction.Internal.TxScope(t))
 			{
 				Console.WriteLine("T1 STATUS: {0}", t.TransactionInformation.Status);
 
@@ -126,7 +126,7 @@ CREATE TABLE [dbo].[Thing] (
 				}
 
 				using (var t2 = t.DependentClone(DependentCloneOption.RollbackIfNotComplete))
-				using (new Services.Transaction.TransactionScope(t2))
+				using (new Services.Transaction.Internal.TxScope(t2))
 				using (var c = GetConnection())
 				using (var cmd = c.CreateCommand())
 				{
@@ -164,7 +164,7 @@ CREATE TABLE [dbo].[Thing] (
 		public void RetryOnFailure()
 		{
 			using (var t = new CommittableTransaction())
-			using (new Services.Transaction.TransactionScope(t))
+			using (new Services.Transaction.Internal.TxScope(t))
 			{
 				t.EnlistVolatile(new ThrowingResource(true), EnlistmentOptions.EnlistDuringPrepareRequired);
 

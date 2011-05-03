@@ -30,7 +30,7 @@ using NUnit.Framework;
 
 namespace Castle.Facilities.NHibernate.Tests
 {
-	internal class NHibernateFacility_Init
+	internal class Init
 	{
 		[Test]
 		public void given_two_configs_resolves_the_default_true_one_first()

@@ -35,9 +35,9 @@ using ITransaction = NHibernate.ITransaction;
 
 namespace Castle.Facilities.NHibernate.Tests
 {
-	internal class NHibernateFacility_ValidationError_OnSave : EnsureSchema
+	internal class ValidationError_OnSave : EnsureSchema
 	{
-		private static readonly ILog _Logger = LogManager.GetLogger(typeof (NHibernateFacility_ValidationError_OnSave));
+		private static readonly ILog _Logger = LogManager.GetLogger(typeof (ValidationError_OnSave));
 
 		private Container _Container;
 
