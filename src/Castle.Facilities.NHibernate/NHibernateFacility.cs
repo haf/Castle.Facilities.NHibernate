@@ -16,7 +16,6 @@
 
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
@@ -45,6 +44,33 @@ namespace Castle.Facilities.NHibernate
 	public class NHibernateFacility : AbstractFacility
 	{
 		private static readonly ILog _Logger = LogManager.GetLogger(typeof (NHibernateFacility));
+		private static readonly bool _IsDebugEnabled = _Logger.IsDebugEnabled;
+
+		/// <summary>
+		/// The suffix on the name of the component that has a lifestyle of Per Transaction.
+		/// </summary>
+		public const string SessionPerTxSuffix = "-session";
+
+		///<summary>
+		/// The suffix on the name of the ISession/component that has a lifestyle of Per Web Request.
+		///</summary>
+		public const string SessionPWRSuffix = "-session-pwr";
+
+		/// <summary>
+		/// The suffix on the name of the ISession/component that has a transient lifestyle.
+		/// </summary>
+		public const string SessionTransientSuffix = "-session-transient";
+
+		/// <summary>
+		/// The suffix of the session manager component.
+		/// </summary>
+		public const string SessionManagerSuffix = "-manager";
+
+		/// <summary>
+		/// The infix (fackey-[here]-session) of stateless session in the naming of components
+		/// in Windsor.
+		/// </summary>
+		public const string SessionStatelessInfix = "-stateless";
 		
 		/// <summary>
 		/// Initialize, override
@@ -94,34 +120,64 @@ namespace Castle.Facilities.NHibernate
 						.Instance(x.Config)
 						.LifeStyle.Singleton
 						.Named(x.Instance.SessionFactoryKey + "-cfg"),
+
 					Component.For<ISessionFactory>()
 						.Instance(x.Factory)
 						.LifeStyle.Singleton
 						.Named(x.Instance.SessionFactoryKey),
+
 					Component.For<ISession>()
 						.LifeStyle.PerTransaction()
-						.Named(x.Instance.SessionFactoryKey + "-session")
+						.Named(x.Instance.SessionFactoryKey + SessionPerTxSuffix)
 						.UsingFactoryMethod(k => {
 						    var factory = k.Resolve<ISessionFactory>(x.Instance.SessionFactoryKey);
 						    var s = x.Instance.Interceptor.Do(y => factory.OpenSession(y)).OrDefault(factory.OpenSession());
 							s.FlushMode = FlushMode.Commit;
+							if (_IsDebugEnabled)
+								_Logger.DebugFormat("resolved per-transaction session, keyed: '{0}'", 
+									x.Instance.SessionFactoryKey + SessionPerTxSuffix);
 							return s;
 						}),
+					Component.For<ISession>()
+						.LifeStyle.PerWebRequest
+						.Named(x.Instance.SessionFactoryKey + SessionPWRSuffix)
+						.UsingFactoryMethod(k => {
+							var factory = k.Resolve<ISessionFactory>(x.Instance.SessionFactoryKey);
+							var s = x.Instance.Interceptor.Do(y => factory.OpenSession(y)).OrDefault(factory.OpenSession());
+							s.FlushMode = FlushMode.Commit;
+							if (_IsDebugEnabled)
+								_Logger.DebugFormat("resolved per-web-request session, keyed: '{0}'",
+									x.Instance.SessionFactoryKey + SessionPWRSuffix);
+							return s;
+						}),
+					Component.For<ISession>()
+						.LifeStyle.Transient
+						.Named(x.Instance.SessionFactoryKey + SessionTransientSuffix)
+						.UsingFactoryMethod(k => {
+							var factory = k.Resolve<ISessionFactory>(x.Instance.SessionFactoryKey);
+							var s = x.Instance.Interceptor.Do(y => factory.OpenSession(y)).OrDefault(factory.OpenSession());
+							s.FlushMode = FlushMode.Commit;
+							if (_IsDebugEnabled)
+								_Logger.DebugFormat("resolved per-web-request session, keyed: '{0}'",
+									x.Instance.SessionFactoryKey + SessionTransientSuffix);
+							return s;
+						}),
+
+					Component.For<IStatelessSession>()
+						.LifeStyle.PerTransaction()
+						.Named(x.Instance.SessionFactoryKey + SessionStatelessInfix + SessionPerTxSuffix)
+						.UsingFactoryMethod(k => 
+							k.Resolve<ISessionFactory>(x.Instance.SessionFactoryKey).OpenStatelessSession()),
+
 					Component.For<ISessionManager>().Instance(new SessionManager(() => {
 							var factory = Kernel.Resolve<ISessionFactory>(x.Instance.SessionFactoryKey);
 							var s = x.Instance.Interceptor.Do(y => factory.OpenSession(y)).OrDefault(factory.OpenSession());
 							s.FlushMode = FlushMode.Commit;
 							return s;
 						}))
-						.Named(x.Instance.SessionFactoryKey + "-manager")
-						.LifeStyle.Singleton,
-					Component.For<IStatelessSession>()
-						.LifeStyle.PerTransaction()
-						.Named(x.Instance.SessionFactoryKey + "-s-session")
-						.UsingFactoryMethod(k => 
-							k.Resolve<ISessionFactory>(x.Instance.SessionFactoryKey).OpenStatelessSession())
-					))
-				.ToList();
+						.Named(x.Instance.SessionFactoryKey + SessionManagerSuffix)
+						.LifeStyle.Singleton
+					)).ToList();
 
 			_Logger.Debug("notifying the nhibernate installers that they have been configured");
 

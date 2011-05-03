@@ -15,7 +15,7 @@ using NUnit.Framework;
 
 namespace Castle.Facilities.NHibernate.Tests
 {
-	public class NHibernateFacility_Multiple_Threads_DependentTransactionWithParent : EnsureSchema
+	public class Multiple_Threads_DependentTransactionWithParent : EnsureSchema
 	{
 		private WindsorContainer _Container;
 

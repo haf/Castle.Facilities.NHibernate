@@ -9,6 +9,7 @@ namespace Castle.Facilities.NHibernate.Tests.TestClasses
 {
 	internal class ExampleInstaller : INHibernateInstaller
 	{
+		public const string Key = "sf.default";
 		private readonly Maybe<IInterceptor> _Interceptor;
 
 		public ExampleInstaller()
@@ -33,7 +34,7 @@ namespace Castle.Facilities.NHibernate.Tests.TestClasses
 
 		public string SessionFactoryKey
 		{
-			get { return "sf.default"; }
+			get { return Key; }
 		}
 
 		public FluentConfiguration BuildFluent()

@@ -33,9 +33,9 @@ using NUnit.Framework;
 
 namespace Castle.Facilities.NHibernate.Tests
 {
-	public class NHibernateFacility_SimpleUseCase_SingleSave : EnsureSchema
+	public class SimpleUseCase_SingleSave : EnsureSchema
 	{
-		private static readonly ILog _Logger = LogManager.GetLogger(typeof (NHibernateFacility_SimpleUseCase_SingleSave));
+		private static readonly ILog _Logger = LogManager.GetLogger(typeof (SimpleUseCase_SingleSave));
 
 		private WindsorContainer c;
 
