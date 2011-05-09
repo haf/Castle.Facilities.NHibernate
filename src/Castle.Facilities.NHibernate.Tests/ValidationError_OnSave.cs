@@ -32,6 +32,7 @@ using NHibernate.SqlCommand;
 using NHibernate.Type;
 using NUnit.Framework;
 using ITransaction = NHibernate.ITransaction;
+using Castle.Facilities.AutoTx.Testing;
 
 namespace Castle.Facilities.NHibernate.Tests
 {
@@ -59,7 +60,8 @@ namespace Castle.Facilities.NHibernate.Tests
 		{
 			_Logger.Debug("starting test run");
 
-			_Container.Test.Run();
+			using (var x = _Container.ResolveScope<Test>())
+				x.Service.Run();
 		}
 	}
 
@@ -72,12 +74,7 @@ namespace Castle.Facilities.NHibernate.Tests
 			AddFacility<AutoTxFacility>();
 			AddFacility<NHibernateFacility>();
 
-			Register(Component.For<Test>());
-		}
-
-		public Test Test
-		{
-			get { return Resolve<Test>(); }
+			Register(Component.For<Test>().LifeStyle.Transient);
 		}
 	}
 

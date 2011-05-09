@@ -16,6 +16,7 @@
 
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
@@ -43,6 +44,8 @@ namespace Castle.Facilities.NHibernate
 	///</summary>
 	public class NHibernateFacility : AbstractFacility
 	{
+		private DefaultSessionLifeStyleOption _Option;
+		private FlushMode _FlushMode;
 		private static readonly ILog _Logger = LogManager.GetLogger(typeof (NHibernateFacility));
 		private static readonly bool _IsDebugEnabled = _Logger.IsDebugEnabled;
 
@@ -71,7 +74,52 @@ namespace Castle.Facilities.NHibernate
 		/// in Windsor.
 		/// </summary>
 		public const string SessionStatelessInfix = "-stateless";
-		
+
+		/// <summary>
+		/// Instantiates a new NHibernateFacility with the default options, session per transaction
+		/// and automatic flush mode.
+		/// </summary>
+		public NHibernateFacility() : this(DefaultSessionLifeStyleOption.SessionPerTransaction, FlushMode.Auto)
+		{
+		}
+
+		/// <summary>
+		/// Instantiates a new NHibernateFacility with a given lifestyle option and automatic flush mode.
+		/// </summary>
+		/// <param name="option">The Session flush mode.</param>
+		public NHibernateFacility(DefaultSessionLifeStyleOption option) : this(option, FlushMode.Auto)
+		{
+		}
+
+		/// <summary>
+		/// Instantiates a new NHibernateFacility with the default options.
+		/// </summary>
+		/// <param name="option">The </param>
+		/// <param name="flushMode">The session flush mode</param>
+		public NHibernateFacility(DefaultSessionLifeStyleOption option, FlushMode flushMode)
+		{
+			_Option = option;
+			_FlushMode = flushMode;
+		}
+
+		/// <summary>
+		/// Gets or sets the default session life style option.
+		/// </summary>
+		public DefaultSessionLifeStyleOption Option
+		{
+			get { return _Option; }
+			set { _Option = value; }
+		}
+
+		/// <summary>
+		/// Gets or sets the default nhibernate session flush mode.
+		/// </summary>
+		public FlushMode FlushMode
+		{
+			get { return _FlushMode; }
+			set { _FlushMode = value; }
+		}
+
 		/// <summary>
 		/// Initialize, override
 		/// </summary>
@@ -109,7 +157,7 @@ namespace Castle.Facilities.NHibernate
 					Config = x.BuildFluent().BuildConfiguration(),
 					Instance = x
 				})
-				.Select(x =>new { x.Config, x.Instance, Factory = x.Config.BuildSessionFactory() })
+				.Select(x =>new Data{ Config = x.Config, Instance = x.Instance, Factory = x.Config.BuildSessionFactory() })
 				.OrderByDescending(x => x.Instance.IsDefault)
 				.Do(x => {
 					if (!added.Add(x.Instance.SessionFactoryKey))
@@ -126,42 +174,9 @@ namespace Castle.Facilities.NHibernate
 						.LifeStyle.Singleton
 						.Named(x.Instance.SessionFactoryKey),
 
-					Component.For<ISession>()
-						.LifeStyle.PerTransaction()
-						.Named(x.Instance.SessionFactoryKey + SessionPerTxSuffix)
-						.UsingFactoryMethod(k => {
-						    var factory = k.Resolve<ISessionFactory>(x.Instance.SessionFactoryKey);
-						    var s = x.Instance.Interceptor.Do(y => factory.OpenSession(y)).OrDefault(factory.OpenSession());
-							s.FlushMode = FlushMode.Commit;
-							if (_IsDebugEnabled)
-								_Logger.DebugFormat("resolved per-transaction session, keyed: '{0}'", 
-									x.Instance.SessionFactoryKey + SessionPerTxSuffix);
-							return s;
-						}),
-					Component.For<ISession>()
-						.LifeStyle.PerWebRequest
-						.Named(x.Instance.SessionFactoryKey + SessionPWRSuffix)
-						.UsingFactoryMethod(k => {
-							var factory = k.Resolve<ISessionFactory>(x.Instance.SessionFactoryKey);
-							var s = x.Instance.Interceptor.Do(y => factory.OpenSession(y)).OrDefault(factory.OpenSession());
-							s.FlushMode = FlushMode.Commit;
-							if (_IsDebugEnabled)
-								_Logger.DebugFormat("resolved per-web-request session, keyed: '{0}'",
-									x.Instance.SessionFactoryKey + SessionPWRSuffix);
-							return s;
-						}),
-					Component.For<ISession>()
-						.LifeStyle.Transient
-						.Named(x.Instance.SessionFactoryKey + SessionTransientSuffix)
-						.UsingFactoryMethod(k => {
-							var factory = k.Resolve<ISessionFactory>(x.Instance.SessionFactoryKey);
-							var s = x.Instance.Interceptor.Do(y => factory.OpenSession(y)).OrDefault(factory.OpenSession());
-							s.FlushMode = FlushMode.Commit;
-							if (_IsDebugEnabled)
-								_Logger.DebugFormat("resolved per-web-request session, keyed: '{0}'",
-									x.Instance.SessionFactoryKey + SessionTransientSuffix);
-							return s;
-						}),
+					RegisterSession(x, 0),
+					RegisterSession(x, 1),
+					RegisterSession(x, 2),
 
 					Component.For<IStatelessSession>()
 						.LifeStyle.PerTransaction()
@@ -172,7 +187,7 @@ namespace Castle.Facilities.NHibernate
 					Component.For<ISessionManager>().Instance(new SessionManager(() => {
 							var factory = Kernel.Resolve<ISessionFactory>(x.Instance.SessionFactoryKey);
 							var s = x.Instance.Interceptor.Do(y => factory.OpenSession(y)).OrDefault(factory.OpenSession());
-							s.FlushMode = FlushMode.Commit;
+							s.FlushMode = _FlushMode;
 							return s;
 						}))
 						.Named(x.Instance.SessionFactoryKey + SessionManagerSuffix)
@@ -184,6 +199,61 @@ namespace Castle.Facilities.NHibernate
 			installed.Run(x => x.Instance.Registered(x.Factory));
 
 			_Logger.Debug("initialized NHibernateFacility");
+		}
+
+		private string GetSuffix(uint index)
+		{
+			var perTx = _Option == DefaultSessionLifeStyleOption.SessionPerTransaction;
+
+			return new[] {
+				perTx ? SessionPerTxSuffix : SessionPWRSuffix,
+				perTx ? SessionPWRSuffix : SessionPerTxSuffix,
+				SessionTransientSuffix
+			}[index];
+		}
+
+		private ComponentRegistration<ISession> GetLifeStyle(ComponentRegistration<ISession> registration, uint index)
+		{
+			switch (_Option)
+			{
+				case DefaultSessionLifeStyleOption.SessionPerTransaction:
+					if (index == 0)
+						return registration.LifeStyle.PerTransaction();
+					if (index == 1)
+						return registration.LifeStyle.PerWebRequest;
+					break;
+				case DefaultSessionLifeStyleOption.SessionPerWebRequest:
+					if (index == 0)
+						return registration.LifeStyle.PerWebRequest;
+					if (index == 1)
+						return registration.LifeStyle.PerTransaction();
+					break;
+			}
+			
+			return registration.LifeStyle.Transient;
+		}
+
+		private IRegistration RegisterSession(Data x, uint index)
+		{
+			var name = x.Instance.SessionFactoryKey + GetSuffix(index);
+			var registration = Component.For<ISession>()
+				.Named(name)
+				.UsingFactoryMethod(k => {
+					var factory = k.Resolve<ISessionFactory>(x.Instance.SessionFactoryKey);
+					var s = x.Instance.Interceptor.Do(y => factory.OpenSession(y)).OrDefault(factory.OpenSession());
+					s.FlushMode = _FlushMode;
+					if (_IsDebugEnabled) _Logger.DebugFormat("resolved session keyed: '{0}'", name);
+					return s;
+				});
+
+			return GetLifeStyle(registration, index);
+		}
+
+		private class Data
+		{
+			public INHibernateInstaller Instance;
+			public Configuration Config;
+			public ISessionFactory Factory;
 		}
 
 		private void AssertHasFacility<T>()
