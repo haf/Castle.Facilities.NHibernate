@@ -188,8 +188,8 @@ namespace :castle do
     nuspec.requireLicenseAcceptance = "true"
     nuspec.dependency "Castle.Core", "2.5.2"
     nuspec.dependency "Castle.Windsor", "[2.5.1]"
-    nuspec.dependency "Castle.Services.Transaction", "[3.0.0.1005]" # exactly equal when alpha versions!
-    nuspec.dependency "Castle.Facilities.AutoTx", "[3.0.0.1005]"
+    nuspec.dependency "Castle.Services.Transaction", "3.0.7"
+    nuspec.dependency "Castle.Facilities.AutoTx", "3.0.7"
 	nuspec.dependency "log4net", "1.2.10"
 	nuspec.dependency "FluentNHibernate", "1.2.0.712"
 	nuspec.dependency "NHibernate.Castle", "3.1.0.4000"

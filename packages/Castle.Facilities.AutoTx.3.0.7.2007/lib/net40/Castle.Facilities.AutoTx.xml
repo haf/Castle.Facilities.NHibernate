@@ -6,9 +6,12 @@
     <members>
         <member name="T:Castle.Facilities.AutoTx.AutoTxFacility">
             <summary>
-            	A facility for automatically handling transactions using the lightweight
-            	transaction manager. This facility does not depend on
-            	any other facilities.
+            	<para>A facility for automatically handling transactions using the lightweight
+            		transaction manager. This facility does not depend on
+            		any other facilities.</para>
+            	<para>
+            		Install the facility in your container with <code>c.AddFacility&lt;AutoTxFacility&gt;</code>
+            	</para>
             </summary>
         </member>
         <member name="T:Castle.Facilities.AutoTx.Lifestyles.WrapperResolveLifestyleManager`1">
@@ -18,7 +21,7 @@
             <typeparam name = "T">Primary lifestyle manager which has its constructor resolved through
             	the main kernel.</typeparam>
         </member>
-        <member name="T:Castle.Facilities.AutoTx.Lifestyles.MissingTransactionException">
+        <member name="T:Castle.Facilities.AutoTx.MissingTransactionException">
             <summary>
             	Exception thrown when there's no transaction available when the component is resolved and the component
             	requires a per-transaction lifestyle.
@@ -28,20 +31,20 @@
             	and the special serialization constructor.
             </remarks>
         </member>
-        <member name="M:Castle.Facilities.AutoTx.Lifestyles.MissingTransactionException.#ctor">
+        <member name="M:Castle.Facilities.AutoTx.MissingTransactionException.#ctor">
             <summary>
-            	Initializes a new instance of the <see cref="T:Castle.Facilities.AutoTx.Lifestyles.MissingTransactionException"/> class.
+            	Initializes a new instance of the <see cref="T:Castle.Facilities.AutoTx.MissingTransactionException"/> class.
             </summary>
         </member>
-        <member name="M:Castle.Facilities.AutoTx.Lifestyles.MissingTransactionException.#ctor(System.String)">
+        <member name="M:Castle.Facilities.AutoTx.MissingTransactionException.#ctor(System.String)">
             <summary>
-            	Initializes a new instance of the <see cref="T:Castle.Facilities.AutoTx.Lifestyles.MissingTransactionException"/> class.
+            	Initializes a new instance of the <see cref="T:Castle.Facilities.AutoTx.MissingTransactionException"/> class.
             </summary>
             <param name="message">The message.</param>
         </member>
-        <member name="M:Castle.Facilities.AutoTx.Lifestyles.MissingTransactionException.#ctor(System.String,System.Exception)">
+        <member name="M:Castle.Facilities.AutoTx.MissingTransactionException.#ctor(System.String,System.Exception)">
             <summary>
-            	Initializes a new instance of the <see cref="T:Castle.Facilities.AutoTx.Lifestyles.MissingTransactionException"/> class.
+            	Initializes a new instance of the <see cref="T:Castle.Facilities.AutoTx.MissingTransactionException"/> class.
             </summary>
             <param name="message">The message.</param>
             <param name="innerException">The inner exception.</param>
@@ -129,6 +132,11 @@
             <summary>
             	Transaction component inspector that selects the methods
             	available to get intercepted with transactions.
+            </summary>
+        </member>
+        <member name="F:Castle.Facilities.AutoTx.TransactionInterceptor.Finally">
+            <summary>
+            For ordering interleaving of threads during testing!
             </summary>
         </member>
         <member name="T:Castle.Facilities.AutoTx.TransactionManagerCurrentTransactionSelector">
