@@ -16,7 +16,6 @@
 
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
@@ -198,7 +197,10 @@ namespace Castle.Facilities.NHibernate
 
 			installed.Run(x => x.Instance.Registered(x.Factory));
 
-			_Logger.Debug("initialized NHibernateFacility");
+			_Logger.Debug(@"Initialized NHibernateFacility:
+
+
+");
 		}
 
 		private string GetSuffix(uint index)
