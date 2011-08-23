@@ -112,12 +112,20 @@ namespace Castle.Facilities.NHibernate.Tests
 		public virtual void VerifyRecursingSession()
 		{
 			var myId = _GetSession().GetSessionImplementation().SessionId;
-			CheckRecursingSession_ShouldBeDifferent(myId);
+			CheckRecursingSession_ShouldBeSame(myId);
 			CheckRecursingSessionWithoutTransaction_ShouldBeSame(myId);
+			CheckForkedRecursingSession_ShouldBeDifferent(myId);
 		}
 
 		[Transaction]
-		protected virtual void CheckRecursingSession_ShouldBeDifferent(Guid myId)
+		protected virtual void CheckRecursingSession_ShouldBeSame(Guid myId)
+		{
+			var session = _GetSession();
+			Assert.That(myId, Is.EqualTo(session.GetSessionImplementation().SessionId));
+		}
+
+		[Transaction(Fork=true)]
+		protected virtual void CheckForkedRecursingSession_ShouldBeDifferent(Guid myId)
 		{
 			var session = _GetSession();
 			Assert.That(myId, Is.Not.EqualTo(session.GetSessionImplementation().SessionId));

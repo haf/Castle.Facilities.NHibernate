@@ -1,38 +1,35 @@
-#region license
-
-// Copyright 2009-2011 Henrik Feldt - http://logibit.se/
+﻿#region license
+// Copyright 2004-2010 Castle Project - http://www.castleproject.org/
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 // 
-//      http://www.apache.org/licenses/LICENSE-2.0
+//     http://www.apache.org/licenses/LICENSE-2.0
 // 
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
 #endregion
 
 using Castle.Facilities.AutoTx;
-using Castle.Facilities.AutoTx.Lifestyles;
 using Castle.Facilities.AutoTx.Testing;
 using Castle.Facilities.NHibernate.Tests.Framework;
 using Castle.Facilities.NHibernate.Tests.TestClasses;
 using Castle.MicroKernel.Registration;
 using Castle.Services.Transaction;
 using Castle.Windsor;
+using NUnit.Framework;
 using log4net;
 using log4net.Config;
-using NUnit.Framework;
 
 namespace Castle.Facilities.NHibernate.Tests
 {
-	public class SimpleUseCase_SingleSave : EnsureSchema
+	public class SimpleUseCase_ProtectedMethod : EnsureSchema
 	{
-		private static readonly ILog _Logger = LogManager.GetLogger(typeof (SimpleUseCase_SingleSave));
+		private static readonly ILog _Logger = LogManager.GetLogger(typeof(SimpleUseCase_SingleSave));
 
 		private WindsorContainer c;
 
@@ -56,25 +53,6 @@ namespace Castle.Facilities.NHibernate.Tests
 			c.Dispose();
 		}
 
-		[Test]
-		public void Smoke()
-		{
-		}
-
-		[Test]
-		public void SavingWith_PerTransaction_Lifestyle()
-		{
-			c.Register(Component.For<ServiceUsingPerTransactionSessionLifestyle>().LifeStyle.Transient);
-
-			// given
-			using (var scope = c.ResolveScope<ServiceUsingPerTransactionSessionLifestyle>())
-			{
-				// then
-				scope.Service.SaveNewThing();
-				Assert.That(scope.Service.LoadNewThing(), Is.Not.Null, "because it was saved by the previous method call");
-			}
-		}
-
 		private static WindsorContainer GetWindsorContainer()
 		{
 			var c = new WindsorContainer();
@@ -87,6 +65,15 @@ namespace Castle.Facilities.NHibernate.Tests
 			Assert.That(c.Kernel.HasComponent(typeof(ITransactionManager)));
 
 			return c;
+		}
+
+		[Test]
+		public void Register_Run()
+		{
+			c.Register(Component.For<ServiceWithProtectedMethodInTransaction>());
+
+			using (var s = c.ResolveScope<ServiceWithProtectedMethodInTransaction>())
+				s.Service.Do();
 		}
 	}
 }

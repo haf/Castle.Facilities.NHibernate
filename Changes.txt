@@ -1,0 +1,8 @@
+2011-08-23:
+	 * Default lifestyle for ISession and IStatelessSession is now PerTopTransaction.
+	 * Each recursion/dependent transaction started/voted to complete Flushes the ISession/IStatelessSession
+	unless FlushMode.Never is set.
+	 * Forked transactions generate new instances, i.e. they behave like PerTransaction lifestyle does with
+	 recursion/dependent transactions.
+	 * IStatelessSessions are now possible to resolve in all three lifestyles
+	 * Made DefaultSessionLifeStyleOption an enum of backing type uint instead of int
