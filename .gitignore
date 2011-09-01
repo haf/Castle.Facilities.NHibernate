@@ -1,6 +1,6 @@
 /build
-src/*/obj
-src/*/bin
+bin/
+obj/
 src/*AssemblyInfo.cs
 *.csproj.user
 *ReSharper.user

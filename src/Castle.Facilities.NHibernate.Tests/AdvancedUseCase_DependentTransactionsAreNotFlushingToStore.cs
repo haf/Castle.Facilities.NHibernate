@@ -1,6 +1,5 @@
 using System;
 using Castle.Facilities.AutoTx;
-using Castle.Facilities.AutoTx.Testing;
 using Castle.Facilities.NHibernate.Tests.TestClasses;
 using Castle.MicroKernel.Registration;
 using Castle.Services.Transaction;
@@ -82,7 +81,6 @@ namespace Castle.Facilities.NHibernate.Tests
 
 			Read2();
 			Write2InTx(t);
-
 		}
 
 		[Transaction]
