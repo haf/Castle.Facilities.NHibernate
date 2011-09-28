@@ -1,32 +1,49 @@
-using System;
-using Castle.Facilities.AutoTx;
-using Castle.Facilities.NHibernate.Tests.TestClasses;
-using Castle.MicroKernel.Registration;
-using Castle.Windsor;
-using NHibernate;
-using NUnit.Framework;
-using Castle.Facilities.AutoTx.Testing;
+// Copyright 2004-2011 Castle Project - http://www.castleproject.org/
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
 namespace Castle.Facilities.NHibernate.Tests.LifeStyle
 {
+	using System;
+
+	using Castle.Facilities.AutoTx;
+	using Castle.Facilities.AutoTx.Testing;
+	using Castle.Facilities.NHibernate.Tests.TestClasses;
+	using Castle.MicroKernel.Registration;
+	using Castle.Windsor;
+
+	using NUnit.Framework;
+
+	using global::NHibernate;
+
 	public class per_web_request_spec
 	{
-		private IWindsorContainer _Container;
+		private IWindsorContainer container;
 
 		[SetUp]
 		public void SetUp()
 		{
-			_Container = new WindsorContainer()
-			.Register(Component.For<INHibernateInstaller>().ImplementedBy<ExampleInstaller>())
-			.AddFacility<AutoTxFacility>()
-			.AddFacility<NHibernateFacility>(
-				fac => fac.DefaultLifeStyle = DefaultSessionLifeStyleOption.SessionPerWebRequest);
+			container = new WindsorContainer()
+				.Register(Component.For<INHibernateInstaller>().ImplementedBy<ExampleInstaller>())
+				.AddFacility<AutoTxFacility>()
+				.AddFacility<NHibernateFacility>(
+					fac => fac.DefaultLifeStyle = DefaultSessionLifeStyleOption.SessionPerWebRequest);
 		}
 
 		[TearDown]
 		public void TearDown()
 		{
-			_Container.Dispose();
+			container.Dispose();
 		}
 
 		[Test]
@@ -34,7 +51,7 @@ namespace Castle.Facilities.NHibernate.Tests.LifeStyle
 		{
 			try
 			{
-				using (var scope = _Container.ResolveScope<ISession>())
+				using (var scope = container.ResolveScope<ISession>())
 					Console.WriteLine(scope.Service.GetSessionImplementation().SessionId);
 
 				Assert.Fail("Not in web request, should not resolve.");
@@ -48,17 +65,17 @@ namespace Castle.Facilities.NHibernate.Tests.LifeStyle
 		[Test]
 		public void resolving_per_tx()
 		{
-			Assert.Throws<MissingTransactionException>(() => _Container.Resolve<ISession>(ExampleInstaller.Key + NHibernateFacility.SessionPerTxSuffix));
+			Assert.Throws<MissingTransactionException>(() => container.Resolve<ISession>(ExampleInstaller.Key + NHibernateFacility.SessionPerTxSuffix));
 		}
 
 		[Test]
 		public void resolving_transient()
 		{
-			var s1 = _Container.Resolve<ISession>(ExampleInstaller.Key + NHibernateFacility.SessionTransientSuffix);
-			var s2 = _Container.Resolve<ISession>(ExampleInstaller.Key + NHibernateFacility.SessionTransientSuffix);
+			var s1 = container.Resolve<ISession>(ExampleInstaller.Key + NHibernateFacility.SessionTransientSuffix);
+			var s2 = container.Resolve<ISession>(ExampleInstaller.Key + NHibernateFacility.SessionTransientSuffix);
 			Assert.That(s1.GetSessionImplementation().SessionId, Is.Not.EqualTo(s2.GetSessionImplementation().SessionId));
-			_Container.Release(s1);
-			_Container.Release(s2);
+			container.Release(s1);
+			container.Release(s2);
 		}
 	}
 }

@@ -1,30 +1,47 @@
-﻿using System.Configuration;
-using System.Diagnostics.Contracts;
-using Castle.Services.Transaction;
-using FluentNHibernate.Cfg;
-using FluentNHibernate.Cfg.Db;
-using NHibernate;
+﻿// Copyright 2004-2011 Castle Project - http://www.castleproject.org/
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
 namespace Castle.Facilities.NHibernate.Tests.TestClasses
 {
+	using System.Configuration;
+	using System.Diagnostics.Contracts;
+
+	using Castle.Services.Transaction;
+
+	using FluentNHibernate.Cfg;
+	using FluentNHibernate.Cfg.Db;
+
+	using global::NHibernate;
+
 	internal class ExampleInstaller : INHibernateInstaller
 	{
 		public const string Key = "sf.default";
-		private readonly Maybe<IInterceptor> _Interceptor;
+		private readonly Maybe<IInterceptor> interceptor;
 
 		public ExampleInstaller()
 		{
-			_Interceptor = Maybe.None<IInterceptor>();
+			interceptor = Maybe.None<IInterceptor>();
 		}
 
 		public ExampleInstaller(IInterceptor interceptor)
 		{
-			_Interceptor = Maybe.Some(interceptor);
+			this.interceptor = Maybe.Some(interceptor);
 		}
 
 		public Maybe<IInterceptor> Interceptor
 		{
-			get { return _Interceptor; }
+			get { return interceptor; }
 		}
 
 		public bool IsDefault
@@ -44,7 +61,7 @@ namespace Castle.Facilities.NHibernate.Tests.TestClasses
 
 			return Fluently.Configure()
 				.Database(MsSqlConfiguration.MsSql2008.DefaultSchema("dbo")
-							.ConnectionString(connectionString.ConnectionString))
+				          	.ConnectionString(connectionString.ConnectionString))
 				.Mappings(m => m.FluentMappings.AddFromAssemblyOf<ThingMap>());
 		}
 

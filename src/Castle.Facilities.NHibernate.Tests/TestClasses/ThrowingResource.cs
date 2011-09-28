@@ -1,12 +1,10 @@
-﻿#region license
-
-// Copyright 2009-2011 Henrik Feldt - http://logibit.se/
+﻿// Copyright 2004-2011 Castle Project - http://www.castleproject.org/
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 // 
-//      http://www.apache.org/licenses/LICENSE-2.0
+//     http://www.apache.org/licenses/LICENSE-2.0
 // 
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,21 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#endregion
-
-using System;
-using System.Transactions;
-
 namespace Castle.Facilities.NHibernate.Tests.TestClasses
 {
+	using System;
+	using System.Transactions;
+
 	internal class ThrowingResource : ISinglePhaseNotification
 	{
-		private readonly bool _ThrowIt;
-		private int _ErrorCount;
+		private readonly bool throwIt;
+		private int errorCount;
 
 		public ThrowingResource(bool throwIt)
 		{
-			_ThrowIt = throwIt;
+			this.throwIt = throwIt;
 		}
 
 		public bool WasRolledBack { get; private set; }
@@ -42,7 +38,7 @@ namespace Castle.Facilities.NHibernate.Tests.TestClasses
 
 		void IEnlistmentNotification.Commit(Enlistment enlistment)
 		{
-			if (_ThrowIt && ++_ErrorCount < 2)
+			if (throwIt && ++errorCount < 2)
 				throw new ApplicationException("simulating resource failure");
 
 			enlistment.Done();

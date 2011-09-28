@@ -7,6 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Castle.Facilities.NHibernat
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1FA775DC-A741-48F8-9F8E-8A72A34AAE0D}"
 	ProjectSection(SolutionItems) = preProject
+		rakefile.rb = rakefile.rb
 		readme.md = readme.md
 	EndProjectSection
 EndProject

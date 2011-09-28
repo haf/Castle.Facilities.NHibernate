@@ -1,12 +1,10 @@
-﻿#region license
-
-// Copyright 2004-2011 Castle Project - http://www.castleproject.org/
+﻿// Copyright 2004-2011 Castle Project - http://www.castleproject.org/
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 // 
-// http://www.apache.org/licenses/LICENSE-2.0
+//     http://www.apache.org/licenses/LICENSE-2.0
 // 
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,16 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#endregion
-
-using System;
-using System.Diagnostics;
-using System.IO;
-using System.Text.RegularExpressions;
-using System.Xml.Serialization;
-
 namespace Castle.Facilities.NHibernate.Tests
 {
+	using System;
+	using System.Diagnostics;
+	using System.IO;
+	using System.Text.RegularExpressions;
+	using System.Xml.Serialization;
+
 	[Serializable]
 	public class TraceRecord
 	{
@@ -43,10 +39,8 @@ namespace Castle.Facilities.NHibernate.Tests
 		public override void Write(string message)
 		{
 			if (message.StartsWith("System.Transactions Verbose: 0 : "))
-			{
 				Console.Write("Sys.Tx: ({1}) {0}", message.Substring("System.Transactions Verbose: 0 : ".Length),
 				              DateTime.UtcNow.ToString("mm:ss.fffff"));
-			}
 			else Console.Write(message);
 		}
 
@@ -55,7 +49,6 @@ namespace Castle.Facilities.NHibernate.Tests
 			TraceRecord r = null;
 
 			if (message.StartsWith("<TraceRecord"))
-			{
 				using (var s = new StringReader(message))
 				{
 					r =
@@ -64,7 +57,6 @@ namespace Castle.Facilities.NHibernate.Tests
 							Deserialize(s);
 					r.ExtendedData = GetData(message);
 				}
-			}
 
 			Console.WriteLine(r == null ? message : r.ToString());
 		}

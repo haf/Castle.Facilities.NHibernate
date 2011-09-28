@@ -190,7 +190,6 @@ namespace :castle do
     nuspec.dependency "Castle.Windsor", "2.5.3"
     nuspec.dependency "Castle.Services.Transaction", "3.0.200"
     nuspec.dependency "Castle.Facilities.AutoTx", "3.0.200"
-	nuspec.dependency "log4net", "1.2.10"
 	nuspec.dependency "FluentNHibernate", "1.2.0.712"
 	nuspec.dependency "NHibernate.Castle", "3.1.0.4000"
 	nuspec.framework_assembly "System.Transactions", FRAMEWORK

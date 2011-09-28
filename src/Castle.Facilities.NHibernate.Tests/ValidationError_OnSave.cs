@@ -1,12 +1,10 @@
-﻿#region license
-
-// Copyright 2009-2011 Henrik Feldt - http://logibit.se/
+﻿// Copyright 2004-2011 Castle Project - http://www.castleproject.org/
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 // 
-//      http://www.apache.org/licenses/LICENSE-2.0
+//     http://www.apache.org/licenses/LICENSE-2.0
 // 
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,53 +12,53 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#endregion
-
-using System;
-using System.Collections;
-using System.Transactions;
-using Castle.Facilities.AutoTx;
-using Castle.Facilities.NHibernate.Tests.Framework;
-using Castle.Facilities.NHibernate.Tests.TestClasses;
-using Castle.MicroKernel.Registration;
-using Castle.Services.Transaction;
-using Castle.Windsor;
-using log4net;
-using log4net.Config;
-using NHibernate;
-using NHibernate.SqlCommand;
-using NHibernate.Type;
-using NUnit.Framework;
-using ITransaction = NHibernate.ITransaction;
-using Castle.Facilities.AutoTx.Testing;
-
 namespace Castle.Facilities.NHibernate.Tests
 {
+	using System;
+	using System.Collections;
+	using System.Transactions;
+
+	using Castle.Facilities.AutoTx;
+	using Castle.Facilities.AutoTx.Testing;
+	using Castle.Facilities.NHibernate.Tests.Framework;
+	using Castle.Facilities.NHibernate.Tests.TestClasses;
+	using Castle.MicroKernel.Registration;
+	using Castle.Services.Transaction;
+	using Castle.Windsor;
+
+	using NLog;
+
+	using NUnit.Framework;
+
+	using global::NHibernate;
+	using global::NHibernate.SqlCommand;
+	using global::NHibernate.Type;
+
+	using ITransaction = global::NHibernate.ITransaction;
+
 	internal class ValidationError_OnSave : EnsureSchema
 	{
-		private static readonly ILog _Logger = LogManager.GetLogger(typeof (ValidationError_OnSave));
-
-		private Container _Container;
+		private static readonly Logger logger = LogManager.GetCurrentClassLogger();
+		private Container container;
 
 		[SetUp]
 		public void SetUp()
 		{
-			BasicConfigurator.Configure();
-			_Container = new Container();
+			container = new Container();
 		}
 
 		[TearDown]
 		public void TearDown()
 		{
-			_Container.Dispose();
+			container.Dispose();
 		}
 
 		[Test]
 		public void RunTest()
 		{
-			_Logger.Debug("starting test run");
+			logger.Debug("starting test run");
 
-			using (var x = _Container.ResolveScope<Test>())
+			using (var x = container.ResolveScope<Test>())
 				x.Service.Run();
 		}
 	}
@@ -70,7 +68,7 @@ namespace Castle.Facilities.NHibernate.Tests
 		public Container()
 		{
 			Register(Component.For<INHibernateInstaller>().Instance(new ExampleInstaller(new ThrowingInterceptor())));
-			
+
 			AddFacility<AutoTxFacility>();
 			AddFacility<NHibernateFacility>();
 
@@ -80,12 +78,12 @@ namespace Castle.Facilities.NHibernate.Tests
 
 	internal class ThrowingInterceptor : IInterceptor
 	{
-		private static readonly ILog _Logger = LogManager.GetLogger(typeof (ThrowingInterceptor));
+		private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
 		public bool OnFlushDirty(object entity, object id, object[] currentState, object[] previousState,
 		                         string[] propertyNames, IType[] types)
 		{
-			_Logger.Debug("throwing validation exception");
+			logger.Debug("throwing validation exception");
 
 			throw new ApplicationException("imaginary validation error");
 		}
@@ -182,24 +180,23 @@ namespace Castle.Facilities.NHibernate.Tests
 
 	public class Test
 	{
-		private static readonly ILog _Logger = LogManager.GetLogger(typeof (Test));
-
-		private readonly ISessionManager _SessionManager;
-		private Guid _ThingId;
+		private static readonly Logger logger = LogManager.GetCurrentClassLogger();
+		private readonly ISessionManager sessionManager;
+		private Guid thingId;
 
 		public Test(ISessionManager sessionManager)
 		{
-			_SessionManager = sessionManager;
+			this.sessionManager = sessionManager;
 		}
 
 		public virtual void Run()
 		{
-			_Logger.Debug("run invoked");
+			logger.Debug("run invoked");
 
 			SaveNewThing();
 			try
 			{
-				_Logger.Debug("chaning thing which will throw");
+				logger.Debug("chaning thing which will throw");
 
 				ChangeThing();
 			}
@@ -215,24 +212,24 @@ namespace Castle.Facilities.NHibernate.Tests
 		[Transaction]
 		protected virtual void SaveNewThing()
 		{
-			var s = _SessionManager.OpenSession();
+			var s = sessionManager.OpenSession();
 			var thing = new Thing(18.0);
-			_ThingId = (Guid) s.Save(thing);
+			thingId = (Guid)s.Save(thing);
 		}
 
 		[Transaction]
 		protected virtual void ChangeThing()
 		{
-			var s = _SessionManager.OpenSession();
-			var thing = s.Load<Thing>(_ThingId);
+			var s = sessionManager.OpenSession();
+			var thing = s.Load<Thing>(thingId);
 			thing.Value = 19.0;
 		}
 
 		[Transaction]
 		protected virtual Thing LoadThing()
 		{
-			var s = _SessionManager.OpenSession(); // we are expecting this to be a new session
-			return s.Load<Thing>(_ThingId);
+			var s = sessionManager.OpenSession(); // we are expecting this to be a new session
+			return s.Load<Thing>(thingId);
 		}
 	}
 }

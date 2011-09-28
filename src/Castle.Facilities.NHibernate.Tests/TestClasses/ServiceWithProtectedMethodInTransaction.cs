@@ -1,5 +1,4 @@
-﻿#region license
-// Copyright 2004-2010 Castle Project - http://www.castleproject.org/
+﻿// Copyright 2004-2011 Castle Project - http://www.castleproject.org/
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,23 +11,25 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-#endregion
-
-using System;
-using Castle.Services.Transaction;
-using NHibernate;
-using NUnit.Framework;
 
 namespace Castle.Facilities.NHibernate.Tests.TestClasses
 {
+	using System;
+
+	using Castle.Services.Transaction;
+
+	using NUnit.Framework;
+
+	using global::NHibernate;
+
 	public class ServiceWithProtectedMethodInTransaction
 	{
-		private readonly ISessionFactory _Factory;
+		private readonly ISessionFactory factory;
 
 		public ServiceWithProtectedMethodInTransaction(ISessionFactory factory)
 		{
 			if (factory == null) throw new ArgumentNullException("factory");
-			_Factory = factory;
+			this.factory = factory;
 		}
 
 		public void Do()
@@ -39,17 +40,17 @@ namespace Castle.Facilities.NHibernate.Tests.TestClasses
 
 		protected void ReadAgain(Guid id)
 		{
-			using (var s = _Factory.OpenSession())
+			using (var s = factory.OpenSession())
 			{
 				var t = s.Load<Thing>(id);
-				Assert.That(t.ID, Is.EqualTo(id));
+				Assert.That(t.Id, Is.EqualTo(id));
 			}
 		}
 
 		[Transaction]
 		protected virtual Guid SaveIt()
 		{
-			using (var s = _Factory.OpenSession())
+			using (var s = factory.OpenSession())
 				return (Guid)s.Save(new Thing(45.0));
 		}
 	}

@@ -1,22 +1,38 @@
-using System;
-using System.Diagnostics.Contracts;
-using Castle.Services.Transaction;
-using NHibernate;
-using log4net;
+// Copyright 2004-2011 Castle Project - http://www.castleproject.org/
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
 namespace Castle.Facilities.NHibernate.Tests.TestClasses
 {
+	using System;
+	using System.Diagnostics.Contracts;
+
+	using Castle.Services.Transaction;
+
+	using NLog;
+
+	using global::NHibernate;
+
 	public class ServiceUsingPerTransactionSessionLifestyle
 	{
-		private static readonly ILog _Logger = LogManager.GetLogger(typeof (ServiceUsingPerTransactionSessionLifestyle));
-
-		private readonly Func<ISession> _GetSession;
-		private Guid _Id;
+		private static readonly Logger logger = LogManager.GetCurrentClassLogger();
+		private readonly Func<ISession> getSession;
+		private Guid id;
 
 		public ServiceUsingPerTransactionSessionLifestyle(Func<ISession> getSession)
 		{
 			Contract.Requires(getSession != null);
-			_GetSession = getSession;
+			this.getSession = getSession;
 		}
 
 		// a bit of documentation
@@ -50,14 +66,14 @@ namespace Castle.Facilities.NHibernate.Tests.TestClasses
 		[Transaction]
 		public virtual void SaveNewThing()
 		{
-			_Logger.DebugFormat("save new thing");
+			logger.Debug("save new thing");
 
-			using (var session = _GetSession())
+			using (var session = getSession())
 			{
 				// at KTH this is an arbitrary number
-				_Id = (Guid) session.Save(new Thing(17.0));
+				id = (Guid)session.Save(new Thing(17.0));
 
-				_Logger.DebugFormat("exiting using-block of session");
+				logger.Debug("exiting using-block of session");
 			}
 		}
 
@@ -65,7 +81,7 @@ namespace Castle.Facilities.NHibernate.Tests.TestClasses
 		public virtual Thing LoadNewThing()
 		{
 			// be aware how I'm not manually disposing the ISession here; I could, but it would make no difference
-			return _GetSession().Get<Thing>(_Id);
+			return getSession().Get<Thing>(id);
 		}
 	}
 }
