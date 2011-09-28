@@ -1,6 +1,12 @@
 <CodeStyleSettings>
+  <CSS>
+    <FormatSettings />
+    <Naming2 />
+  </CSS>
   <CSharp>
     <FormatSettings>
+      <INDENT_ANONYMOUS_METHOD_BLOCK>False</INDENT_ANONYMOUS_METHOD_BLOCK>
+      <INDENT_EMBRACED_INITIALIZER_BLOCK>False</INDENT_EMBRACED_INITIALIZER_BLOCK>
       <MODIFIERS_ORDER IsNull="False">
         <Item>public</Item>
         <Item>protected</Item>
@@ -24,6 +30,13 @@
       <EventHandlerPatternShort>$event$Handler</EventHandlerPatternShort>
     </Naming2>
   </CSharp>
+  <HTML>
+    <FormatSettings />
+  </HTML>
+  <JavaScript>
+    <FormatSettings />
+    <Naming2 />
+  </JavaScript>
   <VB>
     <FormatSettings />
     <ImportsSettings />
@@ -35,12 +48,12 @@
   <Web>
     <Naming2 />
   </Web>
-  <Xaml>
-    <Naming2 />
-  </Xaml>
   <XML>
     <FormatSettings />
   </XML>
+  <Xaml>
+    <Naming2 />
+  </Xaml>
   <FileHeader Region="license"><![CDATA[Copyright 2004-2010 Castle Project - http://www.castleproject.org/
 
 Licensed under the Apache License, Version 2.0 (the "License");

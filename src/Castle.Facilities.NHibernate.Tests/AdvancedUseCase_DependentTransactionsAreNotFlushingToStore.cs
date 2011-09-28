@@ -1,31 +1,47 @@
-using System;
-using Castle.Facilities.AutoTx;
-using Castle.Facilities.AutoTx.Testing;
-using Castle.Facilities.NHibernate.Tests.TestClasses;
-using Castle.MicroKernel.Registration;
-using Castle.Services.Transaction;
-using Castle.Windsor;
-using log4net;
-using log4net.Config;
-using NHibernate;
-using NUnit.Framework;
+// Copyright 2004-2011 Castle Project - http://www.castleproject.org/
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
 namespace Castle.Facilities.NHibernate.Tests
 {
+	using System;
+
+	using Castle.Facilities.AutoTx;
+	using Castle.Facilities.NHibernate.Tests.TestClasses;
+	using Castle.MicroKernel.Registration;
+	using Castle.Services.Transaction;
+	using Castle.Windsor;
+
+	using NLog;
+
+	using NUnit.Framework;
+
+	using global::NHibernate;
+
 	public class AdvancedUseCase_DependentTransactionsAreNotFlushingToStore
 	{
-		private static readonly ILog _Logger = LogManager.GetLogger(typeof(SimpleUseCase_SingleSave));
+		private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
 		private WindsorContainer c;
 
 		[SetUp]
 		public void SetUp()
 		{
-			XmlConfigurator.Configure();
 			c = GetWindsorContainer();
 		}
 
-		[Test, Ignore("Haven't found a repro yet")]
+		[Test]
+		[Ignore("Haven't found a repro yet")]
 		public void MainTx_ThenRW_ThenR_ThenDependentWrite()
 		{
 			// given
@@ -36,7 +52,6 @@ namespace Castle.Facilities.NHibernate.Tests
 			component.MainInvocation();
 			Assert.Fail("we haven't solved this test yet");
 		}
-
 
 		private static WindsorContainer GetWindsorContainer()
 		{
@@ -57,21 +72,21 @@ namespace Castle.Facilities.NHibernate.Tests
 
 	public class ReproClass
 	{
-		private readonly Func<ISession> _GetSession;
-		private readonly ITransactionManager _Manager;
-		private Guid _ThingId;
+		private readonly Func<ISession> getSession;
+		private readonly ITransactionManager manager;
+		private Guid thingId;
 
 		public ReproClass(Func<ISession> getSession, ITransactionManager manager)
 		{
 			if (getSession == null) throw new ArgumentNullException("getSession");
-			_GetSession = getSession;
-			_Manager = manager;
+			this.getSession = getSession;
+			this.manager = manager;
 		}
 
 		[Transaction]
 		public virtual Guid SaveNewThingSetup()
 		{
-			return _ThingId = (Guid)_GetSession().Save(new Thing(19.0));
+			return thingId = (Guid)getSession().Save(new Thing(19.0));
 		}
 
 		[Transaction]
@@ -82,30 +97,29 @@ namespace Castle.Facilities.NHibernate.Tests
 
 			Read2();
 			Write2InTx(t);
-
 		}
 
 		[Transaction]
 		protected virtual void Write2InTx(Thing t)
 		{
-			Assert.That(_Manager.Count, Is.EqualTo(2));
-			_GetSession().Delete(t);
+			Assert.That(manager.Count, Is.EqualTo(2));
+			getSession().Delete(t);
 		}
 
 		private void Read2()
 		{
-			_GetSession().Load<Thing>(_ThingId);
+			getSession().Load<Thing>(thingId);
 		}
 
 		private void Write1(Thing thing)
 		{
 			thing.Value = 20.0;
-			_GetSession().Update(thing);
+			getSession().Update(thing);
 		}
 
 		private Thing Read1()
 		{
-			return _GetSession().Load<Thing>(_ThingId);
+			return getSession().Load<Thing>(thingId);
 		}
 	}
 }

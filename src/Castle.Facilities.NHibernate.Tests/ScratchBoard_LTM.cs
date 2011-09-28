@@ -1,12 +1,10 @@
-#region license
-
-// Copyright 2009-2011 Henrik Feldt - http://logibit.se/
+// Copyright 2004-2011 Castle Project - http://www.castleproject.org/
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 // 
-//      http://www.apache.org/licenses/LICENSE-2.0
+//     http://www.apache.org/licenses/LICENSE-2.0
 // 
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,23 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#endregion
-
-using System;
-using System.Configuration;
-using System.Data.SqlClient;
-using System.Transactions;
-using Castle.Facilities.NHibernate.Tests.TestClasses;
-using Castle.Services.Transaction;
-using NUnit.Framework;
-using TransactionScope = System.Transactions.TransactionScope;
-
 namespace Castle.Facilities.NHibernate.Tests
 {
+	using System;
+	using System.Configuration;
+	using System.Data.SqlClient;
+	using System.Transactions;
+
+	using Castle.Core.Logging;
+	using Castle.Facilities.NHibernate.Tests.TestClasses;
+	using Castle.Services.Transaction.Internal;
+
+	using NUnit.Framework;
+
 	[Explicit]
 	public class ScratchBoard_LTM
 	{
-		private static readonly Random r = new Random((int) DateTime.Now.Ticks);
+		private static readonly Random r = new Random((int)DateTime.Now.Ticks);
 
 		/*
 CREATE TABLE [dbo].[Thing] (
@@ -93,13 +91,13 @@ CREATE TABLE [dbo].[Thing] (
 		public void ExplicitTransaction()
 		{
 			using (var t = new CommittableTransaction())
-			using (new Services.Transaction.Internal.TxScope(t))
+			using (new TxScope(t, NullLogger.Instance))
 			{
 				using (var c = GetConnection())
 				using (var cmd = c.CreateCommand())
 				{
 					cmd.CommandText = "SELECT TOP 1 Val FROM Thing";
-					var scalar = (double) cmd.ExecuteScalar();
+					var scalar = (double)cmd.ExecuteScalar();
 					Console.WriteLine("got val {0}", scalar);
 				}
 				Console.WriteLine("COMMITTING");
@@ -112,7 +110,7 @@ CREATE TABLE [dbo].[Thing] (
 		public void ExplicitTransactionWithDependentTransaction()
 		{
 			using (var t = new CommittableTransaction())
-			using (new Services.Transaction.Internal.TxScope(t))
+			using (new TxScope(t, NullLogger.Instance))
 			{
 				Console.WriteLine("T1 STATUS: {0}", t.TransactionInformation.Status);
 
@@ -120,13 +118,13 @@ CREATE TABLE [dbo].[Thing] (
 				using (var cmd = c.CreateCommand())
 				{
 					cmd.CommandText = "SELECT TOP 1 Val FROM Thing";
-					var scalar = (double) cmd.ExecuteScalar();
+					var scalar = (double)cmd.ExecuteScalar();
 					Console.WriteLine("T1 STATUS: {0}", t.TransactionInformation.Status);
 					Console.WriteLine("got val {0}, disposing command and connection", scalar);
 				}
 
 				using (var t2 = t.DependentClone(DependentCloneOption.RollbackIfNotComplete))
-				using (new Services.Transaction.Internal.TxScope(t2))
+				using (new TxScope(t2, NullLogger.Instance))
 				using (var c = GetConnection())
 				using (var cmd = c.CreateCommand())
 				{
@@ -160,11 +158,12 @@ CREATE TABLE [dbo].[Thing] (
 			}
 		}
 
-		[Test, Explicit("This test will fail because of how System.Transactions work. I can't roll back a transaction if a resource failed.")]
+		[Test]
+		[Explicit("This test will fail because of how System.Transactions work. I can't roll back a transaction if a resource failed.")]
 		public void RetryOnFailure()
 		{
 			using (var t = new CommittableTransaction())
-			using (new Services.Transaction.Internal.TxScope(t))
+			using (new TxScope(t, NullLogger.Instance))
 			{
 				t.EnlistVolatile(new ThrowingResource(true), EnlistmentOptions.EnlistDuringPrepareRequired);
 
@@ -183,10 +182,9 @@ CREATE TABLE [dbo].[Thing] (
 				}
 				catch (ApplicationException)
 				{
-					Assert.That(t.TransactionInformation.Status, Is.EqualTo(System.Transactions.TransactionStatus.Committed));
+					Assert.That(t.TransactionInformation.Status, Is.EqualTo(TransactionStatus.Committed));
 				}
 			}
-			
 		}
 
 		private SqlConnection GetConnection()
@@ -201,18 +199,18 @@ CREATE TABLE [dbo].[Thing] (
 
 	public class VolatileResource : ISinglePhaseNotification
 	{
-		private readonly bool _ThrowIt;
-		private int _ErrorCount = 0;
+		private readonly bool throwIt;
+		private int errorCount;
 
 		public VolatileResource(bool throwIt)
 		{
-			_ThrowIt = throwIt;
+			this.throwIt = throwIt;
 		}
 
 		public void Prepare(PreparingEnlistment preparingEnlistment)
 		{
 			Console.WriteLine("PREPARE - VolatileResource");
-			if (_ThrowIt && ++_ErrorCount <2) throw new ApplicationException("simulating resource failure");
+			if (throwIt && ++errorCount < 2) throw new ApplicationException("simulating resource failure");
 
 			preparingEnlistment.ForceRollback();
 		}
