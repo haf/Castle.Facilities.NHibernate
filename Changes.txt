@@ -1,6 +1,6 @@
 2011-09-28 v0.5:
 	 * Upgraded dependencies. NHibernate < 3.2 will no longer be tested.
-
+	 * Missed ref for sample project, fixed that, so that's 0.5.1, no 0.5.0, soz.
 2011-09-28:
 	 * Upgraded to v3.0.202 of Castle.Transactions (Tx + AutoTx)
 	 * Removed dependency on log4net.
