@@ -196,7 +196,7 @@ namespace :castle do
 	
     nuspec.output_file = Files[:nh_fac][:nuspec]
 	
-    nuspec_copy(:nh_fac, "*Facilities.NHibernate.{dll,xml,pdb}")
+    nuspec_copy(:nh_fac, "*Facilities.NHibernate.{dll,xml}")
 	
     CLEAN.include(Folders[:nuspec])
   end
