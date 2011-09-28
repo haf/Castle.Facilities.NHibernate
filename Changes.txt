@@ -1,3 +1,7 @@
+2011-09-28:
+	 * Upgraded to v3.0.202 of Castle.Transactions (Tx + AutoTx)
+	 * Removed dependency on log4net.
+
 2011-08-23:
 	 * Default lifestyle for ISession and IStatelessSession is now PerTopTransaction.
 	 * Each recursion/dependent transaction started/voted to complete Flushes the ISession/IStatelessSession
