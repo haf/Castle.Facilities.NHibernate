@@ -1147,6 +1147,12 @@
             <typeparam name="T">Entity who's mapping to override</typeparam>
             <param name="populateMap">Lambda performing alterations</param>
         </member>
+        <member name="M:FluentNHibernate.Automapping.AutoPersistenceModel.Override(System.Type)">
+            <summary>
+            Adds an IAutoMappingOverride reflectively
+            </summary>
+            <param name="overrideType">Override type, expected to be an IAutoMappingOverride</param>
+        </member>
         <member name="M:FluentNHibernate.Automapping.AutoPersistenceModel.OverrideAll(System.Action{FluentNHibernate.Automapping.IPropertyIgnorer})">
             <summary>
             Override all mappings.
@@ -1327,20 +1333,6 @@
             <param name="value">Connection string to use</param>
             <returns>Configuration builder</returns>
         </member>
-        <member name="M:FluentNHibernate.Cfg.Db.PersistenceConfiguration`2.Cache(System.Action{FluentNHibernate.Cfg.Db.CacheSettingsBuilder})">
-            <summary>
-            Configure caching.
-            </summary>
-            <example>
-                Cache(x =>
-                {
-                  x.UseQueryCache();
-                  x.UseMinimalPuts();
-                });
-            </example>
-            <param name="cacheExpression">Closure for configuring caching</param>
-            <returns>Configuration builder</returns>
-        </member>
         <member name="M:FluentNHibernate.Cfg.Db.PersistenceConfiguration`2.Raw(System.String,System.String)">
             <summary>
             Sets a raw property on the NHibernate configuration. Use this method
@@ -1350,73 +1342,11 @@
             <param name="value">Setting value</param>
             <returns>Configuration builder</returns>
         </member>
-        <member name="M:FluentNHibernate.Cfg.Db.PersistenceConfiguration`2.CollectionTypeFactory(System.String)">
-            <summary>
-            Sets the collectiontype.factory_class property.
-            NOTE: NHibernate 2.1 only
-            </summary>
-            <param name="collectionTypeFactoryClass">factory class</param>
-            <returns>Configuration</returns>
-        </member>
-        <member name="M:FluentNHibernate.Cfg.Db.PersistenceConfiguration`2.CollectionTypeFactory(System.Type)">
-            <summary>
-            Sets the collectiontype.factory_class property.
-            NOTE: NHibernate 2.1 only
-            </summary>
-            <param name="collectionTypeFactoryClass">factory class</param>
-            <returns>Configuration</returns>
-        </member>
-        <member name="M:FluentNHibernate.Cfg.Db.PersistenceConfiguration`2.CollectionTypeFactory``1">
-            <summary>
-            Sets the collectiontype.factory_class property.
-            NOTE: NHibernate 2.1 only
-            </summary>
-            <typeparam name="TCollectionTypeFactory">factory class</typeparam>
-            <returns>Configuration</returns>
-        </member>
-        <member name="M:FluentNHibernate.Cfg.Db.PersistenceConfiguration`2.ProxyFactoryFactory(System.String)">
-            <summary>
-            Sets the proxyfactory.factory_class property.
-            NOTE: NHibernate 2.1 only
-            </summary>
-            <param name="proxyFactoryFactoryClass">factory class</param>
-            <returns>Configuration</returns>
-        </member>
-        <member name="M:FluentNHibernate.Cfg.Db.PersistenceConfiguration`2.ProxyFactoryFactory(System.Type)">
-            <summary>
-            Sets the proxyfactory.factory_class property.
-            NOTE: NHibernate 2.1 only
-            </summary>
-            <param name="proxyFactoryFactory">factory class</param>
-            <returns>Configuration</returns>
-        </member>
-        <member name="M:FluentNHibernate.Cfg.Db.PersistenceConfiguration`2.ProxyFactoryFactory``1">
-            <summary>
-            Sets the proxyfactory.factory_class property.
-            NOTE: NHibernate 2.1 only
-            </summary>
-            <typeparam name="TProxyFactoryFactory">factory class</typeparam>
-            <returns>Configuration</returns>
-        </member>
         <member name="M:FluentNHibernate.Cfg.Db.PersistenceConfiguration`2.AdoNetBatchSize(System.Int32)">
             <summary>
             Sets the adonet.batch_size property.
             </summary>
             <param name="size">Batch size</param>
-            <returns>Configuration</returns>
-        </member>
-        <member name="M:FluentNHibernate.Cfg.Db.PersistenceConfiguration`2.CurrentSessionContext(System.String)">
-            <summary>
-            Sets the current_session_context_class property.
-            </summary>
-            <param name="currentSessionContextClass">current session context class</param>
-            <returns>Configuration</returns>
-        </member>
-        <member name="M:FluentNHibernate.Cfg.Db.PersistenceConfiguration`2.CurrentSessionContext``1">
-            <summary>
-            Sets the current_session_context_class property.
-            </summary>
-            <typeparam name="TSessionContext">Implementation of ICurrentSessionContext to use</typeparam>
             <returns>Configuration</returns>
         </member>
         <member name="M:FluentNHibernate.Cfg.Db.PersistenceConfiguration`2.IsolationLevel(System.Data.IsolationLevel)">
@@ -2270,6 +2200,40 @@
             </summary>
             <param name="mappings"></param>
         </member>
+        <member name="M:FluentNHibernate.Mapping.ListIndexPart.Offset(System.Int32)">
+            <summary>
+            offset added to index in column
+            </summary>
+            <remarks>mutual exclusive with Type()</remarks>
+            <param name="offset">offset</param>
+        </member>
+        <member name="M:FluentNHibernate.Mapping.ListIndexPart.Column(System.String)">
+            <summary>
+            Specifies the column name for the index or key of the dictionary.
+            </summary>
+            <param name="indexColumnName">Column name</param>
+        </member>
+        <member name="M:FluentNHibernate.Mapping.ListIndexPart.Type``1">
+            <summary>
+            Specifies the type of the index/key column
+            </summary>
+            <remarks>mutual exclusive with offset</remarks>
+            <typeparam name="TIndex">Index type</typeparam>
+        </member>
+        <member name="M:FluentNHibernate.Mapping.ListIndexPart.Type(System.Type)">
+            <summary>
+            Specifies the type of the index/key column
+            </summary>
+            <remarks>mutual exclusive with offset</remarks>
+            <param name="type">Type</param>
+        </member>
+        <member name="M:FluentNHibernate.Mapping.ListIndexPart.Type(System.String)">
+            <summary>
+            Specifies the type of the index/key column
+            </summary>
+            <remarks>mutual exclusive with offset</remarks>
+            <param name="type">Type</param>
+        </member>
         <member name="T:FluentNHibernate.Mapping.Laziness">
             <summary>
             Laziness strategy for relationships
@@ -2425,7 +2389,7 @@
             and use the constructor to control how your component is persisted.
             </summary>
             <example>
-            public class AddressMap : ComponentMap&lt;Address&gt;
+            public class AddressMap : ComponentMap{Address}
             {
               public AddressMap()
               {
@@ -3377,7 +3341,6 @@
             <summary>
             Applies any mappings to the NHibernate Configuration
             </summary>
-            <param name="logger">Diagnostics logger</param>
             <param name="cfg">NHibernate Configuration instance</param>
         </member>
         <member name="P:FluentNHibernate.Cfg.MappingConfiguration.FluentMappings">
@@ -3938,6 +3901,11 @@
             Cascade deletes
             </summary>
         </member>
+        <member name="M:FluentNHibernate.Mapping.CascadeExpression`1.Merge">
+            <summary>
+            Cascade deletes
+            </summary>
+        </member>
         <member name="M:FluentNHibernate.Mapping.CollectionCascadeExpression`1.AllDeleteOrphan">
             <summary>
             Cascade all actions, deleting any orphaned records
@@ -4203,7 +4171,7 @@
             Use all locking
             </summary>
         </member>
-        <member name="M:FluentNHibernate.Mapping.ToManyBase`3.PropertyRef(System.String)">
+        <member name="M:FluentNHibernate.Mapping.ToManyBase`2.PropertyRef(System.String)">
             <summary>
             This method is used to set a different key column in this table to be used for joins.
             The output is set as the property-ref attribute in the "key" subelement of the collection
@@ -4211,63 +4179,63 @@
             <param name="propertyRef">The name of the column in this table which is linked to the foreign key</param>
             <returns>OneToManyPart</returns>
         </member>
-        <member name="M:FluentNHibernate.Mapping.ToManyBase`3.LazyLoad">
+        <member name="M:FluentNHibernate.Mapping.ToManyBase`2.LazyLoad">
             <summary>
             Specify the lazy-load behaviour
             </summary>
         </member>
-        <member name="M:FluentNHibernate.Mapping.ToManyBase`3.ExtraLazyLoad">
+        <member name="M:FluentNHibernate.Mapping.ToManyBase`2.ExtraLazyLoad">
             <summary>
             Specify extra lazy loading
             </summary>
         </member>
-        <member name="M:FluentNHibernate.Mapping.ToManyBase`3.Inverse">
+        <member name="M:FluentNHibernate.Mapping.ToManyBase`2.Inverse">
             <summary>
             Inverse the ownership of this entity. Make the other side of the relationship
             responsible for saving.
             </summary>
         </member>
-        <member name="M:FluentNHibernate.Mapping.ToManyBase`3.AsSet">
+        <member name="M:FluentNHibernate.Mapping.ToManyBase`2.AsSet">
             <summary>
             Use a set collection
             </summary>
         </member>
-        <member name="M:FluentNHibernate.Mapping.ToManyBase`3.AsSet(FluentNHibernate.MappingModel.Collections.SortType)">
+        <member name="M:FluentNHibernate.Mapping.ToManyBase`2.AsSet(FluentNHibernate.MappingModel.Collections.SortType)">
             <summary>
             Use a set collection
             </summary>
             <param name="sort">Sorting</param>
         </member>
-        <member name="M:FluentNHibernate.Mapping.ToManyBase`3.AsSet``1">
+        <member name="M:FluentNHibernate.Mapping.ToManyBase`2.AsSet``1">
             <summary>
             Use a set collection
             </summary>
             <typeparam name="TComparer">Item comparer</typeparam>
         </member>
-        <member name="M:FluentNHibernate.Mapping.ToManyBase`3.AsBag">
+        <member name="M:FluentNHibernate.Mapping.ToManyBase`2.AsBag">
             <summary>
             Use a bag collection
             </summary>
         </member>
-        <member name="M:FluentNHibernate.Mapping.ToManyBase`3.AsList">
+        <member name="M:FluentNHibernate.Mapping.ToManyBase`2.AsList">
             <summary>
             Use a list collection
             </summary>
         </member>
-        <member name="M:FluentNHibernate.Mapping.ToManyBase`3.AsList(System.Action{FluentNHibernate.Mapping.IndexPart})">
+        <member name="M:FluentNHibernate.Mapping.ToManyBase`2.AsList(System.Action{FluentNHibernate.Mapping.ListIndexPart})">
             <summary>
             Use a list collection with an index
             </summary>
             <param name="customIndexMapping">Index mapping</param>
         </member>
-        <member name="M:FluentNHibernate.Mapping.ToManyBase`3.AsMap``1(System.Linq.Expressions.Expression{System.Func{`1,``0}})">
+        <member name="M:FluentNHibernate.Mapping.ToManyBase`2.AsMap``1(System.Linq.Expressions.Expression{System.Func{`1,``0}})">
             <summary>
             Use a map collection
             </summary>
             <typeparam name="TIndex">Index type</typeparam>
             <param name="indexSelector">Index property</param>
         </member>
-        <member name="M:FluentNHibernate.Mapping.ToManyBase`3.AsMap``1(System.Linq.Expressions.Expression{System.Func{`1,``0}},FluentNHibernate.MappingModel.Collections.SortType)">
+        <member name="M:FluentNHibernate.Mapping.ToManyBase`2.AsMap``1(System.Linq.Expressions.Expression{System.Func{`1,``0}},FluentNHibernate.MappingModel.Collections.SortType)">
             <summary>
             Use a map collection
             </summary>
@@ -4275,27 +4243,27 @@
             <param name="indexSelector">Index property</param>
             <param name="sort">Sorting</param>
         </member>
-        <member name="M:FluentNHibernate.Mapping.ToManyBase`3.AsMap(System.String)">
+        <member name="M:FluentNHibernate.Mapping.ToManyBase`2.AsMap(System.String)">
             <summary>
             Use a map collection
             </summary>
             <param name="indexColumnName">Index column name</param>
         </member>
-        <member name="M:FluentNHibernate.Mapping.ToManyBase`3.AsMap(System.String,FluentNHibernate.MappingModel.Collections.SortType)">
+        <member name="M:FluentNHibernate.Mapping.ToManyBase`2.AsMap(System.String,FluentNHibernate.MappingModel.Collections.SortType)">
             <summary>
             Use a map collection
             </summary>
             <param name="indexColumnName">Index column name</param>
             <param name="sort">Sorting</param>
         </member>
-        <member name="M:FluentNHibernate.Mapping.ToManyBase`3.AsMap``1(System.String)">
+        <member name="M:FluentNHibernate.Mapping.ToManyBase`2.AsMap``1(System.String)">
             <summary>
             Use a map collection
             </summary>
             <typeparam name="TIndex">Index type</typeparam>
             <param name="indexColumnName">Index column name</param>
         </member>
-        <member name="M:FluentNHibernate.Mapping.ToManyBase`3.AsMap``1(System.String,FluentNHibernate.MappingModel.Collections.SortType)">
+        <member name="M:FluentNHibernate.Mapping.ToManyBase`2.AsMap``1(System.String,FluentNHibernate.MappingModel.Collections.SortType)">
             <summary>
             Use a map collection
             </summary>
@@ -4303,7 +4271,7 @@
             <param name="indexColumnName">Index column name</param>
             <param name="sort">Sorting</param>
         </member>
-        <member name="M:FluentNHibernate.Mapping.ToManyBase`3.AsMap``2(System.String)">
+        <member name="M:FluentNHibernate.Mapping.ToManyBase`2.AsMap``2(System.String)">
             <summary>
             Use a map collection
             </summary>
@@ -4311,7 +4279,7 @@
             <typeparam name="TComparer">Comparer</typeparam>
             <param name="indexColumnName">Index column name</param>
         </member>
-        <member name="M:FluentNHibernate.Mapping.ToManyBase`3.AsMap``1(System.Linq.Expressions.Expression{System.Func{`1,``0}},System.Action{FluentNHibernate.Mapping.IndexPart})">
+        <member name="M:FluentNHibernate.Mapping.ToManyBase`2.AsMap``1(System.Linq.Expressions.Expression{System.Func{`1,``0}},System.Action{FluentNHibernate.Mapping.IndexPart})">
             <summary>
             Use a map collection
             </summary>
@@ -4319,7 +4287,7 @@
             <param name="indexSelector">Index property</param>
             <param name="customIndexMapping">Index mapping</param>
         </member>
-        <member name="M:FluentNHibernate.Mapping.ToManyBase`3.AsMap``1(System.Linq.Expressions.Expression{System.Func{`1,``0}},System.Action{FluentNHibernate.Mapping.IndexPart},FluentNHibernate.MappingModel.Collections.SortType)">
+        <member name="M:FluentNHibernate.Mapping.ToManyBase`2.AsMap``1(System.Linq.Expressions.Expression{System.Func{`1,``0}},System.Action{FluentNHibernate.Mapping.IndexPart},FluentNHibernate.MappingModel.Collections.SortType)">
             <summary>
             Use a map collection
             </summary>
@@ -4328,7 +4296,7 @@
             <param name="customIndexMapping">Index mapping</param>
             <param name="sort">Sorting</param>
         </member>
-        <member name="M:FluentNHibernate.Mapping.ToManyBase`3.AsMap``1(System.Action{FluentNHibernate.Mapping.IndexPart},System.Action{FluentNHibernate.Mapping.ElementPart})">
+        <member name="M:FluentNHibernate.Mapping.ToManyBase`2.AsMap``1(System.Action{FluentNHibernate.Mapping.IndexPart},System.Action{FluentNHibernate.Mapping.ElementPart})">
             <summary>
             Use a map collection
             </summary>
@@ -4336,14 +4304,14 @@
             <param name="customIndexMapping">Index mapping</param>
             <param name="customElementMapping">Element mapping</param>
         </member>
-        <member name="M:FluentNHibernate.Mapping.ToManyBase`3.AsArray``1(System.Linq.Expressions.Expression{System.Func{`1,``0}})">
+        <member name="M:FluentNHibernate.Mapping.ToManyBase`2.AsArray``1(System.Linq.Expressions.Expression{System.Func{`1,``0}})">
             <summary>
             Use an array
             </summary>
             <typeparam name="TIndex">Index type</typeparam>
             <param name="indexSelector">Index property</param>
         </member>
-        <member name="M:FluentNHibernate.Mapping.ToManyBase`3.AsArray``1(System.Linq.Expressions.Expression{System.Func{`1,``0}},System.Action{FluentNHibernate.Mapping.IndexPart})">
+        <member name="M:FluentNHibernate.Mapping.ToManyBase`2.AsArray``1(System.Linq.Expressions.Expression{System.Func{`1,``0}},System.Action{FluentNHibernate.Mapping.IndexPart})">
             <summary>
             Use an array
             </summary>
@@ -4351,7 +4319,7 @@
             <param name="indexSelector">Index property</param>
             <param name="customIndexMapping">Index mapping</param>
         </member>
-        <member name="M:FluentNHibernate.Mapping.ToManyBase`3.AsIndexedCollection``1(System.Linq.Expressions.Expression{System.Func{`1,``0}},System.Action{FluentNHibernate.Mapping.IndexPart})">
+        <member name="M:FluentNHibernate.Mapping.ToManyBase`2.AsIndexedCollection``1(System.Linq.Expressions.Expression{System.Func{`1,``0}},System.Action{FluentNHibernate.Mapping.IndexPart})">
             <summary>
             Make this collection indexed
             </summary>
@@ -4359,7 +4327,7 @@
             <param name="indexSelector">Index property</param>
             <param name="customIndexMapping">Index mapping</param>
         </member>
-        <member name="M:FluentNHibernate.Mapping.ToManyBase`3.AsIndexedCollection``1(System.String,System.Action{FluentNHibernate.Mapping.IndexPart})">
+        <member name="M:FluentNHibernate.Mapping.ToManyBase`2.AsIndexedCollection``1(System.String,System.Action{FluentNHibernate.Mapping.IndexPart})">
             <summary>
             Make this collection index
             </summary>
@@ -4367,103 +4335,102 @@
             <param name="indexColumn">Index column</param>
             <param name="customIndexMapping">Index mapping</param>
         </member>
-        <member name="M:FluentNHibernate.Mapping.ToManyBase`3.Element(System.String)">
+        <member name="M:FluentNHibernate.Mapping.ToManyBase`2.Element(System.String)">
             <summary>
             Map an element/value type
             </summary>
             <param name="columnName">Column name</param>
         </member>
-        <member name="M:FluentNHibernate.Mapping.ToManyBase`3.Element(System.String,System.Action{FluentNHibernate.Mapping.ElementPart})">
+        <member name="M:FluentNHibernate.Mapping.ToManyBase`2.Element(System.String,System.Action{FluentNHibernate.Mapping.ElementPart})">
             <summary>
             Map an element/value type
             </summary>
             <param name="columnName">Column name</param>
             <param name="customElementMapping">Custom mapping</param>
         </member>
-        <member name="M:FluentNHibernate.Mapping.ToManyBase`3.Component(System.Action{FluentNHibernate.Mapping.CompositeElementPart{`1}})">
+        <member name="M:FluentNHibernate.Mapping.ToManyBase`2.Component(System.Action{FluentNHibernate.Mapping.CompositeElementPart{`1}})">
             <summary>
             Maps this collection as a collection of components.
             </summary>
             <param name="action">Component mapping</param>
         </member>
-        <member name="M:FluentNHibernate.Mapping.ToManyBase`3.Table(System.String)">
+        <member name="M:FluentNHibernate.Mapping.ToManyBase`2.Table(System.String)">
             <summary>
             Sets the table name for this one-to-many.
             </summary>
             <param name="name">Table name</param>
         </member>
-        <member name="M:FluentNHibernate.Mapping.ToManyBase`3.ForeignKeyCascadeOnDelete">
+        <member name="M:FluentNHibernate.Mapping.ToManyBase`2.ForeignKeyCascadeOnDelete">
             <summary>
             Specify that the deletes should be cascaded
             </summary>
         </member>
-        <member name="M:FluentNHibernate.Mapping.ToManyBase`3.Persister``1">
+        <member name="M:FluentNHibernate.Mapping.ToManyBase`2.OptimisticLock">
+            <summary>
+            Specifies whether this collection should be optimistically locked.
+            </summary>
+        </member>
+        <member name="M:FluentNHibernate.Mapping.ToManyBase`2.Persister``1">
             <summary>
             Specify a custom persister
             </summary>
             <typeparam name="TPersister">Persister</typeparam>
         </member>
-        <member name="M:FluentNHibernate.Mapping.ToManyBase`3.Check(System.String)">
+        <member name="M:FluentNHibernate.Mapping.ToManyBase`2.Check(System.String)">
             <summary>
             Specify a check constraint
             </summary>
             <param name="constraintName">Constraint name</param>
         </member>
-        <member name="M:FluentNHibernate.Mapping.ToManyBase`3.Generic">
+        <member name="M:FluentNHibernate.Mapping.ToManyBase`2.Generic">
             <summary>
             Specify that this collection is generic (optional)
             </summary>
         </member>
-        <member name="M:FluentNHibernate.Mapping.ToManyBase`3.Where(System.Linq.Expressions.Expression{System.Func{`1,System.Boolean}})">
-            <summary>
-            Sets the where clause for this one-to-many relationship.
-            Note: This only supports simple cases, use the string overload for more complex clauses.
-            </summary>
-        </member>
-        <member name="M:FluentNHibernate.Mapping.ToManyBase`3.Where(System.String)">
+        <member name="M:FluentNHibernate.Mapping.ToManyBase`2.Where(System.String)">
             <summary>
             Sets the where clause for this one-to-many relationship.
             </summary>
         </member>
-        <member name="M:FluentNHibernate.Mapping.ToManyBase`3.BatchSize(System.Int32)">
+        <member name="M:FluentNHibernate.Mapping.ToManyBase`2.BatchSize(System.Int32)">
             <summary>
             Specify the select batch size
             </summary>
             <param name="size">Batch size</param>
         </member>
-        <member name="M:FluentNHibernate.Mapping.ToManyBase`3.CollectionType``1">
+        <member name="M:FluentNHibernate.Mapping.ToManyBase`2.CollectionType``1">
             <summary>
             Sets a custom collection type
             </summary>
         </member>
-        <member name="M:FluentNHibernate.Mapping.ToManyBase`3.CollectionType(System.Type)">
+        <member name="M:FluentNHibernate.Mapping.ToManyBase`2.CollectionType(System.Type)">
             <summary>
             Sets a custom collection type
             </summary>
         </member>
-        <member name="M:FluentNHibernate.Mapping.ToManyBase`3.CollectionType(System.String)">
+        <member name="M:FluentNHibernate.Mapping.ToManyBase`2.CollectionType(System.String)">
             <summary>
             Sets a custom collection type
             </summary>
         </member>
-        <member name="M:FluentNHibernate.Mapping.ToManyBase`3.CollectionType(FluentNHibernate.MappingModel.TypeReference)">
+        <member name="M:FluentNHibernate.Mapping.ToManyBase`2.CollectionType(FluentNHibernate.MappingModel.TypeReference)">
             <summary>
             Sets a custom collection type
             </summary>
         </member>
-        <member name="M:FluentNHibernate.Mapping.ToManyBase`3.Schema(System.String)">
+        <member name="M:FluentNHibernate.Mapping.ToManyBase`2.Schema(System.String)">
             <summary>
             Specify the table schema
             </summary>
             <param name="schema">Schema name</param>
         </member>
-        <member name="M:FluentNHibernate.Mapping.ToManyBase`3.EntityName(System.String)">
+        <member name="M:FluentNHibernate.Mapping.ToManyBase`2.EntityName(System.String)">
             <summary>
             Specifies an entity-name.
             </summary>
             <remarks>See http://nhforge.org/blogs/nhibernate/archive/2008/10/21/entity-name-in-action-a-strongly-typed-entity.aspx</remarks>
         </member>
-        <member name="M:FluentNHibernate.Mapping.ToManyBase`3.ApplyFilter(System.String,System.String)">
+        <member name="M:FluentNHibernate.Mapping.ToManyBase`2.ApplyFilter(System.String,System.String)">
             <overloads>
             Applies a filter to this entity given it's name.
             </overloads>
@@ -4473,7 +4440,7 @@
             <param name="name">The filter's name</param>
             <param name="condition">The condition to apply</param>
         </member>
-        <member name="M:FluentNHibernate.Mapping.ToManyBase`3.ApplyFilter(System.String)">
+        <member name="M:FluentNHibernate.Mapping.ToManyBase`2.ApplyFilter(System.String)">
             <overloads>
             Applies a filter to this entity given it's name.
             </overloads>
@@ -4482,7 +4449,7 @@
             </summary>
             <param name="name">The filter's name</param>
         </member>
-        <member name="M:FluentNHibernate.Mapping.ToManyBase`3.ApplyFilter``1(System.String)">
+        <member name="M:FluentNHibernate.Mapping.ToManyBase`2.ApplyFilter``1(System.String)">
             <overloads>
             Applies a named filter to this one-to-many.
             </overloads>
@@ -4495,7 +4462,7 @@
             defining the filter to apply.
             </typeparam>
         </member>
-        <member name="M:FluentNHibernate.Mapping.ToManyBase`3.ApplyFilter``1">
+        <member name="M:FluentNHibernate.Mapping.ToManyBase`2.ApplyFilter``1">
             <summary>
             Applies a named filter to this one-to-many.
             </summary>
@@ -4504,32 +4471,33 @@
             defining the filter to apply.
             </typeparam>
         </member>
-        <member name="P:FluentNHibernate.Mapping.ToManyBase`3.Cache">
+        <member name="P:FluentNHibernate.Mapping.ToManyBase`2.EntityType">
+            <summary>
+            Return the type of the owning entity
+            </summary>
+            <returns>Type</returns>
+        </member>
+        <member name="P:FluentNHibernate.Mapping.ToManyBase`2.Cache">
             <summary>
             Specify caching for this entity.
             </summary>
         </member>
-        <member name="P:FluentNHibernate.Mapping.ToManyBase`3.Cascade">
+        <member name="P:FluentNHibernate.Mapping.ToManyBase`2.Cascade">
             <summary>
             Specify the cascade behaviour
             </summary>
         </member>
-        <member name="P:FluentNHibernate.Mapping.ToManyBase`3.Fetch">
+        <member name="P:FluentNHibernate.Mapping.ToManyBase`2.Fetch">
             <summary>
             Specify the fetching behaviour
             </summary>
         </member>
-        <member name="P:FluentNHibernate.Mapping.ToManyBase`3.Access">
+        <member name="P:FluentNHibernate.Mapping.ToManyBase`2.Access">
             <summary>
             Set the access and naming strategy for this one-to-many.
             </summary>
         </member>
-        <member name="P:FluentNHibernate.Mapping.ToManyBase`3.OptimisticLock">
-            <summary>
-            Specify the optimistic locking behaviour
-            </summary>
-        </member>
-        <member name="P:FluentNHibernate.Mapping.ToManyBase`3.Not">
+        <member name="P:FluentNHibernate.Mapping.ToManyBase`2.Not">
             <summary>
             Inverts the next boolean operation
             </summary>
@@ -5162,7 +5130,7 @@
             Specify the generator
             </summary>
             <example>
-            Id(x => x.PersonId)
+            Id("PersonId")
               .GeneratedBy.Assigned();
             </example>
         </member>
@@ -5240,6 +5208,12 @@
         <member name="M:FluentNHibernate.Mapping.ManyToManyPart`1.ChildWhere(System.String)">
             <summary>
             Sets the where clause for this relationship, on the many-to-many element.
+            </summary>
+        </member>
+        <member name="M:FluentNHibernate.Mapping.ManyToManyPart`1.ChildWhere(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            Sets the where clause for this relationship, on the many-to-many element.
+            Note: This only supports simple cases, use the string overload for more complex clauses.
             </summary>
         </member>
         <member name="M:FluentNHibernate.Mapping.ManyToOnePart`1.Unique">
@@ -5344,13 +5318,13 @@
             <summary>
             Specifies the columns used in this relationship
             </summary>
-            <param name="columns">Columns</param>
+            <param name="newColumns">Columns</param>
         </member>
         <member name="M:FluentNHibernate.Mapping.ManyToOnePart`1.Columns(System.Linq.Expressions.Expression{System.Func{`0,System.Object}}[])">
             <summary>
             Specifies the columns used in this relationship
             </summary>
-            <param name="columns">Columns</param>
+            <param name="newColumns">Columns</param>
         </member>
         <member name="M:FluentNHibernate.Mapping.ManyToOnePart`1.Formula(System.String)">
             <summary>
@@ -5480,6 +5454,12 @@
         <member name="M:FluentNHibernate.Mapping.OneToManyPart`1.KeyNullable">
             <summary>
             Specify that the key is nullable
+            </summary>
+        </member>
+        <member name="M:FluentNHibernate.Mapping.OneToManyPart`1.Where(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            Sets the where clause for this one-to-many relationship.
+            Note: This only supports simple cases, use the string overload for more complex clauses.
             </summary>
         </member>
         <member name="P:FluentNHibernate.Mapping.OneToManyPart`1.NotFound">
@@ -5748,24 +5728,6 @@
             <summary>
             Invert the next boolean operation
             </summary>
-        </member>
-        <member name="M:FluentNHibernate.MappingModel.AttributeStore`1.IsSpecified``1(System.Linq.Expressions.Expression{System.Func{`0,``0}})">
-            <summary>
-            Returns whether the user has set a value for a property.
-            </summary>
-        </member>
-        <member name="M:FluentNHibernate.MappingModel.AttributeStore`1.IsSpecified(System.String)">
-            <summary>
-            Returns whether the user has set a value for a property.
-            </summary>
-        </member>
-        <member name="M:FluentNHibernate.MappingModel.AttributeStore`1.HasValue``1(System.Linq.Expressions.Expression{System.Func{`0,``0}})">
-            <summary>
-            Returns whether a property has any value, default or user specified.
-            </summary>
-            <typeparam name="TResult"></typeparam>
-            <param name="exp"></param>
-            <returns></returns>
         </member>
         <member name="M:FluentNHibernate.Reveal.Member``1(System.String)">
             <summary>

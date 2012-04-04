@@ -11,3 +11,5 @@ _ReSharper*
 Castle.Facilities.NHibernate.user
 * Thumbs.db
 *.nupkg
+*.user
+*.dotCover

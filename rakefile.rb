@@ -186,11 +186,12 @@ namespace :castle do
     nuspec.language = "en-US"
     nuspec.licenseUrl = "https://github.com/haf/Castle.Facilities.NHibernate/raw/develop/License.txt"
     nuspec.requireLicenseAcceptance = "true"
-    nuspec.dependency "Castle.Core", "2.5.2"
-    nuspec.dependency "Castle.Windsor", "2.5.3"
-    nuspec.dependency "Castle.Services.Transaction", "3.0.200"
-    nuspec.dependency "Castle.Facilities.AutoTx", "3.0.200"
-	nuspec.dependency "FluentNHibernate", "1.3.0.717"
+    nuspec.dependency "Castle.Core", "3.0.0.4001"
+    nuspec.dependency "Castle.Windsor", "3.0.0.4001"
+    nuspec.dependency "Castle.Services.Transaction", "3.0.202"
+    nuspec.dependency "Castle.Facilities.AutoTx", "3.0.202"
+    nuspec.dependency "Castle.FactorySupportFacility", "3.0.0.4001"
+	# nuspec.dependency "FluentNHibernate", "1.3.0"
 	nuspec.dependency "NHibernate", "3.2.0.4000"
 	nuspec.framework_assembly "System.Transactions", FRAMEWORK
 	
