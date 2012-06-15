@@ -267,6 +267,7 @@ namespace Castle.Facilities.NHibernate
 		}
 
 		private ComponentRegistration<T> GetLifeStyle<T>(ComponentRegistration<T> registration, uint index, string baseName)
+			where T : class
 		{
 			Contract.Requires(index < 3,
 			                  "there are only three supported lifestyles; per transaction, per web request and transient");
