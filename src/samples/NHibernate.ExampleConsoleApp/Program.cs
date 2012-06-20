@@ -20,7 +20,7 @@ namespace NHibernate.ExampleConsoleApp
 	using Castle.Facilities.AutoTx.Testing;
 	using Castle.Facilities.NHibernate;
 	using Castle.MicroKernel.Registration;
-	using Castle.Services.Transaction;
+	using Castle.Transactions;
 	using Castle.Windsor;
 
 	using FluentNHibernate.Cfg;

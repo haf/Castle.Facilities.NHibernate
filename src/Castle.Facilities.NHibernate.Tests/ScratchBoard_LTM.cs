@@ -21,7 +21,7 @@ namespace Castle.Facilities.NHibernate.Tests
 
 	using Castle.Core.Logging;
 	using Castle.Facilities.NHibernate.Tests.TestClasses;
-	using Castle.Services.Transaction.Internal;
+	using Castle.Transactions.Internal;
 
 	using NUnit.Framework;
 
