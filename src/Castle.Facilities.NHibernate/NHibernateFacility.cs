@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using Castle.Transactions.Helpers;
+
 namespace Castle.Facilities.NHibernate
 {
 	using System;
@@ -21,14 +23,12 @@ namespace Castle.Facilities.NHibernate
 
 	using Castle.Core.Logging;
 	using Castle.Facilities.AutoTx;
-	using Castle.Facilities.AutoTx.Registration;
 	using Castle.Facilities.FactorySupport;
 	using Castle.Facilities.TypedFactory;
 	using Castle.MicroKernel;
 	using Castle.MicroKernel.Facilities;
 	using Castle.MicroKernel.Registration;
-	using Castle.Services.Transaction;
-	using Castle.Services.Transaction.Internal;
+	using Castle.Transactions;
 
 	using global::NHibernate;
 	using global::NHibernate.Cfg;
