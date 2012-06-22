@@ -19,7 +19,7 @@ namespace Castle.Facilities.NHibernate.Tests
 	using Castle.Facilities.AutoTx;
 	using Castle.Facilities.NHibernate.Tests.TestClasses;
 	using Castle.MicroKernel.Registration;
-	using Castle.Services.Transaction;
+	using Castle.Transactions;
 	using Castle.Windsor;
 
 	using NLog;

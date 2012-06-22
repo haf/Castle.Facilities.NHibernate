@@ -21,7 +21,7 @@ namespace Castle.Facilities.NHibernate.Tests
 	using Castle.Facilities.NHibernate.Tests.TestClasses;
 	using Castle.MicroKernel.Facilities;
 	using Castle.MicroKernel.Registration;
-	using Castle.Services.Transaction;
+	using Castle.Transactions;
 	using Castle.Windsor;
 
 	using FluentNHibernate.Cfg;
