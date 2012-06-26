@@ -43,6 +43,12 @@
     <Reference Include="Castle.Facilities.FactorySupport">
       <HintPath>..\..\packages\Castle.FactorySupportFacility.3.0.0.4001\lib\net40\Castle.Facilities.FactorySupport.dll</HintPath>
     </Reference>
+    <Reference Include="Castle.Facilities.Logging">
+      <HintPath>..\..\packages\Castle.LoggingFacility.3.0.0.4001\lib\net40\Castle.Facilities.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Services.Logging.NLogIntegration">
+      <HintPath>..\..\packages\Castle.Core-NLog.3.0.0.4001\lib\net40-client\Castle.Services.Logging.NLogIntegration.dll</HintPath>
+    </Reference>
     <Reference Include="Castle.Services.Transaction, Version=3.0.202.2202, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\Castle.Services.Transaction.3.0.202.2202\lib\net40\Castle.Services.Transaction.dll</HintPath>

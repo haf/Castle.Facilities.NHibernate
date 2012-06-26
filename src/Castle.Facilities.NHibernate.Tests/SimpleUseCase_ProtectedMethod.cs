@@ -25,6 +25,7 @@ namespace Castle.Facilities.NHibernate.Tests
 	using NLog;
 
 	using NUnit.Framework;
+	using Castle.Facilities.Logging;
 
 	public class SimpleUseCase_ProtectedMethod : EnsureSchema
 	{
@@ -54,7 +55,7 @@ namespace Castle.Facilities.NHibernate.Tests
 		private static WindsorContainer GetWindsorContainer()
 		{
 			var c = new WindsorContainer();
-
+			c.AddFacility<LoggingFacility>(f => f.UseNLog());
 			c.Register(Component.For<INHibernateInstaller>().ImplementedBy<ExampleInstaller>());
 
 			c.AddFacility<AutoTxFacility>();

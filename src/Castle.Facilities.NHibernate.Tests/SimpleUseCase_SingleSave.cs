@@ -25,6 +25,7 @@ namespace Castle.Facilities.NHibernate.Tests
 	using NLog;
 
 	using NUnit.Framework;
+	using Castle.Facilities.Logging;
 
 	public class SimpleUseCase_SingleSave : EnsureSchema
 	{
@@ -75,6 +76,7 @@ namespace Castle.Facilities.NHibernate.Tests
 
 			c.Register(Component.For<INHibernateInstaller>().ImplementedBy<ExampleInstaller>());
 
+			c.AddFacility<LoggingFacility>(f => f.UseNLog());
 			c.AddFacility<AutoTxFacility>();
 			c.AddFacility<NHibernateFacility>();
 

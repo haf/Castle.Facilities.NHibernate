@@ -33,6 +33,7 @@ namespace NHibernate.ExampleConsoleApp
 	using NLog;
 
 	using Topshelf;
+	using Castle.Facilities.Logging;
 
 	internal class Program
 	{
@@ -62,6 +63,7 @@ namespace NHibernate.ExampleConsoleApp
 		private void Start()
 		{
 			container = new WindsorContainer();
+			container.AddFacility<LoggingFacility>(f => f.UseNLog());
 
 			container
 				.AddFacility<AutoTxFacility>()

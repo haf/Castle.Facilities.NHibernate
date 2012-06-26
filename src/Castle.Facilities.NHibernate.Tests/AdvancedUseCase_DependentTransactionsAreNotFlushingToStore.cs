@@ -27,6 +27,7 @@ namespace Castle.Facilities.NHibernate.Tests
 	using NUnit.Framework;
 
 	using global::NHibernate;
+	using Castle.Facilities.Logging;
 
 	public class AdvancedUseCase_DependentTransactionsAreNotFlushingToStore
 	{
@@ -59,6 +60,7 @@ namespace Castle.Facilities.NHibernate.Tests
 
 			c.Register(Component.For<INHibernateInstaller>().ImplementedBy<ExampleInstaller>());
 
+			c.AddFacility<LoggingFacility>(f => f.UseNLog());
 			c.AddFacility<AutoTxFacility>();
 			c.AddFacility<NHibernateFacility>();
 
