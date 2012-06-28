@@ -41,9 +41,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\packages\Castle.Core.3.0.0.4001\lib\net40-client\Castle.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Castle.Facilities.AutoTx, Version=3.0.202.2202, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+    <Reference Include="Castle.Facilities.AutoTx, Version=3.1.0.18015, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\Castle.Facilities.AutoTx.3.0.202.2202\lib\net40\Castle.Facilities.AutoTx.dll</HintPath>
+      <HintPath>..\..\..\packages\Castle.Facilities.AutoTx.3.1.0.18015\lib\net40\Castle.Facilities.AutoTx.dll</HintPath>
     </Reference>
     <Reference Include="Castle.Facilities.Logging">
       <HintPath>..\..\..\packages\Castle.LoggingFacility.3.0.0.4001\lib\net40\Castle.Facilities.Logging.dll</HintPath>
@@ -51,9 +51,9 @@
     <Reference Include="Castle.Services.Logging.NLogIntegration">
       <HintPath>..\..\..\packages\Castle.Core-NLog.3.0.0.4001\lib\net40-client\Castle.Services.Logging.NLogIntegration.dll</HintPath>
     </Reference>
-    <Reference Include="Castle.Services.Transaction, Version=3.0.202.2202, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+    <Reference Include="Castle.Transactions, Version=3.1.0.18015, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\Castle.Services.Transaction.3.0.202.2202\lib\net40\Castle.Services.Transaction.dll</HintPath>
+      <HintPath>..\..\..\packages\Castle.Transactions.3.1.0.18015\lib\net40\Castle.Transactions.dll</HintPath>
     </Reference>
     <Reference Include="Castle.Windsor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
