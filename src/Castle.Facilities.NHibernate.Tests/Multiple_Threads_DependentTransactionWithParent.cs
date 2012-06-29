@@ -70,6 +70,7 @@ namespace Castle.Facilities.NHibernate.Tests
 		}
 
 		[Test]
+		[Explicit]
 		public void Forking_NewTransaction_Means_AnotherISessionReference()
 		{
 			using (var threaded = new ResolveScope<ThreadedService>(container))
