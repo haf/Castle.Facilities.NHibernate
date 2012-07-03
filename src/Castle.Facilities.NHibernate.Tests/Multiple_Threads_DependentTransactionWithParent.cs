@@ -23,7 +23,7 @@ namespace Castle.Facilities.NHibernate.Tests
 	using Castle.Facilities.NHibernate.Tests.Framework;
 	using Castle.Facilities.NHibernate.Tests.TestClasses;
 	using Castle.MicroKernel.Registration;
-	using Castle.Services.Transaction;
+	using Castle.Transactions;
 	using Castle.Windsor;
 
 	using NLog;
@@ -31,6 +31,7 @@ namespace Castle.Facilities.NHibernate.Tests
 	using NUnit.Framework;
 
 	using global::NHibernate;
+	using Castle.Facilities.Logging;
 
 	public class Multiple_Threads_DependentTransactionWithParent : EnsureSchema
 	{
@@ -41,6 +42,7 @@ namespace Castle.Facilities.NHibernate.Tests
 		public void SetUp()
 		{
 			container = new WindsorContainer();
+			container.AddFacility<LoggingFacility>(f => f.UseNLog());
 			container.Register(Component.For<INHibernateInstaller>().ImplementedBy<ExampleInstaller>());
 			container.AddFacility<AutoTxFacility>();
 			container.AddFacility<NHibernateFacility>();
@@ -68,6 +70,7 @@ namespace Castle.Facilities.NHibernate.Tests
 		}
 
 		[Test]
+		[Explicit]
 		public void Forking_NewTransaction_Means_AnotherISessionReference()
 		{
 			using (var threaded = new ResolveScope<ThreadedService>(container))
