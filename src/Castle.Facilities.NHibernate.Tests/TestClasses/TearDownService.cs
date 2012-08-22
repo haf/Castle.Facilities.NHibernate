@@ -17,7 +17,7 @@ namespace Castle.Facilities.NHibernate.Tests.TestClasses
 	using System;
 	using System.Diagnostics.Contracts;
 
-	using Castle.Services.Transaction;
+	using Castle.Transactions;
 
 	using NLog;
 

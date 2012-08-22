@@ -19,12 +19,13 @@ namespace Castle.Facilities.NHibernate.Tests
 	using Castle.Facilities.NHibernate.Tests.Framework;
 	using Castle.Facilities.NHibernate.Tests.TestClasses;
 	using Castle.MicroKernel.Registration;
-	using Castle.Services.Transaction;
+	using Castle.Transactions;
 	using Castle.Windsor;
 
 	using NLog;
 
 	using NUnit.Framework;
+	using Castle.Facilities.Logging;
 
 	public class SimpleUseCase_ProtectedMethod : EnsureSchema
 	{
@@ -54,7 +55,7 @@ namespace Castle.Facilities.NHibernate.Tests
 		private static WindsorContainer GetWindsorContainer()
 		{
 			var c = new WindsorContainer();
-
+			c.AddFacility<LoggingFacility>(f => f.UseNLog());
 			c.Register(Component.For<INHibernateInstaller>().ImplementedBy<ExampleInstaller>());
 
 			c.AddFacility<AutoTxFacility>();
