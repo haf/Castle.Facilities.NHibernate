@@ -188,12 +188,12 @@ namespace :castle do
     nuspec.requireLicenseAcceptance = "true"
     nuspec.dependency "Castle.Core", "3.0.0.4001"
     nuspec.dependency "Castle.Windsor", "3.0.0.4001"
-    nuspec.dependency "Castle.Services.Transaction", "3.0.202"
-    nuspec.dependency "Castle.Facilities.AutoTx", "3.0.202"
     nuspec.dependency "Castle.FactorySupportFacility", "3.0.0.4001"
-	# nuspec.dependency "FluentNHibernate", "1.3.0"
-	nuspec.dependency "NHibernate", "3.2.0.4000"
-	nuspec.framework_assembly "System.Transactions", FRAMEWORK
+    nuspec.dependency "Castle.Transactions", "3.1.0.18015"
+    nuspec.dependency "Castle.Facilities.AutoTx", "3.1.0.18015"
+    nuspec.dependency "FluentNHibernate", "1.3.0.733"
+    nuspec.dependency "NHibernate", "3.3.1.4000"
+    nuspec.framework_assembly "System.Transactions", FRAMEWORK
 	
     nuspec.output_file = Files[:nh_fac][:nuspec]
 	

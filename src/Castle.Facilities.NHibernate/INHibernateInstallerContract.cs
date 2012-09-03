@@ -19,7 +19,7 @@ namespace Castle.Facilities.NHibernate
     using System;
     using System.Diagnostics.Contracts;
 
-    using Castle.Services.Transaction;
+	using Castle.Transactions;
 
     using FluentNHibernate.Cfg;
 

@@ -16,7 +16,7 @@ namespace Castle.Facilities.NHibernate.Tests.TestClasses
 {
 	using System;
 
-	using Castle.Services.Transaction;
+	using Castle.Transactions;
 
 	using NUnit.Framework;
 
