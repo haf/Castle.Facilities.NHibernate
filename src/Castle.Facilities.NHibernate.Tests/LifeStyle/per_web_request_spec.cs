@@ -12,9 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Web;
-using Castle.MicroKernel.Lifestyle;
-
 namespace Castle.Facilities.NHibernate.Tests.LifeStyle
 {
 	using System;
@@ -29,7 +26,7 @@ namespace Castle.Facilities.NHibernate.Tests.LifeStyle
 
 	using global::NHibernate;
 
-    public class per_web_request_spec
+	public class per_web_request_spec
 	{
 		private IWindsorContainer container;
 
@@ -41,9 +38,6 @@ namespace Castle.Facilities.NHibernate.Tests.LifeStyle
 				.AddFacility<AutoTxFacility>()
 				.AddFacility<NHibernateFacility>(
 					fac => fac.DefaultLifeStyle = DefaultSessionLifeStyleOption.SessionPerWebRequest);
-			var app = new HttpApplication();
-			var lifestyle = new PerWebRequestLifestyleModule();
-			lifestyle.Init(app);
 		}
 
 		[TearDown]
