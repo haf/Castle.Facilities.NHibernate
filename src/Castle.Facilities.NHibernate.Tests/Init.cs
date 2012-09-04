@@ -241,18 +241,18 @@ namespace Castle.Facilities.NHibernate.Tests
 				throw new ApplicationException("C1");
 			}
 
-		    public Configuration Deserialize()
-		    {
-		        return null;
-		    }
+			public Configuration Deserialize()
+			{
+				return null;
+			}
 
-		    public void Serialize(Configuration configuration)
-		    {
-		    }
+			public void Serialize(Configuration configuration)
+			{
+			}
 
-		    public void AfterDeserialize(Configuration configuration)
-		    {
-		    }
+			public void AfterDeserialize(Configuration configuration)
+			{
+			}
 		}
 
 		#endregion

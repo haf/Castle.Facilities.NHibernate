@@ -16,75 +16,75 @@ using NHibernate.Cfg;
 
 namespace Castle.Facilities.NHibernate
 {
-    using System.Diagnostics.Contracts;
+	using System.Diagnostics.Contracts;
 
 	using Castle.Transactions;
 
-    using FluentNHibernate.Cfg;
+	using FluentNHibernate.Cfg;
 
-    using global::NHibernate;
+	using global::NHibernate;
 
-    /// <summary>
-    /// 	Register a bunch of these; one for each database.
-    /// </summary>
-    [ContractClass(typeof(INHibernateInstallerContract))]
-    public interface INHibernateInstaller
-    {
-        /// <summary>
-        /// 	Is this the default session factory
-        /// </summary>
-        bool IsDefault { get; }
+	/// <summary>
+	/// 	Register a bunch of these; one for each database.
+	/// </summary>
+	[ContractClass(typeof(INHibernateInstallerContract))]
+	public interface INHibernateInstaller
+	{
+		/// <summary>
+		/// 	Is this the default session factory
+		/// </summary>
+		bool IsDefault { get; }
 
-        /// <summary>
-        /// 	Gets a session factory key. This key must be unique for the registered
-        /// 	NHibernate installers.
-        /// </summary>
-        string SessionFactoryKey { get; }
+		/// <summary>
+		/// 	Gets a session factory key. This key must be unique for the registered
+		/// 	NHibernate installers.
+		/// </summary>
+		string SessionFactoryKey { get; }
 
-        /// <summary>
-        /// 	An interceptor to assign to the ISession being resolved through this session factory.
-        /// </summary>
-        Maybe<IInterceptor> Interceptor { get; }
+		/// <summary>
+		/// 	An interceptor to assign to the ISession being resolved through this session factory.
+		/// </summary>
+		Maybe<IInterceptor> Interceptor { get; }
 
-        /// <summary>
-        /// 	Build a fluent configuration.
-        /// </summary>
-        /// <returns>A non null fluent configuration instance that can
-        /// 	be used to further configure NHibernate</returns>
-        FluentConfiguration BuildFluent();
+		/// <summary>
+		/// 	Build a fluent configuration.
+		/// </summary>
+		/// <returns>A non null fluent configuration instance that can
+		/// 	be used to further configure NHibernate</returns>
+		FluentConfiguration BuildFluent();
 
-        /// <summary>
-        /// 	Call-back to the installer, when the factory is registered
-        /// 	and correctly set up in Windsor..
-        /// </summary>
-        /// <param name = "factory"></param>
-        void Registered(ISessionFactory factory);
+		/// <summary>
+		/// 	Call-back to the installer, when the factory is registered
+		/// 	and correctly set up in Windsor..
+		/// </summary>
+		/// <param name = "factory"></param>
+		void Registered(ISessionFactory factory);
 
-        /// <summary>
-        /// Method provides opportunity to return existing configuration
-        /// </summary>
-        /// <remarks>
-        /// Return null if configuration should be rebuilt
-        /// </remarks>
-        /// <returns></returns>
-        Configuration Deserialize();
+		/// <summary>
+		/// Method provides opportunity to return existing configuration
+		/// </summary>
+		/// <remarks>
+		/// Return null if configuration should be rebuilt
+		/// </remarks>
+		/// <returns></returns>
+		Configuration Deserialize();
 
-        /// <summary>
-        /// Save configuration to persistent storage
-        /// </summary>
-        /// <remarks>
-        /// This is only called if the configuration has been rebuilt
-        /// </remarks>
-        /// <param name="configuration"></param>
-        void Serialize(Configuration configuration);
+		/// <summary>
+		/// Save configuration to persistent storage
+		/// </summary>
+		/// <remarks>
+		/// This is only called if the configuration has been rebuilt
+		/// </remarks>
+		/// <param name="configuration"></param>
+		void Serialize(Configuration configuration);
 
-        /// <summary>
-        /// Always called after configuration has been deserialized or rebuilt.
-        /// </summary>
-        /// <remarks>
-        /// This is when configuration settings that should not be persisted can be set. Eg. Interceptors
-        /// </remarks>
-        /// <param name="configuration"></param>
-        void AfterDeserialize(Configuration configuration);
-    }
+		/// <summary>
+		/// Always called after configuration has been deserialized or rebuilt.
+		/// </summary>
+		/// <remarks>
+		/// This is when configuration settings that should not be persisted can be set. Eg. Interceptors
+		/// </remarks>
+		/// <param name="configuration"></param>
+		void AfterDeserialize(Configuration configuration);
+	}
 }
