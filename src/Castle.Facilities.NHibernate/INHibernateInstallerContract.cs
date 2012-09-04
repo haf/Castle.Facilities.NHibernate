@@ -63,5 +63,22 @@ namespace Castle.Facilities.NHibernate
 			Contract.Requires(factory != null);
 			throw new NotImplementedException();
 		}
+
+		public Configuration Deserialize()
+		{
+			throw new NotImplementedException();
+		}
+
+		public void Serialize(Configuration configuration)
+		{
+			Contract.Requires(configuration != null);
+			throw new NotImplementedException();
+		}
+
+		public void AfterDeserialize(Configuration configuration)
+		{
+			Contract.Requires(configuration != null);
+			throw new NotImplementedException();
+		}
 	}
 }

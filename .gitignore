@@ -2,8 +2,7 @@
 bin/
 obj/
 src/*AssemblyInfo.cs
-*.csproj.user
-*ReSharper.user
+*.user
 _ReSharper*
 *.ReSharper
 *.suo
@@ -12,5 +11,4 @@ Castle.Facilities.NHibernate.user
 * Thumbs.db
 *.nupkg
 packages/
-*.user
-*.dotCover
+*.dotcover

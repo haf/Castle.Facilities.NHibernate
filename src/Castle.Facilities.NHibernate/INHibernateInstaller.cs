@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 namespace Castle.Facilities.NHibernate
 {
 	using System.Diagnostics.Contracts;
@@ -55,5 +54,32 @@ namespace Castle.Facilities.NHibernate
 		/// </summary>
 		/// <param name = "factory"></param>
 		void Registered(ISessionFactory factory);
+
+		/// <summary>
+		/// Method provides opportunity to return existing configuration
+		/// </summary>
+		/// <remarks>
+		/// Return null if configuration should be rebuilt
+		/// </remarks>
+		/// <returns></returns>
+		Configuration Deserialize();
+
+		/// <summary>
+		/// Save configuration to persistent storage
+		/// </summary>
+		/// <remarks>
+		/// This is only called if the configuration has been rebuilt
+		/// </remarks>
+		/// <param name="configuration"></param>
+		void Serialize(Configuration configuration);
+
+		/// <summary>
+		/// Always called after configuration has been deserialized or rebuilt.
+		/// </summary>
+		/// <remarks>
+		/// This is when configuration settings that should not be persisted can be set. Eg. Interceptors
+		/// </remarks>
+		/// <param name="configuration"></param>
+		void AfterDeserialize(Configuration configuration);
 	}
 }

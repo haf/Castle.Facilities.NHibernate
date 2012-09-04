@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.IO;
 using Castle.Facilities.NHibernate;
 using Castle.Transactions;
 using NHibernate.Cfg;
@@ -24,6 +25,13 @@ namespace NHibernate.AttrExampleConsoleApp
 {
 	internal class NHibInstaller : INHibernateInstaller
 	{
+        private readonly IConfigurationPersister _persister;
+
+        public NHibInstaller(IConfigurationPersister persister)
+        {
+            _persister = persister;
+        }
+
 		public bool IsDefault
 		{
 			get { return true; }
@@ -61,5 +69,26 @@ namespace NHibernate.AttrExampleConsoleApp
 		public void Registered(ISessionFactory factory)
 		{
 		}
-	}
+
+        public Configuration Deserialize()
+        {
+            if (File.Exists("serialized.dat"))
+            {
+                return _persister.ReadConfiguration("serialized.dat");
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public void Serialize(Configuration configuration)
+        {
+            _persister.WriteConfiguration("serialized.dat", configuration);
+        }
+
+        public void AfterDeserialize(Configuration configuration)
+        {
+        }
+    }
 }

@@ -63,6 +63,7 @@ namespace NHibernate.AttrExampleConsoleApp
 			container
 				.AddFacility<AutoTxFacility>()
 				.Register(
+                    Component.For<IConfigurationPersister>().ImplementedBy<FileConfigurationPersister>(),
 					Component.For<INHibernateInstaller>().ImplementedBy<NHibInstaller>().LifeStyle.Singleton,
 					Component.For<Logger>().LifeStyle.Singleton)
 				.AddFacility<NHibernateFacility>();
