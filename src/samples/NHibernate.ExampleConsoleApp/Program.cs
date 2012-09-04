@@ -185,5 +185,18 @@ namespace NHibernate.ExampleConsoleApp
 		public void Registered(ISessionFactory factory)
 		{
 		}
+
+	    public Configuration Deserialize()
+	    {
+	        return null;
+	    }
+
+	    public void Serialize(Configuration configuration)
+	    {
+	    }
+
+	    public void AfterDeserialize(Configuration configuration)
+	    {
+	    }
 	}
 }

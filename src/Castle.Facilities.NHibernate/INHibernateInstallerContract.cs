@@ -12,53 +12,72 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using NHibernate.Cfg;
+
 namespace Castle.Facilities.NHibernate
 {
-	using System;
-	using System.Diagnostics.Contracts;
+    using System;
+    using System.Diagnostics.Contracts;
 
 	using Castle.Transactions;
 
-	using FluentNHibernate.Cfg;
+    using FluentNHibernate.Cfg;
 
-	using global::NHibernate;
+    using global::NHibernate;
 
-	[ContractClassFor(typeof(INHibernateInstaller))]
-	internal abstract class INHibernateInstallerContract : INHibernateInstaller
-	{
-		public bool IsDefault
-		{
-			get { throw new NotImplementedException(); }
-		}
+    [ContractClassFor(typeof(INHibernateInstaller))]
+    internal abstract class INHibernateInstallerContract : INHibernateInstaller
+    {
+        public bool IsDefault
+        {
+            get { throw new NotImplementedException(); }
+        }
 
-		public string SessionFactoryKey
-		{
-			get
-			{
-				Contract.Ensures(Contract.Result<string>() != null && Contract.Result<string>().Length > 0);
-				throw new NotImplementedException();
-			}
-		}
+        public string SessionFactoryKey
+        {
+            get
+            {
+                Contract.Ensures(Contract.Result<string>() != null && Contract.Result<string>().Length > 0);
+                throw new NotImplementedException();
+            }
+        }
 
-		public Maybe<IInterceptor> Interceptor
-		{
-			get
-			{
-				Contract.Ensures(Contract.Result<Maybe<IInterceptor>>() != null);
-				throw new NotImplementedException();
-			}
-		}
+        public Maybe<IInterceptor> Interceptor
+        {
+            get
+            {
+                Contract.Ensures(Contract.Result<Maybe<IInterceptor>>() != null);
+                throw new NotImplementedException();
+            }
+        }
 
-		public FluentConfiguration BuildFluent()
-		{
-			Contract.Ensures(Contract.Result<FluentConfiguration>() != null);
-			throw new NotImplementedException();
-		}
+        public FluentConfiguration BuildFluent()
+        {
+            Contract.Ensures(Contract.Result<FluentConfiguration>() != null);
+            throw new NotImplementedException();
+        }
 
-		public void Registered(ISessionFactory factory)
-		{
-			Contract.Requires(factory != null);
-			throw new NotImplementedException();
-		}
-	}
+        public void Registered(ISessionFactory factory)
+        {
+            Contract.Requires(factory != null);
+            throw new NotImplementedException();
+        }
+
+        public Configuration Deserialize()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Serialize(Configuration configuration)
+        {
+            Contract.Requires(configuration != null);
+            throw new NotImplementedException();
+        }
+
+        public void AfterDeserialize(Configuration configuration)
+        {
+            Contract.Requires(configuration != null);
+            throw new NotImplementedException();
+        }
+    }
 }
