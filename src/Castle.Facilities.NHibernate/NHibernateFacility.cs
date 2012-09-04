@@ -157,6 +157,11 @@ namespace Castle.Facilities.NHibernate
 			if (logger.IsDebugEnabled)
 				logger.DebugFormat("initializing NHibernateFacility");
 
+			if (!Kernel.HasComponent(typeof(IConfigurationPersister)))
+			{
+				Kernel.Register(Component.For<IConfigurationPersister>().ImplementedBy<FileConfigurationPersister>());
+			}
+
 			var installers = Kernel.ResolveAll<INHibernateInstaller>();
 
 			Contract.Assume(installers != null, "ResolveAll shouldn't return null");
@@ -186,10 +191,9 @@ namespace Castle.Facilities.NHibernate
 			var installed = installers
 				.Select(x =>
 						{
-							Configuration configuration;
-							if (x.Deserialize() != null)
-								configuration = x.Deserialize();
-							else
+							Configuration configuration = x.Deserialize();
+
+							if (configuration == null)
 							{
 								configuration = x.BuildFluent().BuildConfiguration();
 								x.Serialize(configuration);
