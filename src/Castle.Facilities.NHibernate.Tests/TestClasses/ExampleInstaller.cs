@@ -69,16 +69,16 @@ namespace Castle.Facilities.NHibernate.Tests.TestClasses
 		{
 		}
 
-		public global::NHibernate.Cfg.Configuration Deserialize()
+		public virtual global::NHibernate.Cfg.Configuration Deserialize()
 		{
 			return null;
 		}
 
-		public void Serialize(global::NHibernate.Cfg.Configuration configuration)
+		public virtual void Serialize(global::NHibernate.Cfg.Configuration configuration)
 		{
 		}
 
-		public void AfterDeserialize(global::NHibernate.Cfg.Configuration configuration)
+		public virtual void AfterDeserialize(global::NHibernate.Cfg.Configuration configuration)
 		{
 		}
 	}
