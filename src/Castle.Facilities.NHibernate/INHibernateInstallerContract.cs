@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using NHibernate.Cfg;
+
 namespace Castle.Facilities.NHibernate
 {
 	using System;
@@ -58,6 +60,23 @@ namespace Castle.Facilities.NHibernate
 		public void Registered(ISessionFactory factory)
 		{
 			Contract.Requires(factory != null);
+			throw new NotImplementedException();
+		}
+
+		public Configuration Deserialize()
+		{
+			throw new NotImplementedException();
+		}
+
+		public void Serialize(Configuration configuration)
+		{
+			Contract.Requires(configuration != null);
+			throw new NotImplementedException();
+		}
+
+		public void AfterDeserialize(Configuration configuration)
+		{
+			Contract.Requires(configuration != null);
 			throw new NotImplementedException();
 		}
 	}

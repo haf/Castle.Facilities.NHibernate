@@ -155,7 +155,12 @@ namespace Castle.Facilities.NHibernate
 			}
 
 			if (logger.IsDebugEnabled)
-				logger.Debug("initializing NHibernateFacility");
+				logger.DebugFormat("initializing NHibernateFacility");
+
+			if (!Kernel.HasComponent(typeof(IConfigurationPersister)))
+			{
+				Kernel.Register(Component.For<IConfigurationPersister>().ImplementedBy<FileConfigurationPersister>());
+			}
 
 			var installers = Kernel.ResolveAll<INHibernateInstaller>();
 
@@ -168,7 +173,7 @@ namespace Castle.Facilities.NHibernate
 			if (count == 0 || count > 1)
 				throw new FacilityException("no INHibernateInstaller has IsDefault = true or many have specified it");
 
-			if (!installers.All(x => !string.IsNullOrEmpty(x.SessionFactoryKey)))
+			if (installers.Any(x => string.IsNullOrEmpty(x.SessionFactoryKey)))
 				throw new FacilityException("all session factory keys must be non null and non empty strings");
 
 			VerifyLegacyInterceptors();
@@ -179,15 +184,29 @@ namespace Castle.Facilities.NHibernate
 			AddFacility<TypedFactoryFacility>();
 
 			if (logger.IsDebugEnabled)
-				logger.Debug("registering facility components");
+				logger.DebugFormat("registering facility components");
 
 			var added = new HashSet<string>();
 
 			var installed = installers
-				.Select(x => new
+				.Select(x =>
 				{
-					Config = x.BuildFluent().BuildConfiguration(),
-					Instance = x
+					Configuration configuration = x.Deserialize();
+
+					if (configuration == null)
+					{
+						configuration = x.BuildFluent().BuildConfiguration();
+						x.Serialize(configuration);
+					}
+
+					x.AfterDeserialize(configuration);
+
+					return new
+					{
+						Config = configuration,
+						Instance = x
+					};
+
 				})
 				.Select(x => new Data { Config = x.Config, Instance = x.Instance, Factory = x.Config.BuildSessionFactory() })
 				.OrderByDescending(x => x.Instance.IsDefault)
@@ -226,12 +245,12 @@ namespace Castle.Facilities.NHibernate
 				.ToList();
 
 			if (logger.IsDebugEnabled)
-				logger.Debug("notifying the nhibernate installers that they have been configured");
+				logger.DebugFormat("notifying the nhibernate installers that they have been configured");
 
 			installed.Run(x => x.Instance.Registered(x.Factory));
 
 			if (logger.IsDebugEnabled)
-				logger.Debug("Initialized NHibernateFacility");
+				logger.DebugFormat("Initialized NHibernateFacility");
 		}
 
 		private IRegistration RegisterStatelessSession(Data x, uint index)
@@ -329,7 +348,7 @@ namespace Castle.Facilities.NHibernate
 		private void VerifyLegacyInterceptors()
 		{
 			if (Kernel.HasComponent("nhibernate.session.interceptor"))
-				logger.Warn("component with key \"nhibernate.session.interceptor\" found! this interceptor will not be used.");
+				logger.WarnFormat("component with key \"nhibernate.session.interceptor\" found! this interceptor will not be used.");
 		}
 
 		// even though this is O(3n), n ~= 3, so we don't mind it
