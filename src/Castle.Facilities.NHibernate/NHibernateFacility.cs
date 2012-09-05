@@ -190,22 +190,23 @@ namespace Castle.Facilities.NHibernate
 
 			var installed = installers
 				.Select(x =>
-						{
-							Configuration configuration = x.Deserialize();
+				{
+					Configuration configuration = x.Deserialize();
 
-							if (configuration == null)
-							{
-								configuration = x.BuildFluent().BuildConfiguration();
-								x.Serialize(configuration);
-							}
+					if (configuration == null)
+					{
+						configuration = x.BuildFluent().BuildConfiguration();
+						x.Serialize(configuration);
+					}
 
-							x.AfterDeserialize(configuration);
+					x.AfterDeserialize(configuration);
 
-							return new
-								 {
-									 Config = configuration,
-									 Instance = x
-								 };
+					return new
+					{
+						Config = configuration,
+						Instance = x
+					};
+
 				})
 				.Select(x => new Data { Config = x.Config, Instance = x.Instance, Factory = x.Config.BuildSessionFactory() })
 				.OrderByDescending(x => x.Instance.IsDefault)

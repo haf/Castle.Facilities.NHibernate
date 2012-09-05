@@ -42,7 +42,7 @@ namespace Castle.Facilities.NHibernate
 		public virtual Configuration ReadConfiguration(string filename)
 		{
 			var formatter = new BinaryFormatter();
-			using (var fileStream = new FileStream(filename, FileMode.OpenOrCreate))
+			using (var fileStream = new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.Read))
 			{
 				return formatter.Deserialize(fileStream) as Configuration;
 			}
@@ -55,9 +55,9 @@ namespace Castle.Facilities.NHibernate
 		/// <param name="cfg">The NH Configuration</param>
 		public virtual void WriteConfiguration(string filename, Configuration cfg)
 		{
-			var formatter = new BinaryFormatter();
-			using (var fileStream = new FileStream(filename, FileMode.OpenOrCreate))
+			using (var fileStream = new FileStream(filename, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None))
 			{
+				var formatter = new BinaryFormatter();
 				formatter.Serialize(fileStream, cfg);
 			}
 		}
