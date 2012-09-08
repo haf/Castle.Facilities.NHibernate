@@ -12,3 +12,5 @@ Castle.Facilities.NHibernate.user
 * Thumbs.db
 *.nupkg
 packages/
+*.user
+*.dotCover

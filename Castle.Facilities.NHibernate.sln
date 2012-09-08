@@ -27,6 +27,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{DAFBA7
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NHibernate.AttrExampleConsoleApp", "src\samples\NHibernate.AttrExampleConsoleApp\NHibernate.AttrExampleConsoleApp.csproj", "{BB3642DF-85D3-4A33-9E11-2AC847DA4DED}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -103,11 +105,32 @@ Global
 		{9B977E07-808A-4773-B378-EB3665679082}.Release|Mixed Platforms.Build.0 = Release|x86
 		{9B977E07-808A-4773-B378-EB3665679082}.Release|x86.ActiveCfg = Release|x86
 		{9B977E07-808A-4773-B378-EB3665679082}.Release|x86.Build.0 = Release|x86
+		{BB3642DF-85D3-4A33-9E11-2AC847DA4DED}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{BB3642DF-85D3-4A33-9E11-2AC847DA4DED}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{BB3642DF-85D3-4A33-9E11-2AC847DA4DED}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{BB3642DF-85D3-4A33-9E11-2AC847DA4DED}.Debug|x86.ActiveCfg = Debug|x86
+		{BB3642DF-85D3-4A33-9E11-2AC847DA4DED}.Debug|x86.Build.0 = Debug|x86
+		{BB3642DF-85D3-4A33-9E11-2AC847DA4DED}.NET40-Debug|Any CPU.ActiveCfg = Debug|x86
+		{BB3642DF-85D3-4A33-9E11-2AC847DA4DED}.NET40-Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{BB3642DF-85D3-4A33-9E11-2AC847DA4DED}.NET40-Debug|Mixed Platforms.Build.0 = Debug|x86
+		{BB3642DF-85D3-4A33-9E11-2AC847DA4DED}.NET40-Debug|x86.ActiveCfg = Debug|x86
+		{BB3642DF-85D3-4A33-9E11-2AC847DA4DED}.NET40-Debug|x86.Build.0 = Debug|x86
+		{BB3642DF-85D3-4A33-9E11-2AC847DA4DED}.NET40-Release|Any CPU.ActiveCfg = Release|x86
+		{BB3642DF-85D3-4A33-9E11-2AC847DA4DED}.NET40-Release|Mixed Platforms.ActiveCfg = Release|x86
+		{BB3642DF-85D3-4A33-9E11-2AC847DA4DED}.NET40-Release|Mixed Platforms.Build.0 = Release|x86
+		{BB3642DF-85D3-4A33-9E11-2AC847DA4DED}.NET40-Release|x86.ActiveCfg = Release|x86
+		{BB3642DF-85D3-4A33-9E11-2AC847DA4DED}.NET40-Release|x86.Build.0 = Release|x86
+		{BB3642DF-85D3-4A33-9E11-2AC847DA4DED}.Release|Any CPU.ActiveCfg = Release|x86
+		{BB3642DF-85D3-4A33-9E11-2AC847DA4DED}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{BB3642DF-85D3-4A33-9E11-2AC847DA4DED}.Release|Mixed Platforms.Build.0 = Release|x86
+		{BB3642DF-85D3-4A33-9E11-2AC847DA4DED}.Release|x86.ActiveCfg = Release|x86
+		{BB3642DF-85D3-4A33-9E11-2AC847DA4DED}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{9B977E07-808A-4773-B378-EB3665679082} = {BF42C45F-BC6F-467D-99C3-D104EF605147}
+		{BB3642DF-85D3-4A33-9E11-2AC847DA4DED} = {BF42C45F-BC6F-467D-99C3-D104EF605147}
 	EndGlobalSection
 EndGlobal
