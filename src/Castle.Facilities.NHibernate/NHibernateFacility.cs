@@ -186,7 +186,7 @@ namespace Castle.Facilities.NHibernate
 			var installed = installers
 				.Select(x => new
 				{
-					Config = x.BuildFluent().BuildConfiguration(),
+					Config = x.ConfigBuilder(),
 					Instance = x
 				})
 				.Select(x => new Data { Config = x.Config, Instance = x.Instance, Factory = x.Config.BuildSessionFactory() })
@@ -282,7 +282,7 @@ namespace Castle.Facilities.NHibernate
 						return registration.Named(baseName + SessionPWRSuffix).LifeStyle.PerWebRequest;
 					if (index == 2)
 						return registration.Named(baseName + SessionTransientSuffix).LifeStyle.Transient;
-					goto default;
+					goto default; // TODO: kill this goto
 				case DefaultSessionLifeStyleOption.SessionPerWebRequest:
 					if (index == 0)
 						return registration.Named(baseName + SessionPWRSuffix).LifeStyle.PerWebRequest;

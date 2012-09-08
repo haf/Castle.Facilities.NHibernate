@@ -25,7 +25,7 @@ namespace Castle.Facilities.NHibernate.Tests.Framework
 		[TestFixtureSetUp]
 		public void Setup()
 		{
-			var configuration = new ExampleInstaller().BuildFluent().BuildConfiguration();
+			var configuration = new ExampleInstaller().ConfigBuilder();
 			new SchemaUpdate(configuration).Execute(true, true);
 		}
 	}

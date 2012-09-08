@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System;
+
 namespace Castle.Facilities.NHibernate.Tests.TestClasses
 {
 	using System.Configuration;
@@ -44,7 +46,12 @@ namespace Castle.Facilities.NHibernate.Tests.TestClasses
 			get { return interceptor; }
 		}
 
-		public bool IsDefault
+	    public Func<global::NHibernate.Cfg.Configuration> ConfigBuilder
+	    {
+            get { return BuildFluent().BuildConfiguration; }
+	    }
+
+	    public bool IsDefault
 		{
 			get { return true; }
 		}
@@ -54,7 +61,7 @@ namespace Castle.Facilities.NHibernate.Tests.TestClasses
 			get { return Key; }
 		}
 
-		public FluentConfiguration BuildFluent()
+		private FluentConfiguration BuildFluent()
 		{
 			var connectionString = ConfigurationManager.ConnectionStrings["test"];
 			Contract.Assume(connectionString != null, "please set the \"test\" connection string in app.config");

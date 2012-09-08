@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using NHibernate.Cfg;
+
 namespace Castle.Facilities.NHibernate.Tests
 {
 	using System;
@@ -147,10 +149,10 @@ namespace Castle.Facilities.NHibernate.Tests
 				get { return Maybe.None<IInterceptor>(); }
 			}
 
-			public FluentConfiguration BuildFluent()
-			{
-				return new ExampleInstaller().BuildFluent();
-			}
+		    public Func<Configuration> ConfigBuilder
+		    {
+                get { return new ExampleInstaller().ConfigBuilder; }
+		    }
 
 			public void Registered(ISessionFactory factory)
 			{
@@ -175,10 +177,10 @@ namespace Castle.Facilities.NHibernate.Tests
 				get { return Maybe.None<IInterceptor>(); }
 			}
 
-			public FluentConfiguration BuildFluent()
-			{
-				return new ExampleInstaller().BuildFluent();
-			}
+		    public Func<Configuration> ConfigBuilder
+		    {
+                get { return new ExampleInstaller().ConfigBuilder; }
+		    }
 
 			public void Registered(ISessionFactory factory)
 			{
@@ -203,10 +205,10 @@ namespace Castle.Facilities.NHibernate.Tests
 				get { return Maybe.None<IInterceptor>(); }
 			}
 
-			public FluentConfiguration BuildFluent()
-			{
-				return new ExampleInstaller().BuildFluent();
-			}
+		    public Func<Configuration> ConfigBuilder
+		    {
+                get { return new ExampleInstaller().ConfigBuilder; }
+		    }
 
 			public void Registered(ISessionFactory factory)
 			{

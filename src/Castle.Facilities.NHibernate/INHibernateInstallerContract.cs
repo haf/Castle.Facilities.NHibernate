@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using NHibernate.Cfg;
+
 namespace Castle.Facilities.NHibernate
 {
 	using System;
 	using System.Diagnostics.Contracts;
 
 	using Castle.Transactions;
-
-	using FluentNHibernate.Cfg;
 
 	using global::NHibernate;
 
@@ -49,11 +49,14 @@ namespace Castle.Facilities.NHibernate
 			}
 		}
 
-		public FluentConfiguration BuildFluent()
-		{
-			Contract.Ensures(Contract.Result<FluentConfiguration>() != null);
-			throw new NotImplementedException();
-		}
+	    public Func<Configuration> ConfigBuilder
+	    {
+	        get
+            {
+                Contract.Ensures(Contract.Result<Func<Configuration>>() != null);
+                throw new NotImplementedException();
+            }
+	    }
 
 		public void Registered(ISessionFactory factory)
 		{

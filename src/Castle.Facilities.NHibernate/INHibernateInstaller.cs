@@ -12,15 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+
 namespace Castle.Facilities.NHibernate
 {
-	using System.Diagnostics.Contracts;
+    using System;
+    using System.Diagnostics.Contracts;
 
-	using Castle.Transactions;
+	using Transactions;
 
-	using FluentNHibernate.Cfg;
-
-	using global::NHibernate;
+    using global::NHibernate.Cfg;
+    using global::NHibernate;
 
 	/// <summary>
 	/// 	Register a bunch of these; one for each database.
@@ -44,18 +45,23 @@ namespace Castle.Facilities.NHibernate
 		/// </summary>
 		Maybe<IInterceptor> Interceptor { get; }
 
-		/// <summary>
-		/// 	Build a fluent configuration.
-		/// </summary>
-		/// <returns>A non null fluent configuration instance that can
-		/// 	be used to further configure NHibernate</returns>
-		FluentConfiguration BuildFluent();
+	    /// <summary>
+	    /// 	Build a fluent configuration.
+	    /// </summary>
+	    /// <returns>A non null fluent configuration instance that can
+	    /// 	be used to further configure NHibernate</returns>
+	    //FluentConfiguration BuildFluent();
 
-		/// <summary>
-		/// 	Call-back to the installer, when the factory is registered
-		/// 	and correctly set up in Windsor..
-		/// </summary>
-		/// <param name = "factory"></param>
-		void Registered(ISessionFactory factory);
+        /// <summary>
+        /// Returns functions building configuration
+        /// </summary>
+	    Func<Configuration> ConfigBuilder { get; }
+
+        /// <summary>
+        /// 	Call-back to the installer, when the factory is registered
+        /// 	and correctly set up in Windsor..
+        /// </summary>
+        /// <param name = "factory"></param>
+        void Registered(ISessionFactory factory);
 	}
 }

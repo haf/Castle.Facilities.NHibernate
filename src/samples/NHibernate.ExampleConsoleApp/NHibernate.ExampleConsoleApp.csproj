@@ -50,6 +50,9 @@
     <Reference Include="Castle.Facilities.Logging">
       <HintPath>..\..\..\packages\Castle.LoggingFacility.3.1.0\lib\net40\Castle.Facilities.Logging.dll</HintPath>
     </Reference>
+    <Reference Include="Castle.Services.Logging.NLogIntegration">
+      <HintPath>..\..\..\packages\Castle.Core-NLog.3.1.0\lib\net40-client\Castle.Services.Logging.NLogIntegration.dll</HintPath>
+    </Reference>
     <Reference Include="Castle.Transactions, Version=3.2.207.2207, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\packages\Castle.Transactions.3.2.207.2207\lib\net40\Castle.Transactions.dll</HintPath>
