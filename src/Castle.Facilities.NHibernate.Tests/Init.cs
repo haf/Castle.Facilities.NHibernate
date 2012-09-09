@@ -147,10 +147,10 @@ namespace Castle.Facilities.NHibernate.Tests
 				get { return Maybe.None<IInterceptor>(); }
 			}
 
-		    public Configuration Config
-		    {
-                get { return new ExampleInstaller().Config; }
-		    }
+			public Configuration Config
+			{
+				get { return new ExampleInstaller().Config; }
+			}
 
 			public void Registered(ISessionFactory factory)
 			{
@@ -175,10 +175,10 @@ namespace Castle.Facilities.NHibernate.Tests
 				get { return Maybe.None<IInterceptor>(); }
 			}
 
-		    public Configuration Config
-		    {
-                get { return new ExampleInstaller().Config; }
-		    }
+			public Configuration Config
+			{
+				get { return new ExampleInstaller().Config; }
+			}
 
 			public void Registered(ISessionFactory factory)
 			{
@@ -203,10 +203,10 @@ namespace Castle.Facilities.NHibernate.Tests
 				get { return Maybe.None<IInterceptor>(); }
 			}
 
-		    public Configuration Config
-		    {
-                get { return new ExampleInstaller().Config; }
-		    }
+			public Configuration Config
+			{
+				get { return new ExampleInstaller().Config; }
+			}
 
 			public void Registered(ISessionFactory factory)
 			{

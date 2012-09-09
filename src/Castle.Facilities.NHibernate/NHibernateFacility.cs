@@ -237,7 +237,7 @@ namespace Castle.Facilities.NHibernate
 		private IRegistration RegisterStatelessSession(Data x, uint index)
 		{
 			Contract.Requires(index < 3,
-			                  "there are only three supported lifestyles; per transaction, per web request and transient");
+							  "there are only three supported lifestyles; per transaction, per web request and transient");
 			Contract.Requires(x != null);
 			Contract.Ensures(Contract.Result<IRegistration>() != null);
 
@@ -250,7 +250,7 @@ namespace Castle.Facilities.NHibernate
 		private IRegistration RegisterSession(Data x, uint index)
 		{
 			Contract.Requires(index < 3,
-			                  "there are only three supported lifestyles; per transaction, per web request and transient");
+							  "there are only three supported lifestyles; per transaction, per web request and transient");
 			Contract.Requires(x != null);
 			Contract.Ensures(Contract.Result<IRegistration>() != null);
 
@@ -270,7 +270,7 @@ namespace Castle.Facilities.NHibernate
 			where T : class
 		{
 			Contract.Requires(index < 3,
-			                  "there are only three supported lifestyles; per transaction, per web request and transient");
+							  "there are only three supported lifestyles; per transaction, per web request and transient");
 			Contract.Ensures(Contract.Result<ComponentRegistration<T>>() != null);
 
 			switch (defaultLifeStyle)
@@ -290,20 +290,20 @@ namespace Castle.Facilities.NHibernate
 						return registration.Named(baseName + SessionPerTxSuffix).LifeStyle.PerTopTransaction();
 					if (index == 2)
 						return registration.Named(baseName + SessionTransientSuffix).LifeStyle.Transient;
-                    break;
-                case DefaultSessionLifeStyleOption.SessionTransient:
+					break;
+				case DefaultSessionLifeStyleOption.SessionTransient:
 					if (index == 0)
 						return registration.Named(baseName + SessionTransientSuffix).LifeStyle.Transient;
 					if (index == 1)
 						return registration.Named(baseName + SessionPerTxSuffix).LifeStyle.PerTopTransaction();
 					if (index == 2)
 						return registration.Named(baseName + SessionPWRSuffix).LifeStyle.PerWebRequest;
-                    break;
-                default:
+					break;
+				default:
 					throw new FacilityException("Unknown default life style - please file a bug report");
 			}
-            throw new FacilityException("Invalid index passed to GetLifeStyle<T> - please file a bug report");
-        }
+			throw new FacilityException("Invalid index passed to GetLifeStyle<T> - please file a bug report");
+		}
 
 		private class Data
 		{

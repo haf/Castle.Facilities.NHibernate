@@ -44,12 +44,12 @@ namespace Castle.Facilities.NHibernate.Tests.TestClasses
 			get { return interceptor; }
 		}
 
-	    public global::NHibernate.Cfg.Configuration Config
-	    {
-            get { return BuildFluent().BuildConfiguration(); }
-	    }
+		public global::NHibernate.Cfg.Configuration Config
+		{
+			get { return BuildFluent().BuildConfiguration(); }
+		}
 
-	    public bool IsDefault
+		public bool IsDefault
 		{
 			get { return true; }
 		}

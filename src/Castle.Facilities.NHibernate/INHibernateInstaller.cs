@@ -15,12 +15,12 @@
 
 namespace Castle.Facilities.NHibernate
 {
-    using System.Diagnostics.Contracts;
+	using System.Diagnostics.Contracts;
 
 	using Transactions;
 
-    using global::NHibernate.Cfg;
-    using global::NHibernate;
+	using global::NHibernate.Cfg;
+	using global::NHibernate;
 
 	/// <summary>
 	/// 	Register a bunch of these; one for each database.
@@ -44,16 +44,16 @@ namespace Castle.Facilities.NHibernate
 		/// </summary>
 		Maybe<IInterceptor> Interceptor { get; }
 
-        /// <summary>
-        /// Returns NHibernate configuration
-        /// </summary>
-	    Configuration Config { get; }
+		/// <summary>
+		/// Returns NHibernate configuration
+		/// </summary>
+		Configuration Config { get; }
 
-        /// <summary>
-        /// 	Call-back to the installer, when the factory is registered
-        /// 	and correctly set up in Windsor..
-        /// </summary>
-        /// <param name = "factory"></param>
-        void Registered(ISessionFactory factory);
+		/// <summary>
+		/// 	Call-back to the installer, when the factory is registered
+		/// 	and correctly set up in Windsor..
+		/// </summary>
+		/// <param name = "factory"></param>
+		void Registered(ISessionFactory factory);
 	}
 }

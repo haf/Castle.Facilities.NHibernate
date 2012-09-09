@@ -4,7 +4,7 @@
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 // 
-//     http://www.apache.org/licenses/LICENSE-2.0
+//	 http://www.apache.org/licenses/LICENSE-2.0
 // 
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,32 +17,32 @@ using NHibernate.Mapping.Attributes;
 
 namespace NHibernate.AttrExampleConsoleApp
 {
-    [Serializable]
-    [Class(Table = "LOGLINES")]
-    public class LogLine
-    {
-        /// <summary>
-        /// Gets the ID of the line in the log.
-        /// </summary>
-        [Id(Name = "Id", Column = "ID")]
-        [Generator(1, Class = "guid.comb")]
-        public virtual Guid Id { get; protected set; }
+	[Serializable]
+	[Class(Table = "LOGLINES")]
+	public class LogLine
+	{
+		/// <summary>
+		/// Gets the ID of the line in the log.
+		/// </summary>
+		[Id(Name = "Id", Column = "ID")]
+		[Generator(1, Class = "guid.comb")]
+		public virtual Guid Id { get; protected set; }
 
-        /// <summary>
-        /// Gets the log-line.
-        /// </summary>
-        [Property(Column = "LINE", NotNull = true, TypeType = typeof(string))]
-        public virtual string Line { get; protected set; }
+		/// <summary>
+		/// Gets the log-line.
+		/// </summary>
+		[Property(Column = "LINE", NotNull = true, TypeType = typeof(string))]
+		public virtual string Line { get; protected set; }
 
-        /// <summary> for serialization </summary>
-        [Obsolete("for serialization")]
-        protected LogLine()
-        {
-        }
+		/// <summary> for serialization </summary>
+		[Obsolete("for serialization")]
+		protected LogLine()
+		{
+		}
 
-        public LogLine(string line)
-        {
-            Line = line;
-        }
-    }
+		public LogLine(string line)
+		{
+			Line = line;
+		}
+	}
 }

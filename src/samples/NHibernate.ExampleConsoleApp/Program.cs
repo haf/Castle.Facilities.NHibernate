@@ -175,15 +175,15 @@ namespace NHibernate.ExampleConsoleApp
 			get { return Maybe.None<IInterceptor>(); }
 		}
 
-	    public Configuration Config
-	    {
-	        get
-	        {
-	            return Fluently.Configure()
-	                .Database(SQLiteConfiguration.Standard.UsingFile("DataStore.db"))
-	                .Mappings(m => m.FluentMappings.AddFromAssemblyOf<NHibInstaller>()).BuildConfiguration();
-	        }
-	    }
+		public Configuration Config
+		{
+			get
+			{
+				return Fluently.Configure()
+					.Database(SQLiteConfiguration.Standard.UsingFile("DataStore.db"))
+					.Mappings(m => m.FluentMappings.AddFromAssemblyOf<NHibInstaller>()).BuildConfiguration();
+			}
+		}
 
 		public void Registered(ISessionFactory factory)
 		{

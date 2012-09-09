@@ -4,7 +4,7 @@
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 // 
-//     http://www.apache.org/licenses/LICENSE-2.0
+//	 http://www.apache.org/licenses/LICENSE-2.0
 // 
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,44 +22,44 @@ using NHibernate.Mapping.Attributes;
 
 namespace NHibernate.AttrExampleConsoleApp
 {
-    internal class NHibInstaller : INHibernateInstaller
-    {
-        public bool IsDefault
-        {
-            get { return true; }
-        }
+	internal class NHibInstaller : INHibernateInstaller
+	{
+		public bool IsDefault
+		{
+			get { return true; }
+		}
 
-        public string SessionFactoryKey
-        {
-            get { return "def"; }
-        }
+		public string SessionFactoryKey
+		{
+			get { return "def"; }
+		}
 
-        public Maybe<IInterceptor> Interceptor
-        {
-            get { return Maybe.None<IInterceptor>(); }
-        }
+		public Maybe<IInterceptor> Interceptor
+		{
+			get { return Maybe.None<IInterceptor>(); }
+		}
 
-        public Configuration Config
-        {
-            get
-            {
-                HbmSerializer.Default.Validate = true;
-                Configuration cfg = new Configuration()
-                    .DataBaseIntegration(db =>
-                                             {
-                                                 db.ConnectionString = "Data Source=DataStore.db;Version=3";
-                                                 db.Dialect<SQLiteDialect>();
-                                                 db.Driver<SQLite20Driver>();
-                                                 db.ConnectionProvider<DriverConnectionProvider>();
-                                             })
-                    .AddAssembly(GetType().Assembly)
-                    .AddInputStream(HbmSerializer.Default.Serialize(GetType().Assembly));
-                return cfg;
-            }
-        }
+		public Configuration Config
+		{
+			get
+			{
+				HbmSerializer.Default.Validate = true;
+				Configuration cfg = new Configuration()
+					.DataBaseIntegration(db =>
+											 {
+												 db.ConnectionString = "Data Source=DataStore.db;Version=3";
+												 db.Dialect<SQLiteDialect>();
+												 db.Driver<SQLite20Driver>();
+												 db.ConnectionProvider<DriverConnectionProvider>();
+											 })
+					.AddAssembly(GetType().Assembly)
+					.AddInputStream(HbmSerializer.Default.Serialize(GetType().Assembly));
+				return cfg;
+			}
+		}
 
-        public void Registered(ISessionFactory factory)
-        {
-        }
-    }
+		public void Registered(ISessionFactory factory)
+		{
+		}
+	}
 }
