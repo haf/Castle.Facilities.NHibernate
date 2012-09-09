@@ -65,8 +65,7 @@ namespace Castle.Facilities.NHibernate.Tests.TestClasses
 			Contract.Assume(connectionString != null, "please set the \"test\" connection string in app.config");
 
 			return Fluently.Configure()
-				.Database(MsSqlConfiguration.MsSql2008.DefaultSchema("dbo")
-				          	.ConnectionString(connectionString.ConnectionString))
+				.Database(SQLiteConfiguration.Standard.ConnectionString(connectionString.ConnectionString))
 				.Mappings(m => m.FluentMappings.AddFromAssemblyOf<ThingMap>());
 		}
 
