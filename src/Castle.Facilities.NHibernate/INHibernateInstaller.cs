@@ -15,7 +15,6 @@
 
 namespace Castle.Facilities.NHibernate
 {
-    using System;
     using System.Diagnostics.Contracts;
 
 	using Transactions;
@@ -45,17 +44,10 @@ namespace Castle.Facilities.NHibernate
 		/// </summary>
 		Maybe<IInterceptor> Interceptor { get; }
 
-	    /// <summary>
-	    /// 	Build a fluent configuration.
-	    /// </summary>
-	    /// <returns>A non null fluent configuration instance that can
-	    /// 	be used to further configure NHibernate</returns>
-	    //FluentConfiguration BuildFluent();
-
         /// <summary>
-        /// Returns functions building configuration
+        /// Returns NHibernate configuration
         /// </summary>
-	    Func<Configuration> ConfigBuilder { get; }
+	    Configuration Config { get; }
 
         /// <summary>
         /// 	Call-back to the installer, when the factory is registered

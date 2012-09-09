@@ -49,11 +49,11 @@ namespace Castle.Facilities.NHibernate
 			}
 		}
 
-	    public Func<Configuration> ConfigBuilder
+	    public Configuration Config
 	    {
 	        get
             {
-                Contract.Ensures(Contract.Result<Func<Configuration>>() != null);
+                Contract.Ensures(Contract.Result<Configuration>() != null);
                 throw new NotImplementedException();
             }
 	    }

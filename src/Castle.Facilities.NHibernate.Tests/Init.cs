@@ -26,8 +26,6 @@ namespace Castle.Facilities.NHibernate.Tests
 	using Castle.Transactions;
 	using Castle.Windsor;
 
-	using FluentNHibernate.Cfg;
-
 	using NUnit.Framework;
 
 	using global::NHibernate;
@@ -149,9 +147,9 @@ namespace Castle.Facilities.NHibernate.Tests
 				get { return Maybe.None<IInterceptor>(); }
 			}
 
-		    public Func<Configuration> ConfigBuilder
+		    public Configuration Config
 		    {
-                get { return new ExampleInstaller().ConfigBuilder; }
+                get { return new ExampleInstaller().Config; }
 		    }
 
 			public void Registered(ISessionFactory factory)
@@ -177,9 +175,9 @@ namespace Castle.Facilities.NHibernate.Tests
 				get { return Maybe.None<IInterceptor>(); }
 			}
 
-		    public Func<Configuration> ConfigBuilder
+		    public Configuration Config
 		    {
-                get { return new ExampleInstaller().ConfigBuilder; }
+                get { return new ExampleInstaller().Config; }
 		    }
 
 			public void Registered(ISessionFactory factory)
@@ -205,9 +203,9 @@ namespace Castle.Facilities.NHibernate.Tests
 				get { return Maybe.None<IInterceptor>(); }
 			}
 
-		    public Func<Configuration> ConfigBuilder
+		    public Configuration Config
 		    {
-                get { return new ExampleInstaller().ConfigBuilder; }
+                get { return new ExampleInstaller().Config; }
 		    }
 
 			public void Registered(ISessionFactory factory)

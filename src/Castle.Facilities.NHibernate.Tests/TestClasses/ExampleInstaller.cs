@@ -12,8 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
-
 namespace Castle.Facilities.NHibernate.Tests.TestClasses
 {
 	using System.Configuration;
@@ -46,9 +44,9 @@ namespace Castle.Facilities.NHibernate.Tests.TestClasses
 			get { return interceptor; }
 		}
 
-	    public Func<global::NHibernate.Cfg.Configuration> ConfigBuilder
+	    public global::NHibernate.Cfg.Configuration Config
 	    {
-            get { return BuildFluent().BuildConfiguration; }
+            get { return BuildFluent().BuildConfiguration(); }
 	    }
 
 	    public bool IsDefault

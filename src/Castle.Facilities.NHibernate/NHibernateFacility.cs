@@ -186,7 +186,7 @@ namespace Castle.Facilities.NHibernate
 			var installed = installers
 				.Select(x => new
 				{
-					Config = x.ConfigBuilder(),
+					Config = x.Config,
 					Instance = x
 				})
 				.Select(x => new Data { Config = x.Config, Instance = x.Instance, Factory = x.Config.BuildSessionFactory() })
