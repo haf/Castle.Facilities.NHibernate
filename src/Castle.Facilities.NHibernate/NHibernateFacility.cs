@@ -168,7 +168,7 @@ namespace Castle.Facilities.NHibernate
 			if (count == 0 || count > 1)
 				throw new FacilityException("no INHibernateInstaller has IsDefault = true or many have specified it");
 
-			if (!installers.All(x => !string.IsNullOrEmpty(x.SessionFactoryKey)))
+			if (installers.Any(x => string.IsNullOrEmpty(x.SessionFactoryKey)))
 				throw new FacilityException("all session factory keys must be non null and non empty strings");
 
 			VerifyLegacyInterceptors();
@@ -282,7 +282,7 @@ namespace Castle.Facilities.NHibernate
 						return registration.Named(baseName + SessionPWRSuffix).LifeStyle.PerWebRequest;
 					if (index == 2)
 						return registration.Named(baseName + SessionTransientSuffix).LifeStyle.Transient;
-					goto default; // TODO: kill this goto
+					break;
 				case DefaultSessionLifeStyleOption.SessionPerWebRequest:
 					if (index == 0)
 						return registration.Named(baseName + SessionPWRSuffix).LifeStyle.PerWebRequest;
@@ -290,19 +290,20 @@ namespace Castle.Facilities.NHibernate
 						return registration.Named(baseName + SessionPerTxSuffix).LifeStyle.PerTopTransaction();
 					if (index == 2)
 						return registration.Named(baseName + SessionTransientSuffix).LifeStyle.Transient;
-					goto default;
-				case DefaultSessionLifeStyleOption.SessionTransient:
+                    break;
+                case DefaultSessionLifeStyleOption.SessionTransient:
 					if (index == 0)
 						return registration.Named(baseName + SessionTransientSuffix).LifeStyle.Transient;
 					if (index == 1)
 						return registration.Named(baseName + SessionPerTxSuffix).LifeStyle.PerTopTransaction();
 					if (index == 2)
 						return registration.Named(baseName + SessionPWRSuffix).LifeStyle.PerWebRequest;
-					goto default;
-				default:
-					throw new FacilityException("invalid index passed to GetLifeStyle<T> - please file a bug report");
+                    break;
+                default:
+					throw new FacilityException("Unknown default life style - please file a bug report");
 			}
-		}
+            throw new FacilityException("Invalid index passed to GetLifeStyle<T> - please file a bug report");
+        }
 
 		private class Data
 		{
