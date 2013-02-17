@@ -168,7 +168,7 @@ namespace Castle.Facilities.NHibernate
 			if (count == 0 || count > 1)
 				throw new FacilityException("no INHibernateInstaller has IsDefault = true or many have specified it");
 
-			if (!installers.All(x => !string.IsNullOrEmpty(x.SessionFactoryKey)))
+			if (installers.Any(x => string.IsNullOrEmpty(x.SessionFactoryKey)))
 				throw new FacilityException("all session factory keys must be non null and non empty strings");
 
 			VerifyLegacyInterceptors();
@@ -186,7 +186,7 @@ namespace Castle.Facilities.NHibernate
 			var installed = installers
 				.Select(x => new
 				{
-					Config = x.BuildFluent().BuildConfiguration(),
+					Config = x.Config,
 					Instance = x
 				})
 				.Select(x => new Data { Config = x.Config, Instance = x.Instance, Factory = x.Config.BuildSessionFactory() })
@@ -237,7 +237,7 @@ namespace Castle.Facilities.NHibernate
 		private IRegistration RegisterStatelessSession(Data x, uint index)
 		{
 			Contract.Requires(index < 3,
-			                  "there are only three supported lifestyles; per transaction, per web request and transient");
+							  "there are only three supported lifestyles; per transaction, per web request and transient");
 			Contract.Requires(x != null);
 			Contract.Ensures(Contract.Result<IRegistration>() != null);
 
@@ -250,7 +250,7 @@ namespace Castle.Facilities.NHibernate
 		private IRegistration RegisterSession(Data x, uint index)
 		{
 			Contract.Requires(index < 3,
-			                  "there are only three supported lifestyles; per transaction, per web request and transient");
+							  "there are only three supported lifestyles; per transaction, per web request and transient");
 			Contract.Requires(x != null);
 			Contract.Ensures(Contract.Result<IRegistration>() != null);
 
@@ -270,7 +270,7 @@ namespace Castle.Facilities.NHibernate
 			where T : class
 		{
 			Contract.Requires(index < 3,
-			                  "there are only three supported lifestyles; per transaction, per web request and transient");
+							  "there are only three supported lifestyles; per transaction, per web request and transient");
 			Contract.Ensures(Contract.Result<ComponentRegistration<T>>() != null);
 
 			switch (defaultLifeStyle)
@@ -282,7 +282,7 @@ namespace Castle.Facilities.NHibernate
 						return registration.Named(baseName + SessionPWRSuffix).LifeStyle.PerWebRequest;
 					if (index == 2)
 						return registration.Named(baseName + SessionTransientSuffix).LifeStyle.Transient;
-					goto default;
+					break;
 				case DefaultSessionLifeStyleOption.SessionPerWebRequest:
 					if (index == 0)
 						return registration.Named(baseName + SessionPWRSuffix).LifeStyle.PerWebRequest;
@@ -290,7 +290,7 @@ namespace Castle.Facilities.NHibernate
 						return registration.Named(baseName + SessionPerTxSuffix).LifeStyle.PerTopTransaction();
 					if (index == 2)
 						return registration.Named(baseName + SessionTransientSuffix).LifeStyle.Transient;
-					goto default;
+					break;
 				case DefaultSessionLifeStyleOption.SessionTransient:
 					if (index == 0)
 						return registration.Named(baseName + SessionTransientSuffix).LifeStyle.Transient;
@@ -298,10 +298,11 @@ namespace Castle.Facilities.NHibernate
 						return registration.Named(baseName + SessionPerTxSuffix).LifeStyle.PerTopTransaction();
 					if (index == 2)
 						return registration.Named(baseName + SessionPWRSuffix).LifeStyle.PerWebRequest;
-					goto default;
+					break;
 				default:
-					throw new FacilityException("invalid index passed to GetLifeStyle<T> - please file a bug report");
+					throw new FacilityException("Unknown default life style - please file a bug report");
 			}
+			throw new FacilityException("Invalid index passed to GetLifeStyle<T> - please file a bug report");
 		}
 
 		private class Data

@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+
 namespace Castle.Facilities.NHibernate
 {
 	using System.Diagnostics.Contracts;
 
-	using Castle.Transactions;
+	using Transactions;
 
-	using FluentNHibernate.Cfg;
-
+	using global::NHibernate.Cfg;
 	using global::NHibernate;
 
 	/// <summary>
@@ -45,11 +45,9 @@ namespace Castle.Facilities.NHibernate
 		Maybe<IInterceptor> Interceptor { get; }
 
 		/// <summary>
-		/// 	Build a fluent configuration.
+		/// Returns NHibernate configuration
 		/// </summary>
-		/// <returns>A non null fluent configuration instance that can
-		/// 	be used to further configure NHibernate</returns>
-		FluentConfiguration BuildFluent();
+		Configuration Config { get; }
 
 		/// <summary>
 		/// 	Call-back to the installer, when the factory is registered

@@ -191,7 +191,6 @@ namespace :castle do
     nuspec.dependency "Castle.FactorySupportFacility", "3.0.0.4001"
     nuspec.dependency "Castle.Transactions", "3.1.0.18015"
     nuspec.dependency "Castle.Facilities.AutoTx", "3.1.0.18015"
-    nuspec.dependency "FluentNHibernate", "1.3.0.733"
     nuspec.dependency "NHibernate", "3.3.1.4000"
     nuspec.framework_assembly "System.Transactions", FRAMEWORK
 	
