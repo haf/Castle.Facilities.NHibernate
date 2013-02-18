@@ -73,6 +73,7 @@ namespace Castle.Facilities.NHibernate.Tests
 			AddFacility<NHibernateFacility>();
 
 			Register(Component.For<Test>().LifeStyle.Transient);
+			Register(Component.For<NestedTransactionService>().LifeStyle.Transient);
 		}
 	}
 
@@ -81,7 +82,7 @@ namespace Castle.Facilities.NHibernate.Tests
 		private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
 		public bool OnFlushDirty(object entity, object id, object[] currentState, object[] previousState,
-		                         string[] propertyNames, IType[] types)
+														 string[] propertyNames, IType[] types)
 		{
 			logger.Debug("throwing validation exception");
 
@@ -96,7 +97,7 @@ namespace Castle.Facilities.NHibernate.Tests
 		}
 
 		public int[] FindDirty(object entity, object id, object[] currentState, object[] previousState, string[] propertyNames,
-		                       IType[] types)
+													 IType[] types)
 		{
 			return null;
 		}
@@ -178,6 +179,7 @@ namespace Castle.Facilities.NHibernate.Tests
 		}
 	}
 
+
 	public class Test
 	{
 		private static readonly Logger logger = LogManager.GetCurrentClassLogger();
@@ -189,6 +191,7 @@ namespace Castle.Facilities.NHibernate.Tests
 			this.sessionManager = sessionManager;
 		}
 
+		
 		public virtual void Run()
 		{
 			logger.Debug("run invoked");
@@ -232,4 +235,6 @@ namespace Castle.Facilities.NHibernate.Tests
 			return s.Load<Thing>(thingId);
 		}
 	}
+
+	
 }
