@@ -32,27 +32,27 @@ namespace Castle.Facilities.NHibernate
 	{
 		private readonly Func<ISession> getSession;
 		private Guid privateSessionId = new Guid();
-		private IKernel kernel;
+		private ITransactionManager transactionManager;
 
 		/// <summary>
 		/// 	Constructor.
 		/// </summary>
 		/// <param name = "getSession"></param>
-		public SessionManager(Func<ISession> getSession, IKernel kernel)
+		public SessionManager(Func<ISession> getSession, ITransactionManager transactionManager)
 		{
 			Contract.Requires(getSession != null);
 			Contract.Ensures(this.getSession != null);
 
 			this.getSession = getSession;
-			this.kernel = kernel;
+			this.transactionManager = transactionManager;
 		}
 
 		ISession ISessionManager.OpenSession()
 		{
-			ITransaction transaction = ObtainCurrentTransaction();
+			Maybe<ITransaction> transaction = ObtainCurrentTransaction();
 
 			//This is a new transaction or no transaction is required
-			if (transaction == null)
+			if (!transaction.HasValue)
 			{
 				var session = getSession();
 
@@ -79,7 +79,7 @@ namespace Castle.Facilities.NHibernate
 					StoreSession(session);
 
 					//Attach to the TransactionEvent so I can clean the callcontext
-					transaction.Inner.TransactionCompleted += Inner_TransactionCompleted;
+					transaction.Value.Inner.TransactionCompleted += Inner_TransactionCompleted;
 					
 					return session;
 				}
@@ -104,11 +104,9 @@ namespace Castle.Facilities.NHibernate
 		/// Gets the current transaction from de AutoTx facility via an ITransactionManager
 		/// </summary>
 		/// <returns>The current transaction</returns>
-		private ITransaction ObtainCurrentTransaction()
+		private Maybe<ITransaction> ObtainCurrentTransaction()
 		{
-			ITransactionManager transactionManager = kernel.Resolve<ITransactionManager>();
-
-			return transactionManager.CurrentTransaction.HasValue ? transactionManager.CurrentTransaction.Value : null;
+			return transactionManager.CurrentTransaction;
 		}
 
 		/// <summary>
