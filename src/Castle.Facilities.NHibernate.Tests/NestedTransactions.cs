@@ -57,12 +57,52 @@ namespace Castle.Facilities.NHibernate.Tests
 		/// This test shows that several transaction methods can be attached to the same transaction
 		/// </summary>
 		[Test]
-		public void RunTest()
+		public void NestedTransactionFeature()
 		{
 			logger.Debug("starting test run");
 
 			using (var x = container.ResolveScope<NestedTransactionService>())
 				x.Service.Run();
+		}
+
+		/// <summary>
+		/// This test shows that an objects created in a call chain is not persisted
+		/// </summary>
+		[Test]
+		public void Transaction()
+		{
+			//Arrange
+			logger.Debug("starting test run");
+			var x = container.ResolveScope<NestedTransactionService>();
+			int thingCount = x.Service.GetThingsCount();
+
+			//Act
+			x.Service.RunAndAssert();
+
+			//Assert
+			Assert.AreEqual(x.Service.GetThingsCount(), thingCount + 1, "A thing was created");
+		}
+
+		/// <summary>
+		/// This test shows that objects are not persisted if something fails
+		/// </summary>
+		[Test]
+		public void Rollback()
+		{
+			//Arrange
+			logger.Debug("starting test run");
+			var x = container.ResolveScope<NestedTransactionService>();
+			int thingCount = x.Service.GetThingsCount();
+
+			//Act
+			try{
+				x.Service.RunAndFail();
+			}
+			catch{
+			}
+
+			//Assert
+			Assert.AreEqual(x.Service.GetThingsCount(), thingCount, "No thing was created");
 		}
 	}
 
@@ -80,10 +120,35 @@ namespace Castle.Facilities.NHibernate.Tests
 		[Transaction]
 		public virtual void Run()
 		{
-
+			
 			SaveNewThing();
 			SaveNewThing();
 		}
+
+		[Transaction]
+		public virtual void RunAndAssert()
+		{
+			//Arrange
+			int thingCount = GetThingsCount();
+
+			//Act
+			SaveNewThing();
+
+			//Assert
+			Assert.AreEqual(GetThingsCount(), thingCount, "No thing was created yet");
+		}
+
+		[Transaction]
+		public virtual void RunAndFail()
+		{
+			SaveNewThing();
+
+			//Force a Fail so I can test the nested rollback
+			throw new Exception();
+
+			
+		}
+		
 
 		[Transaction]
 		protected virtual void SaveNewThing()
@@ -93,5 +158,10 @@ namespace Castle.Facilities.NHibernate.Tests
 			thingId = (Guid)s.Save(thing);
 		}
 
+		public virtual int GetThingsCount()
+		{
+			var s = sessionManager.OpenSession();
+			return s.QueryOver<Thing>().RowCount();
+		}
 	}
 }

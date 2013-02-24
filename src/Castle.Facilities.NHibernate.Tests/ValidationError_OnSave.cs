@@ -228,7 +228,7 @@ namespace Castle.Facilities.NHibernate.Tests
 			thing.Value = 19.0;
 		}
 
-		[Transaction]
+		//Removed Transaction attribute, Transaction is not needed to load a thing
 		protected virtual Thing LoadThing()
 		{
 			var s = sessionManager.OpenSession(); // we are expecting this to be a new session
