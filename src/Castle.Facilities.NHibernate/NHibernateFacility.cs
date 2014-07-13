@@ -220,7 +220,7 @@ namespace Castle.Facilities.NHibernate
 						var s = x.Instance.Interceptor.Do(y => factory.OpenSession(y)).OrDefault(factory.OpenSession());
 						s.FlushMode = flushMode;
 						return s;
-					}))
+					}, Kernel.Resolve<ITransactionManager>()))
 						.Named(x.Instance.SessionFactoryKey + SessionManagerSuffix)
 						.LifeStyle.Singleton))
 				.ToList();

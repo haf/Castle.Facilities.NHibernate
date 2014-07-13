@@ -88,10 +88,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\CommonAssemblyInfo.cs">
-      <Link>Properties\CommonAssemblyInfo.cs</Link>
-    </Compile>
     <Compile Include="AdvancedUseCase_DependentTransactionsAreNotFlushingToStore.cs" />
+    <Compile Include="NestedTransactions.cs" />
     <Compile Include="InterceptorTests.cs" />
     <Compile Include="LifeStyle\per_web_request_spec.cs" />
     <Compile Include="LifeStyle\transient_resolving_spec.cs" />
