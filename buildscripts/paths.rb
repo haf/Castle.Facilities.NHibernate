@@ -18,7 +18,7 @@ Folders = {
 }
 
 Files = {
-  :sln => "Castle.Facilities.NHibernate.sln",
+  :sln => "build.proj",
   :version => "VERSION",
   
   :nh_fac => {
