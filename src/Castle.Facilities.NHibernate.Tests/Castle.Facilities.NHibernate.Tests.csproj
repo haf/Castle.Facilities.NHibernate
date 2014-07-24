@@ -89,6 +89,8 @@
   <ItemGroup>
     <Compile Include="AdvancedUseCase_DependentTransactionsAreNotFlushingToStore.cs" />
     <Compile Include="NestedTransactions.cs" />
+    <Compile Include="TestClasses\PersistingInstaller.cs" />
+    <Compile Include="SimpleUseCase_PersistedConfig.cs" />
     <Compile Include="InterceptorTests.cs" />
     <Compile Include="LifeStyle\per_web_request_spec.cs" />
     <Compile Include="LifeStyle\transient_resolving_spec.cs" />
@@ -96,6 +98,7 @@
     <Compile Include="Framework\EnsureSchema.cs" />
     <Compile Include="Init.cs" />
     <Compile Include="Multiple_Threads_DependentTransactionWithParent.cs" />
+    <Compile Include="PersisterTests.cs" />
     <Compile Include="SimpleUseCase_ProtectedMethod.cs" />
     <Compile Include="TestClasses\ServiceWithProtectedMethodInTransaction.cs" />
     <Compile Include="TestClasses\TearDownService.cs" />

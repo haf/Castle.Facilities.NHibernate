@@ -72,5 +72,18 @@ namespace Castle.Facilities.NHibernate.Tests.TestClasses
 		public void Registered(ISessionFactory factory)
 		{
 		}
+
+		public virtual global::NHibernate.Cfg.Configuration Deserialize()
+		{
+			return null;
+		}
+
+		public virtual void Serialize(global::NHibernate.Cfg.Configuration configuration)
+		{
+		}
+
+		public virtual void AfterDeserialize(global::NHibernate.Cfg.Configuration configuration)
+		{
+		}
 	}
 }
