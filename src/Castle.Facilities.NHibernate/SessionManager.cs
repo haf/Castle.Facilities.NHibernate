@@ -31,7 +31,7 @@ namespace Castle.Facilities.NHibernate
 	public class SessionManager : ISessionManager
 	{
 		private readonly Func<ISession> getSession;
-		private Guid privateSessionId = new Guid();
+		private Guid privateSessionId = Guid.NewGuid();
 		private ITransactionManager transactionManager;
 
 		/// <summary>
