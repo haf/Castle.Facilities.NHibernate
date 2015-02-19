@@ -71,8 +71,7 @@
       <HintPath>..\..\packages\Castle.Core.3.3.3\lib\net40-client\Castle.Core.dll</HintPath>
     </Reference>
     <Reference Include="Castle.Facilities.AutoTx">
-      <HintPath>..\..\packages\Castle.Facilities.AutoTx.3.3.0-huddle1\lib\net40\Castle.Facilities.AutoTx.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\packages\Castle.Facilities.AutoTx.3.3.0.05012\lib\net40\Castle.Facilities.AutoTx.dll</HintPath>
     </Reference>
     <Reference Include="Castle.Facilities.FactorySupport, Version=3.3.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -83,8 +82,7 @@
       <HintPath>..\..\packages\Castle.LoggingFacility.3.3.0\lib\net40\Castle.Facilities.Logging.dll</HintPath>
     </Reference>
     <Reference Include="Castle.Transactions">
-      <HintPath>..\..\packages\Castle.Transactions.3.3.0-huddle1\lib\net40\Castle.Transactions.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\packages\Castle.Transactions.3.3.0.05012\lib\net40\Castle.Transactions.dll</HintPath>
     </Reference>
     <Reference Include="Castle.Windsor, Version=3.3.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

@@ -41,8 +41,7 @@
       <HintPath>..\..\..\packages\Castle.Core.3.3.3\lib\net40-client\Castle.Core.dll</HintPath>
     </Reference>
     <Reference Include="Castle.Facilities.AutoTx">
-      <HintPath>..\..\..\packages\Castle.Facilities.AutoTx.3.3.0-huddle1\lib\net40\Castle.Facilities.AutoTx.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\..\packages\Castle.Facilities.AutoTx.3.3.0.05012\lib\net40\Castle.Facilities.AutoTx.dll</HintPath>
     </Reference>
     <Reference Include="Castle.Facilities.FactorySupport, Version=3.3.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -57,8 +56,7 @@
       <HintPath>..\..\..\packages\Castle.Core-NLog.3.3.3\lib\net40-client\Castle.Services.Logging.NLogIntegration.dll</HintPath>
     </Reference>
     <Reference Include="Castle.Transactions">
-      <HintPath>..\..\..\packages\Castle.Transactions.3.3.0-huddle1\lib\net40\Castle.Transactions.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\..\packages\Castle.Transactions.3.3.0.05012\lib\net40\Castle.Transactions.dll</HintPath>
     </Reference>
     <Reference Include="Castle.Windsor, Version=3.3.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -74,8 +72,9 @@
     <Reference Include="NHibernate.Mapping.Attributes">
       <HintPath>..\..\..\packages\NHibernate.Mapping.Attributes.3.2.0.0\lib\NHibernate.Mapping.Attributes.dll</HintPath>
     </Reference>
-    <Reference Include="NLog">
-      <HintPath>..\..\..\packages\NLog.2.0.0.2000\lib\net40\NLog.dll</HintPath>
+    <Reference Include="NLog, Version=3.2.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\NLog.3.2.0.0\lib\net40\NLog.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -94,10 +93,12 @@
     <Reference Include="System.Xml" />
     <Reference Include="Topshelf, Version=3.0.104.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\Topshelf.3.0.1\lib\net40-full\Topshelf.dll</HintPath>
+      <HintPath>..\..\..\packages\Topshelf.3.1.4\lib\net40-full\Topshelf.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Topshelf.NLog">
-      <HintPath>..\..\..\packages\Topshelf.NLog.3.0.1\lib\net40-full\Topshelf.NLog.dll</HintPath>
+      <HintPath>..\..\..\packages\Topshelf.NLog.3.1.4\lib\net40-full\Topshelf.NLog.dll</HintPath>
+      <Private>True</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>

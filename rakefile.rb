@@ -178,7 +178,7 @@ namespace :castle do
   desc "create the nuget package"
   nuspec :nuspec do |nuspec|
     nuspec.id = Projects[:nh_fac][:id]
-    nuspec.version = VERSION + "-huddle1"
+    nuspec.version = VERSION
     nuspec.authors = Projects[:nh_fac][:authors]
     nuspec.description = Projects[:nh_fac][:description]
     nuspec.title = Projects[:nh_fac][:title]
@@ -189,8 +189,8 @@ namespace :castle do
     nuspec.dependency "Castle.Core", "3.3.3"
     nuspec.dependency "Castle.Windsor", "3.3.0"
     nuspec.dependency "Castle.FactorySupportFacility", "3.3.0"
-    nuspec.dependency "Castle.Transactions", "3.3.0-huddle1"
-    nuspec.dependency "Castle.Facilities.AutoTx", "3.3.0-huddle1"
+    nuspec.dependency "Castle.Transactions", "3.3.0"
+    nuspec.dependency "Castle.Facilities.AutoTx", "3.3.0"
     nuspec.dependency "NHibernate", "3.3.4.4000"
     nuspec.framework_assembly "System.Transactions", FRAMEWORK
 	

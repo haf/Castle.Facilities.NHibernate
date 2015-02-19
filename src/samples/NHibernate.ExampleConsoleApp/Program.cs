@@ -45,7 +45,6 @@ namespace NHibernate.ExampleConsoleApp
 				cfg.Service<Program>(s =>
 				{
 					s.ConstructUsing(() => new Program());
-					s.SetServiceName("nhibLogger");
 					s.WhenStarted(p => p.Start());
 					s.WhenStopped(p => p.Stop());
 				});
