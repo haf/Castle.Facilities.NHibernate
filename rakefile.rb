@@ -191,7 +191,7 @@ namespace :castle do
     nuspec.dependency "Castle.FactorySupportFacility", "3.3.0"
     nuspec.dependency "Castle.Transactions", "3.3.0"
     nuspec.dependency "Castle.Facilities.AutoTx", "3.3.0"
-    nuspec.dependency "NHibernate", "3.3.4.4000"
+    nuspec.dependency "NHibernate", "4.0.3.4000"
     nuspec.framework_assembly "System.Transactions", FRAMEWORK
 	
     nuspec.output_file = Files[:nh_fac][:nuspec]
