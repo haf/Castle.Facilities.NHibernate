@@ -1,0 +1,13 @@
+Castle.Core
+Castle.Core-NLog
+Castle.Facilities.AutoTx
+Castle.FactorySupportFacility
+Castle.LoggingFacility
+Castle.Transactions
+Castle.Windsor
+FluentNHibernate
+Iesi.Collections
+NHibernate
+NLog
+NUnit
+System.Data.SQLite

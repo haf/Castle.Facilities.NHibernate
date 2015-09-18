@@ -1,0 +1,14 @@
+Castle.Core
+Castle.Core-NLog
+Castle.Facilities.AutoTx
+Castle.FactorySupportFacility
+Castle.LoggingFacility
+Castle.Transactions
+Castle.Windsor
+Iesi.Collections
+NHibernate
+NHibernate.Mapping.Attributes
+NLog
+System.Data.SQLite
+Topshelf
+Topshelf.NLog

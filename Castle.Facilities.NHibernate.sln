@@ -3,6 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".paket", ".paket", "{619A0735-3884-4F64-B80A-538D464EC841}"
+	ProjectSection(SolutionItems) = preProject
+		paket.dependencies = paket.dependencies
+	EndProjectSection
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Castle.Facilities.NHibernate", "src\Castle.Facilities.NHibernate\Castle.Facilities.NHibernate.csproj", "{12598D2B-B68E-4EA7-A7DD-0CC2398CE8B6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Castle.Facilities.NHibernate.Tests", "src\Castle.Facilities.NHibernate.Tests\Castle.Facilities.NHibernate.Tests.csproj", "{EAC2817B-94AC-4DB2-AA22-F17E284D9892}"
@@ -20,11 +25,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{3FD0C53F-0FA5-4521-A666-3079B38E2B05}"
 	ProjectSection(SolutionItems) = preProject
 		Changes.txt = Changes.txt
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{DAFBA74D-F7BC-4E71-9EFB-C268EF498DC0}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NHibernate.AttrExampleConsoleApp", "src\samples\NHibernate.AttrExampleConsoleApp\NHibernate.AttrExampleConsoleApp.csproj", "{BB3642DF-85D3-4A33-9E11-2AC847DA4DED}"

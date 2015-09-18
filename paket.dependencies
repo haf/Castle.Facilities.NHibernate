@@ -1,0 +1,20 @@
+framework: >= net40
+source https://nuget.org/api/v2
+
+nuget Castle.Core
+nuget Castle.Core-NLog
+nuget Castle.Facilities.AutoTx
+nuget Castle.FactorySupportFacility
+nuget Castle.LoggingFacility
+nuget Castle.Transactions
+nuget Castle.Windsor
+nuget FluentNHibernate
+nuget Iesi.Collections
+nuget NHibernate
+nuget NHibernate.Mapping.Attributes
+nuget NLog
+nuget NUnit
+nuget SQLitex64
+nuget System.Data.SQLite
+nuget Topshelf
+nuget Topshelf.NLog

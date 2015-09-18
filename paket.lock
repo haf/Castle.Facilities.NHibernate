@@ -1,0 +1,42 @@
+FRAMEWORK: >= NET40
+NUGET
+  remote: https://nuget.org/api/v2
+  specs:
+    Castle.Core (3.3.3)
+    Castle.Core-NLog (3.3.3)
+      Castle.Core (>= 3.3.3)
+      NLog (>= 2.0.0)
+    Castle.Facilities.AutoTx (3.2.207.2207)
+      Castle.Core (>= 3.0.0.4001)
+      Castle.Transactions (3.2.207.2207)
+      Castle.Windsor (>= 3.0.0.4001)
+    Castle.FactorySupportFacility (3.3.0)
+      Castle.Windsor (>= 3.3.0)
+    Castle.LoggingFacility (3.3.0)
+      Castle.Core (>= 3.3.0)
+      Castle.Windsor (>= 3.3.0)
+    Castle.Transactions (3.2.207.2207)
+    Castle.Windsor (3.3.0)
+      Castle.Core (>= 3.3.0)
+    EntityFramework (6.1.3) - framework: net40, net45, >= net451, >= net46, >= net40
+    FluentNHibernate (2.0.1)
+      NHibernate (>= 4.0)
+    Iesi.Collections (4.0.1.4000)
+    NHibernate (4.0.4.4000)
+      Iesi.Collections (>= 4.0 < 5.0)
+    NHibernate.Mapping.Attributes (4.0.0.1)
+    NLog (4.1.1)
+    NUnit (2.6.4)
+    SQLitex64 (1.0.66)
+    System.Data.SQLite (1.0.98.1)
+      System.Data.SQLite.Core (>= 1.0.98.1) - framework: net20, net40, net45, >= net451, >= net46
+      System.Data.SQLite.EF6 (>= 1.0.98.1) - framework: net40, net45, >= net451, >= net46
+      System.Data.SQLite.Linq (>= 1.0.98.1) - framework: net20, net40, net45, >= net451, >= net46
+    System.Data.SQLite.Core (1.0.98.1) - framework: net20, net40, net45, >= net451, >= net46, >= net40
+    System.Data.SQLite.EF6 (1.0.98.1) - framework: net40, net45, >= net451, >= net46, >= net40
+      EntityFramework (>= 6.0.0.0) - framework: net40, net45, >= net451, >= net46
+    System.Data.SQLite.Linq (1.0.98.1) - framework: net20, net40, net45, >= net451, >= net46, >= net40
+    Topshelf (3.2.0)
+    Topshelf.NLog (3.2.0)
+      NLog (>= 3.2.1)
+      Topshelf (>= 3.2.0)
