@@ -20,10 +20,10 @@ class NuspecFile
     @src = src
     @target = target
   end
-  
+
   def render(xml)
     depend = xml.add_element 'file', { 'src' => @src }
-    
+
     depend.add_attribute( 'target', @target ) unless @target.nil?
   end
 end
@@ -36,7 +36,7 @@ class NuspecDependency
     @id = id
     @version = version
   end
-  
+
   def render( xml )
     depend = xml.add_element 'dependency', {'id' => @id, 'version' => @version}
   end
@@ -44,7 +44,7 @@ end
 
 class Nuspec
   include Albacore::Task
-  
+
   attr_accessor :id, :version, :title, :authors, :description, :language, :licenseUrl, :projectUrl, :output_file,
                 :owners, :summary, :iconUrl, :requireLicenseAcceptance, :tags, :working_directory
 
@@ -73,7 +73,7 @@ class Nuspec
     check_required_field @version, "version"
     check_required_field @authors, "authors"
     check_required_field @description, "description"
-    
+
     if(! @working_directory.nil?)
       @working_output_file = File.join(@working_directory, @output_file)
     else
@@ -95,7 +95,7 @@ class Nuspec
     package.add_attribute("xmlns", "http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd")
 
     metadata = package.add_element('metadata')
-    
+
     metadata.add_element('id').add_text(@id)
     metadata.add_element('version').add_text(@version)
     metadata.add_element('title').add_text(@title)

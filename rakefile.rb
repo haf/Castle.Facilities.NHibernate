@@ -4,7 +4,7 @@ $: << './'
 require 'albacore'
 require 'buildscripts/albacore_mods'
 begin
-  require 'version_bumper'  
+  require 'version_bumper'
 rescue LoadError
   puts 'version bumper not available!'
 end
@@ -25,7 +25,7 @@ task :release => ["env:release", "castle:build", "castle:nuget"]
 
 desc "build in debug mode"
 task :debug => ["env:debug", "castle:build"]
- 
+
 task :ci => ["clobber", "castle:build", "castle:nuget"]
 
 desc "Run all unit and integration tests in debug mode"
@@ -74,18 +74,18 @@ namespace :castle do
   desc "build + unit tests + output"
   task :build => [:version, :msbuild, :test, :output]
   task :build_notest => [:version, :msbuild, :output]
- 
+
   desc "generate the assembly infos you need to compile with VS"
   task :assembly_infos => [:version]
-  
+
   desc "prepare nuspec + nuget package"
   task :nuget => [:nuget_inner]
-  
+
   task :test_all => [:test]
-  
+
   #                    BUILDING
   # ===================================================
-  
+
   msbuild :msbuild do |msb, args|
     # msb.use = :args[:framework] || :net40
     config = "#{FRAMEWORK.upcase}-#{CONFIGURATION}"
@@ -94,13 +94,13 @@ namespace :castle do
     msb.targets :Clean, :Build
     msb.solution = Files[:sln]
   end
-    
+
   #                    VERSIONING
   #        http://support.microsoft.com/kb/556041
   # ===================================================
-  
+
   file 'src/CommonAssemblyInfo.cs' => "castle:version"
-  
+
   assemblyinfo :version do |asm|
     data = commit_data() #hash + date
     asm.product_name = asm.title = Projects[:nh_fac][:title]
@@ -116,19 +116,19 @@ namespace :castle do
     asm.com_visible = false
     asm.copyright = Projects[:nh_fac][:copyright]
     asm.output_file = 'src/CommonAssemblyInfo.cs'
-  end  
-  
+  end
+
   #                    OUTPUTTING
   # ===================================================
   task :output => [:nh_fac_output] do
     Dir.glob(File.join(Folders[:binaries], "*.txt")){ | fn | File.delete(fn) } # remove old commit marker files
-	data = commit_data() # get semantic data
+  data = commit_data() # get semantic data
     File.open File.join(Folders[:binaries], "#{data[0]} - #{data[1]}.txt"), "w" do |f|
       f.puts %Q{aa
     This file's name gives you the specifics of the commit.
-    
-    Commit hash:		#{data[0]}
-    Commit date:		#{data[1]}
+
+    Commit hash:  	#{data[0]}
+    Commit date:  	#{data[1]}
 }
     end
   end
@@ -150,12 +150,12 @@ namespace :castle do
     nunit.command = Commands[:nunit]
     nunit.options '/framework v4.0', "/out #{Files[:nh_fac][:test_log]}", "/xml #{Files[:nh_fac][:test_xml]}"
     nunit.assemblies Files[:nh_fac][:test]
-	CLEAN.include(Folders[:tests])
+  CLEAN.include(Folders[:tests])
   end
   
   task :nh_fac_test_publish_artifacts => :nh_fac_nunit do
-	puts "##teamcity[importData type='nunit' path='#{Files[:nh_fac][:test_xml]}']"
-	puts "##teamcity[publishArtifacts '#{Files[:nh_fac][:test_log]}']"
+  puts "##teamcity[importData type='nunit' path='#{Files[:nh_fac][:test_xml]}']"
+  puts "##teamcity[publishArtifacts '#{Files[:nh_fac][:test_log]}']"
   end
 
   #                      NUSPEC
@@ -168,13 +168,13 @@ namespace :castle do
       to = File.join( Folders[:nuspec], "lib", FRAMEWORK )
       FileUtils.mkdir_p to
       cp f, to
-	  # return the file name and its extension:
-	  File.join(FRAMEWORK, File.basename(f))
+    # return the file name and its extension:
+    File.join(FRAMEWORK, File.basename(f))
     }
   end
   
   file "#{Files[:nh_fac][:nuspec]}"
-  
+
   desc "create the nuget package"
   nuspec :nuspec do |nuspec|
     nuspec.id = Projects[:nh_fac][:id]
@@ -193,35 +193,35 @@ namespace :castle do
     nuspec.dependency "Castle.Facilities.AutoTx", "3.3.0"
     nuspec.dependency "NHibernate", "4.0.3.4000"
     nuspec.framework_assembly "System.Transactions", FRAMEWORK
-	
+
     nuspec.output_file = Files[:nh_fac][:nuspec]
-	
+
     nuspec_copy(:nh_fac, "*Facilities.NHibernate.{dll,xml}")
-	
+
     CLEAN.include(Folders[:nuspec])
   end
-  
+
   #                       NUGET
   # ===================================================
-  
+
   directory "#{Folders[:nuget]}"
-  
+
   # creates directory tasks for all nuspec-convention based directories
   def nuget_directory()
     dirs = FileList.new([:lib, :content, :tools].collect{ |dir|
       File.join(Folders[:nuspec], "#{dir}")
     })
     task :nuget_dirs => dirs # NOTE: here a new dynamic task is defined
-	dirs.to_a.each{ |d| directory d }
+  dirs.to_a.each{ |d| directory d }
   end
-  
+
   nuget_directory()
-  
+
   desc "generate nuget package for NHibernate Facility"
   nugetpack :nuget_inner => [:output, :nuspec, "#{Folders[:nuget]}", :nuget_dirs] do |nuget|
     nuget.command     = Commands[:nuget]
     nuget.nuspec      = Files[:nh_fac][:nuspec]
     nuget.output      = Folders[:nuget]
   end
-  
+
 end
