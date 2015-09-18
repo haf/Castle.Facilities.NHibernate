@@ -12,3 +12,5 @@ Castle.Facilities.NHibernate.user
 *.nupkg
 packages/
 *.dotcover
+paket.exe
+
