@@ -9,6 +9,10 @@ Iesi.Collections
 NHibernate
 NHibernate.Mapping.Attributes
 NLog
+EntityFramework
 System.Data.SQLite
+System.Data.SQLite.Core
+System.Data.SQLite.EF6
+System.Data.SQLite.Linq
 Topshelf
 Topshelf.NLog
