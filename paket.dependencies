@@ -16,10 +16,8 @@ nuget NHibernate.Mapping.Attributes
 nuget NLog
 nuget NUnit
 nuget SQLitex64
-nuget EntityFramework
 nuget System.Data.SQLite
 nuget System.Data.SQLite.Core
-nuget System.Data.SQLite.EF6
 nuget System.Data.SQLite.Linq
 nuget Topshelf
 nuget Topshelf.NLog
