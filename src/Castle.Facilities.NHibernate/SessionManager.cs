@@ -33,12 +33,12 @@ namespace Castle.Facilities.NHibernate
 		private readonly Func<ISession> getSession;
 		private Guid privateSessionId = Guid.NewGuid();
 		private ITransactionManager transactionManager;
-
-		/// <summary>
-		/// 	Constructor.
-		/// </summary>
-		/// <param name = "getSession"></param>
-		public SessionManager(Func<ISession> getSession, ITransactionManager transactionManager)
+	    /// <summary>
+	    /// 	Constructor.
+	    /// </summary>
+	    /// <param name = "getSession"></param>
+	    /// <param name="transactionManager"></param>
+	    public SessionManager(Func<ISession> getSession, ITransactionManager transactionManager)
 		{
 			Contract.Requires(getSession != null);
 			Contract.Ensures(this.getSession != null);

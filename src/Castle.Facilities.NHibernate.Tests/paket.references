@@ -11,3 +11,5 @@ NHibernate
 NLog
 NUnit
 System.Data.SQLite
+System.Data.SQLite.Core
+System.Data.SQLite.Linq

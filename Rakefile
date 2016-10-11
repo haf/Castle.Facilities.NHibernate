@@ -53,7 +53,7 @@ nugets_pack :create_nugets => ['build/pkg', :versioning, :compile] do |p|
   p.files   = FileList['src/*/*.csproj'].
     exclude(/Tests/)
   p.out     = 'build/pkg'
-  p.exe     = 'packages/NuGet.CommandLine/tools/NuGet.exe'
+  p.exe     = 'packages/NuGet.CommandLine.3.3.0/tools/NuGet.exe'
   p.with_metadata do |m|
     m.title       = 'Castle.Facilities.NHibernate'
     m.description = Description

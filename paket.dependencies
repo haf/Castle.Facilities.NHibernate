@@ -1,6 +1,7 @@
 framework: >= net40
 source https://nuget.org/api/v2
 
+nuget NuGet.CommandLine
 nuget Castle.Core
 nuget Castle.Core-NLog
 nuget Castle.Facilities.AutoTx
@@ -16,5 +17,7 @@ nuget NLog
 nuget NUnit
 nuget SQLitex64
 nuget System.Data.SQLite
+nuget System.Data.SQLite.Core
+nuget System.Data.SQLite.Linq
 nuget Topshelf
 nuget Topshelf.NLog

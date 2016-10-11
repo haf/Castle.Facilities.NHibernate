@@ -1,10 +1,11 @@
+2016-04-06 v0.9:
+	* Upgraded to work with Fluent NHibernate v2.x and NHibernate v4.x
 2011-09-28 v0.5:
 	 * Upgraded dependencies. NHibernate < 3.2 will no longer be tested.
 	 * Missed ref for sample project, fixed that, so that's 0.5.1, no 0.5.0, soz.
 2011-09-28:
 	 * Upgraded to v3.0.202 of Castle.Transactions (Tx + AutoTx)
 	 * Removed dependency on log4net.
-
 2011-08-23:
 	 * Default lifestyle for ISession and IStatelessSession is now PerTopTransaction.
 	 * Each recursion/dependent transaction started/voted to complete Flushes the ISession/IStatelessSession
